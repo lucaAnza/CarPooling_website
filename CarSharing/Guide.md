@@ -55,6 +55,10 @@ urlpatterns = [
 
 ## Step3 - Aggiunta template
 
+Consigli:
+
+- Fare `{% extends "base.html" %}` o `{% include "base.html" %}` son 2 cose diverse.
+
 1. Creazione /Template nella root del progetto.
 2. Aggiungi in *urls.py* `'DIRS': [os.path.join(BASE_DIR, "templates")],`
 3. Aggiunti *base.html*, *base_extended.html* on /templates.
@@ -108,3 +112,9 @@ urlpatterns = [
         return render(request, template_name = 'base_extended.html' , context = ctx)
     ```
 
+## Step4 - Risorse statiche
+
+1. Crea directory */static*.
+2. Add info on *settings.py*.
+3. Add `{% load static %}` on block head of the extended html.
+4. Add `<img src="{% static 'img/test.png' %}" alt="Mia immagine">`.
