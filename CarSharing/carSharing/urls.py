@@ -16,11 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import home_page,elenca_params
+from .views import home_page,elenca_params,two_params,hello_template
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/' , home_page , name="homepage"),
     path("", home_page,name="homepage"),
-    path("elenca/", elenca_params ,name="elenca")
+    path("elenca/", elenca_params ,name="elenca"),
+    path('two/<str:nome>/<int:eta>/', two_params, name='twoParamas'),
+    path('welcome/' , hello_template , name='welcome')
 ]
