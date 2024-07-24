@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from .initcmds import init_db
+from .initcmds import init_db,erase_db
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +24,5 @@ urlpatterns = [
 ]
 
 
-#init_db()
+init_db()
+#erase_db()
