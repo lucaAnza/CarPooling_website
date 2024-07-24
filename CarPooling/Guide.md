@@ -141,3 +141,56 @@ Consigli:
 
 3. Add `{% load static %}` on block head of the extended html.
 4. Add `<img src="{% static 'img/test.png' %}" alt="Mia immagine">`.
+
+
+## Step5 - Creazione sub-application
+
+1. `python3 manage.py startapp gestione`
+   
+2. Changes on *settings.py*
+
+    ```python
+    INSTALLED_APPS = [
+        'django.contrib.admin',
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.messages',
+        'django.contrib.staticfiles',
+        'gestione'       # <----------------- 
+    ]
+    ```
+
+3. Changes on *urls.py*
+
+    ```python
+    from django.urls import path,include
+    
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('gestione/' , include('gestione.urls'))  # <----- Move old urls on Gestione/urls.py
+    ]
+    ```
+
+4. Move old *views.py* on *Gestione/views.py*
+   
+
+## Step5 - Il mio primo database
+
+//TODO - Insert img
+
+1. Create `models.py` on /<Application_Name>
+
+2. `models.py` : 
+
+```python
+# TODO
+```
+
+3. Make migrations : 
+
+```bash
+cd <Project_Name_Dir>
+python manage.py makemigrations gestione # gestione is <Application_Name>
+python manage.py migrate
+```
