@@ -5,10 +5,9 @@ class Car(models.Model):
     license_plate = models.CharField(max_length=15)
     km = models.IntegerField(default=-1)
     last_inspection_date = models.DateField(default=None)
+    
     def __str__(self):
-        out = self.model + " di " + self.autore
-        if self.data_prestito == None:
-            out += "Nessuna revisione"
+        out = f'model({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)}'
         return out
 
     class Meta:

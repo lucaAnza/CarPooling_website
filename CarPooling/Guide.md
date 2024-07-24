@@ -175,7 +175,7 @@ Consigli:
 4. Move old *views.py* on *Gestione/views.py*
    
 
-## Step5 - Il mio primo database
+## Step6 - Il mio primo database
 
 //TODO - Insert img
 
@@ -183,9 +183,23 @@ Consigli:
 
 2. `models.py` : 
 
-```python
-# TODO
-```
+    ```python
+    from django.db import models
+
+    class Car(models.Model):
+        model = models.CharField(max_length=50)
+        license_plate = models.CharField(max_length=15)
+        km = models.IntegerField(default=-1)
+        last_inspection_date = models.DateField(default=None)
+        
+        def __str__(self):
+            out = f'model({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)}'
+            return out
+
+        class Meta:
+            verbose_name_plural = "Cars"
+
+    ```
 
 3. Make migrations : 
 
@@ -194,3 +208,54 @@ cd <Project_Name_Dir>
 python manage.py makemigrations gestione # gestione is <Application_Name>
 python manage.py migrate
 ```
+
+4. Init db : 
+    1. Create <Project_Name_Dir>/initcmds.py
+
+   ```python
+    from gestione.models import Car
+
+    def erase_db():
+        print("Cancello il DB...")
+        Car.objects.all().delete()
+
+    def init_db():
+        
+        if len(Car.objects.all()) != 0:
+            return
+
+        cardict = {
+            "model" : ["Ford", "Model2", "Model3", "Model4", "Model5"],
+            "license_plate" : ["AB123CD", "EF456GH", "IJ789KL", "MN012OP", "QR345ST"],
+            "km" : [200000 , 150000, 43414, 1012, 4000000],
+        }
+
+        for i in range(5):
+            c = Car()
+            for k in cardict:
+                if k == "model":
+                        c.autore = cardict[k][i]
+                if k == "license_plate":
+                        c.titolo = cardict[k][i]
+                if k == "km":
+                        c.pagine = cardict[k][i] 
+            c.save()
+        
+        print("DUMP DB")
+        print(Car.objects.all()) 
+    ```
+    2. Add function call on *<Project_Name_Dir>/urls.py*
+
+## Step7 - Create a super user
+
+1. `python3 manage.py createsuperuser`
+
+2. Change *<Application_Name>/admin.py* : 
+
+    ```python
+    from django.contrib import admin
+    from .models import *
+
+    # Registered Models
+    admin.site.register(Car)
+    ```
