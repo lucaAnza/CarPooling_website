@@ -8,6 +8,8 @@
 pipenv install django
 pipenv shell
 django-admin startproject <Project_name>
+
+#If you want to create a sub-application
 python manage.py startapp <App_name>
 
 ```
@@ -59,7 +61,7 @@ Consigli:
 
 - Fare `{% extends "base.html" %}` o `{% include "base.html" %}` son 2 cose diverse.
 
-1. Creazione /Template nella root del progetto.
+1. Creazione /templates nella root del progetto.
 2. Aggiungi in *urls.py* `'DIRS': [os.path.join(BASE_DIR, "templates")],`
 3. Aggiunti *base.html*, *base_extended.html* on /templates.
     Base:
@@ -112,9 +114,30 @@ Consigli:
         return render(request, template_name = 'base_extended.html' , context = ctx)
     ```
 
+5. Change *urls.py*
+
+    ```python
+    from .views import home_page,elenca_params,hello_template,two_params
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('home/' , home_page , name="homepage"),
+        path("", home_page,name="homepage"),
+        path("elenca/", elenca_params ,name="elenca"), # Parametri passati con ?
+        path('parametri/<str:nome>/<int:eta>/', two_params, name='alias'),  # Parametri passati con /
+        path('template/', hello_template, name='template')  
+    ]
+    ```
+
 ## Step4 - Risorse statiche
 
 1. Crea directory */static*.
 2. Add info on *settings.py*.
+
+    ```python
+    #remember to import os
+    STATICFILES_DIRS = [os.path.join(BASE_DIR , "static")]
+    ```
+
 3. Add `{% load static %}` on block head of the extended html.
 4. Add `<img src="{% static 'img/test.png' %}" alt="Mia immagine">`.

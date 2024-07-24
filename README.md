@@ -1,6 +1,6 @@
-# Car Sharing Web Site
+# Car Pooling Web Site
 
-This repository contains the code of a Car Sharing Web Site made with <b>Django</b>. <br>
+This repository contains the code of a Car Pooling Web Site made with <b>Django</b>. <br>
 
 <div style="display:flex;">
 	<img src="img/car_sharing_logo.jpg" alt="Image 1" style="width:20%;">

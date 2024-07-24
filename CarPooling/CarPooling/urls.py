@@ -1,5 +1,5 @@
 """
-URL configuration for carSharing project.
+URL configuration for CarPooling project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -16,13 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import home_page,elenca_params,two_params,hello_template
+
+
+from .views import home_page,elenca_params,hello_template,two_params
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/' , home_page , name="homepage"),
     path("", home_page,name="homepage"),
-    path("elenca/", elenca_params ,name="elenca"),
-    path('two/<str:nome>/<int:eta>/', two_params, name='twoParamas'),
-    path('welcome/' , hello_template , name='welcome')
+    path("elenca/", elenca_params ,name="elenca"), # Parametri passati con ?
+    path('parametri/<str:nome>/<int:eta>/', two_params, name='alias'),  # Parametri passati con /
+    path('template/', hello_template, name='template')  
 ]
