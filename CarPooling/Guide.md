@@ -275,3 +275,6 @@ python manage.py migrate
     # Registered Models
     admin.site.register(Car)
     ```
+
+## Step8 - Using database in a Function View
+

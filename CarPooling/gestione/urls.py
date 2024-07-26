@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.urls import path
 
 
-from .views import home_page,elenca_params,hello_template,two_params
+from .views import home_page,elenca_params,hello_template,two_params,play_with_database
 
 urlpatterns = [
     path('home/' , home_page , name="homepage"),
     path("", home_page,name="homepage"),
     path("elenca/", elenca_params ,name="elenca"), # Parametri passati con ?
     path('parametri/<str:nome>/<int:eta>/', two_params, name='alias'),  # Parametri passati con /
-    path('template/', hello_template, name='template')  
+    path('template/', hello_template, name='template'),
+    path('database/', play_with_database , name='database')
 ]
