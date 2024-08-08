@@ -7,7 +7,7 @@ class Car(models.Model):
     last_inspection_date = models.DateField(default=None)
     
     def __str__(self):
-        out = f'model({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)}'
+        out = f'{self.model} ({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)}'
         return out
 
     class Meta:
