@@ -18,12 +18,15 @@ from django.contrib import admin
 from django.urls import path,include, re_path
 from django.contrib.auth import views as auth_views
 from .initcmds import init_db,erase_db
-from .views import biblio3_home
+from .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gestione/' , include('gestione.urls')),
-    re_path(r"^$|^\/$|^home\/$", biblio3_home ,name="home") ## PROF
+    re_path(r"^$|^\/$|^home\/$", home_page ,name="home"),  # Homepage
+    path("register/", UserCreateView.as_view(), name="register"), # ... 
+    path("login/", auth_views.LoginView.as_view(), name="login"),   # Login (pre-built Django) {templates/registration/login.html}
+    path("logout/", auth_views.LogoutView.as_view(), name="logout") # Logout (pre-built Django) {templates/registration/logged_out.html}
 ]
 
 """ WHAT????
