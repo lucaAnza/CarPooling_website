@@ -24,12 +24,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('gestione/' , include('gestione.urls')),
     re_path(r"^$|^\/$|^home\/$", home_page ,name="home"),  # Homepage
-    path("register/", UserCreateView.as_view(), name="register"), # ... 
+    path("register/", UserCreateView.as_view(), name="register"), # Register {templates/user_create.html}
     path("login/", auth_views.LoginView.as_view(), name="login"),   # Login (pre-built Django) {templates/registration/login.html}
     path("logout/", auth_views.LogoutView.as_view(), name="logout") # Logout (pre-built Django) {templates/registration/logged_out.html}
 ]
 
-""" WHAT????
+""" TODO 
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 """
