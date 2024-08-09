@@ -29,10 +29,5 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout") # Logout (pre-built Django) {templates/registration/logged_out.html}
 ]
 
-""" TODO 
-    path("login/", auth_views.LoginView.as_view(), name="login"),
-    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-"""
-
 init_db()
 #erase_db()
