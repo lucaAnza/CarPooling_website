@@ -366,6 +366,11 @@ def get_context_data(self, **kwargs):
     context['titolo'] = "Insegnamenti Attivi" # Add context variable
     return context
 
+## Usato nel sito finale
+class CarsListView(ListView):
+    model = Car
+    template_name = "garage.html"
+
 
 
 ```

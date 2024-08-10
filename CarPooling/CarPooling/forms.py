@@ -10,12 +10,10 @@ class CreateUserPassenger(UserCreationForm):
         return user 
 
 
-"""
-class CreaUtenteBibliotecario(UserCreationForm):
+class CreateUserDriver(UserCreationForm):
     
     def save(self, commit=True):
         user = super().save(commit) 
-        g = Group.objects.get(name="Bibliotecari") 
+        g = Group.objects.get(name="Driver") 
         g.user_set.add(user) 
         return user
-""" 

@@ -14,13 +14,12 @@
 
 {% block content %} 
 
-<form method="post"> {% csrf_token %}
-
-  {{form | crispy}}   
-  
-  <input type="submit" class="btn btn-success" value="Registrati ora!">
-  
-  </form>
+<div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Well done!</h4>
+    <p>Aww yeah, you successfully upgrade your Account! Now you have the opportunity to add personal vehicles and create personal races where other users can join.</p>
+    <hr>
+    <p class="mb-0">If you need other information ask to this account fakeEmail@gmail.com </p>
+</div>
 
 {% endblock %}
 

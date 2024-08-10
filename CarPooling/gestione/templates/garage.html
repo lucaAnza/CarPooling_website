@@ -5,7 +5,9 @@
 {% block title %} Garage {% endblock %} 
 
 {% block header1 %}
-  <h1> Yours vehicle </h1>
+  <div class="header-background">
+    <h1> Yours vehicle </h1>
+  </div>
 {% endblock %}
 
 {% block content %} 
@@ -14,7 +16,7 @@
 
 <br>
 
-{% if "Driver" in user.groups.all.0.name or user.is_staff %}
+{% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  {# TODO - Improve this check #}
 
   {% for l in object_list %}
   <br>
@@ -48,7 +50,7 @@
     <div class="card-body">
       <h5 class="card-title">Attention</h5>
       <p class="card-text">You are a {{user.groups.all.0.name}}. If you want to have access a garage you have to create a DRIVER account</p>
-      <a href="#" class="btn btn-primary">Become a driver 🚕 </a>
+      <a href="{% url 'registerDriver' %}" class="btn btn-primary">Become a driver 🚕 </a>
     </div>
   </div>
 
