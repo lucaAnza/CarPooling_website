@@ -17,7 +17,7 @@
     background-image: url('/static/img/home_background.jpg'); 
     background-size: cover; 
     background-position: center; 
-    padding: 20px; 
+    padding: 40px; 
     color: white; 
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
   }
@@ -92,15 +92,20 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'home' %}">Drivers ranking 🏆</a>
         </li>
-    
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">My Profile 👤</a>
+        </li>
+
         
         {% if user.is_authenticated %} {# deprecation! https://docs.djangoproject.com/en/5.0/releases/4.1/#features-deprecated-in-4-1 #}
-          <li class="nav-item ml-auto"></li>  
-          <form id="logout-form" method="post" action="{% url 'logout' %}">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-info">Log out</button>
-          </form>
-          </br>
+          <li class="nav-item ml-auto"></li> 
+            <form id="logout-form" method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="button" class="btn btn-primary"> 👤 {{user.username}} </button>
+              <button type="submit" class="btn btn-info">Log out</button>
+            </form>
+            </br>
           </li>
         {% else %}
         <li class="nav-item ml-auto">
@@ -109,15 +114,7 @@
           <a class="btn btn-warning" href="/admin/" role="button">Admin Login</a>
         </li>
         {% endif %}
-
-      
-
-        
-        
-        
-        
-    
-      </ul>
+    </ul>
     </div>
     
     

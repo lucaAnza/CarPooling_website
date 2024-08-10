@@ -68,6 +68,5 @@ def play_with_database(request):
 
 
 class CarsListView(ListView):
-    titolo = "Your garage"
     model = Car
     template_name = "garage.html"

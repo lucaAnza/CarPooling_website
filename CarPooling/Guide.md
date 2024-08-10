@@ -327,3 +327,54 @@ def play_with_database(request):
     return render(request,template_name=templ,context=ctx)
 ```
 
+## Step 9 - My First CBV (Class Based View)
+
+Esistono diverse categorie di CBV le principale sono:
+- ListView: elenca le entry delle nostre tabelle  ✓ 
+- UpdateView: ci permette di modificare una specifica entry di una tabella
+- CreateView: ci permette di creare una entry di una tabella
+- DeleteView: ci permette di rimuovere una entry di una tabella
+- DetailView: ci permette di leggere gli attributi di una specifica entry di una tabella.
+
+
+1. Change *urls.py*
+
+```python
+
+urlpatterns = [
+    # ... 
+    path("garage/", CarsListView.as_view(), name="garage")
+]
+
+```
+
+2. Change *views.py*
+
+- get_queryset -> Permette di fare operazioni sul queryset sulla tabella indicata dall’attributo model
+
+- get_context_data -> Permette di aggiungere variabili di contesto
+
+- other methods -> È possibile ridefinire altri metodi per poi chiamarli nel template con `view.method`
+
+```python
+## Example
+def get_queryset(self):
+    return self.model.objects.exclude(studenti__isnull=True) # Filter on database
+## Example
+def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)  
+    context['titolo'] = "Insegnamenti Attivi" # Add context variable
+    return context
+
+
+
+```
+
+1. Template info
+
+```python
+
+object_list # Variabile di contesto contiene il QuerySet operato sul modello specificato nella estensione della ListView
+view. # Serve per chiamare i vari metodo del CBV
+
+```
