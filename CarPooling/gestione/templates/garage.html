@@ -1,0 +1,44 @@
+{% extends 'basebs.html' %}
+
+{% load static %}
+
+{% block title %} Garage {% endblock %} 
+
+{% block header1 %}
+  <h1> Yours vehicle </h1>
+{% endblock %}
+
+{% block content %} 
+
+<h2> {{ view.titolo }} has {{ object_list.count }} vehicle </h2>
+
+<br>
+
+{% for l in object_list %}
+<br>
+<div class="card">
+  <div class="card-header">
+    {{l.model}} ({{l.license_plate}})
+  </div>
+
+  <div class="card-body">
+    <h5 class="card-title"> {{l.km}} Km 🛣️ </h5>
+    <p class="card-text"> 
+    "Experience the perfect blend of comfort and cutting-edge technology with this vehicle. 
+    Enjoy heated leather seats, an intuitive infotainment system, and a sleek design that turns heads. 
+    Advanced safety features ensure peace of mind, while impressive fuel efficiency helps you save and respect the environment. 
+    Hop in for a ride that combines luxury and innovation like never before. 
+    Don't miss out on this unique experience!"
+    </p>
+    <img src="{% static '/img/range_rover.jpg' %}"  height="300px" alt="car_img">
+    
+    <a href="#" class="btn btn-info disabled"> Modify </a> 
+
+  </div>
+</div>
+<br>
+{%endfor%}
+
+<br>
+
+{% endblock %}

@@ -4,6 +4,7 @@ from datetime import datetime
 from .models import Car
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
+from django.views.generic.list import ListView
 
 def home_page(request):
 
@@ -64,3 +65,9 @@ def play_with_database(request):
     #car_to_modify.delete()
 
     return render(request,template_name=templ,context=ctx)
+
+
+class CarsListView(ListView):
+    titolo = "Your garage"
+    model = Car
+    template_name = "garage.html"
