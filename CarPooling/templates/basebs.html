@@ -13,6 +13,14 @@
     height: 200px;
     background: #aaa;
   }
+  .header-background {
+    background-image: url('/static/img/home_background.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    padding: 20px; 
+    color: white; 
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+  }
   </style>
   {% endblock %}
   {% load crispy_forms_tags %} 
@@ -62,28 +70,57 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     {% block navbar %}
-    <a class="navbar-brand" href="{% url 'home' %}">Biblio3</a>
+    <a class="navbar-brand" href="{% url 'home' %}">Homepage 🏠 </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
-      <ul class="navbar-nav">
-
-
+      <ul class="navbar-nav w-100 d-flex">
+        
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">Gestione</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">Lista dei Libri</a>
+          <a class="nav-link" href="{% url 'home' %}">Search for a trip 🔍</a>
         </li>
         
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">Cerca un Libro</a>
+          <a class="nav-link" href="{% url 'home' %}">My Trip 🧳</a>
         </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">My vehicle 🚗</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Drivers ranking 🏆</a>
+        </li>
+    
+        
+        {% if user.is_authenticated %} {# deprecation! https://docs.djangoproject.com/en/5.0/releases/4.1/#features-deprecated-in-4-1 #}
+          <li class="nav-item ml-auto"></li>  
+          <form id="logout-form" method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-info">Log out</button>
+          </form>
+          </br>
+          </li>
+        {% else %}
+        <li class="nav-item ml-auto">
+          <a class="btn btn-info" href="{% url 'register' %}" role="button">Registrati</a>
+          <a class="btn btn-info" href="{% url 'login' %}" role="button">Login</a>
+          <a class="btn btn-warning" href="/admin/" role="button">Admin Login</a>
+        </li>
+        {% endif %}
 
+      
+
+        
+        
+        
+        
+    
       </ul>
-    </div> 
+    </div>
+    
+    
     {% endblock %} 
   </nav>
 

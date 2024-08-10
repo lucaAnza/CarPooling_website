@@ -18,7 +18,6 @@ class UserCreateView(CreateView):
 
 
 """
-
 class BiblioCreateView(PermissionRequiredMixin, UserCreateView):
     permission_required = "is_staff"
     form_class = CreaUtenteBibliotecario
