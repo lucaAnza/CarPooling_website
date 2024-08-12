@@ -26,5 +26,6 @@ urlpatterns = [
     path('template/', hello_template, name='template'),
     path('database/', play_with_database , name='database'),
     path("garage/", CarsListView.as_view(), name="garage"),
-    path("addvehicle/", CreateVehicleView.as_view() , name="addvehicle" )
+    path("addvehicle/", CreateVehicleView.as_view() , name="addvehicle" ),
+    path("deletevehicle/<pk>/" ,  DeleteCarView.as_view() , name="deletevehicle" )
 ]

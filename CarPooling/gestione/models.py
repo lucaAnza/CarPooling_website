@@ -10,14 +10,15 @@ class Car(models.Model):
     last_inspection_date = models.DateField(default=None , null = True , blank=True)
     
     def __str__(self):
+        out = "{" + str(self.id) + "}"  # Primary key
         if(self.user_id != None and self.last_inspection_date != None) : 
-            out = f'[{self.user_id.username}] {self.model} ({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)} \n'
+            out = str(out) +  f'  [{self.user_id.username}] {self.model} ({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)} \n'
         elif(self.last_inspection_date != None) :
-            out = f' {self.model} ({self.license_plate}) - {self.km} Km \n\tLast inspection : {str(self.last_inspection_date)} \n'
+            out = str(out) + f' {self.model} ({self.license_plate}) - {self.km} Km \n\tLast inspection : {str(self.last_inspection_date)} \n'
         elif(self.user_id != None):
-            out = f'[{self.user_id.username}] {self.model} ({self.license_plate}) - {self.km} Km \n'
+            out = str(out) + f'  [{self.user_id.username}] {self.model} ({self.license_plate}) - {self.km} Km \n'
         else:
-            out = f' {self.model} ({self.license_plate}) - {self.km} Km \n'
+            out = str(out) + f' {self.model} ({self.license_plate}) - {self.km} Km \n'
 
         return out
 

@@ -52,7 +52,7 @@
       <br><br>
 
       <a href="#" class="btn btn-info disabled"> Modify </a> 
-      <a href="#" class="btn btn-danger"> Delete </a> 
+      <a href="{% url 'deletevehicle' l.id %}" class="btn btn-danger"> Delete </a> 
   
 
 
@@ -62,7 +62,7 @@
   {%endfor%}
 
   <br>
-  <button type="button" class="btn btn-primary btn-lg btn-block"> Add new car <i class="bi bi-plus-square-fill"></i> <i class="bi bi-car-front-fill"></i> </button>
+  <a href="{% url 'addvehicle' %}" class="btn btn-primary btn-lg btn-block"> Add new car <i class="bi bi-plus-square-fill"></i> <i class="bi bi-car-front-fill"></i> </a>
 
 
   {% endif %}

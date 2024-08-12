@@ -17,9 +17,7 @@ class CreateVehicleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):     
         super(CreateVehicleForm, self).__init__(*args, **kwargs)   
         self.fields['last_inspection_date'].required = False
-
         
-
     class Meta:
         model = Car
         fields = ["model", "license_plate", "km" , "last_inspection_date"]

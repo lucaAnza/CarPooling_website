@@ -3,7 +3,7 @@ from django.shortcuts import render
 from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import get_object_or_404 , render , redirect
-from django.urls import reverse_lazy
+from django.urls import reverse,reverse_lazy
 #Models
 from .models import *
 from .forms import *
@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import DeleteView
 
 #Authentication
 from django.contrib.auth.decorators import login_required
@@ -102,6 +103,25 @@ class CreateVehicleView(GroupRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user_id = self.request.user
         return super().form_valid(form)
+    
+class DeleteEntityView(DeleteView):
+    template_name = "delete_vehicle.html"
 
+    def get_context_data(self , **kwargs):
+        ctx = super().get_context_data()
+        # Car case
+        if(self.model == Car):
+            entity = "Car"
+        ctx["entity"] = entity
+        return ctx
+    
+    def get_success_url(self):
+        if self.model == Car : 
+            return reverse("home")
+
+class DeleteCarView(GroupRequiredMixin , DeleteEntityView):
+    title = "Delete a vehicle"
+    group_required = ["Driver"]
+    model = Car
         
 
