@@ -14,6 +14,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
+from django.views.generic.edit import UpdateView
 
 #Authentication
 from django.contrib.auth.decorators import login_required
@@ -123,5 +124,13 @@ class DeleteCarView(GroupRequiredMixin , DeleteEntityView):
     title = "Delete a vehicle"
     group_required = ["Driver"]
     model = Car
+
+class UpdateCarView(GroupRequiredMixin , UpdateView):
+    title = "Modify vehicle settings"
+    group_required = ["Driver"]
+    model = Car
+    template_name = "update_vehicle.html"
+    fields = ["model" , "license_plate" , "km" , "last_inspection_date"]
+    success_url = reverse_lazy("home")
         
 
