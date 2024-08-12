@@ -70,3 +70,6 @@ def play_with_database(request):
 class CarsListView(ListView):
     model = Car
     template_name = "garage.html"
+
+    def get_queryset(self):
+        return Car.objects.filter(user_id=self.request.user)

@@ -12,11 +12,24 @@
 
 {% block content %} 
 
-<h2> Your Garage has {{ object_list.count }} vehicle ,, Sei nel gruppo {{user.groups.all.0.name}} </h2>
+<h2> Your Garage has {{ object_list.count }} vehicle </h2>
 
 <br>
 
 {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  {# TODO - Improve this check #}
+
+  {% if object_list.count == 0 %}
+  
+    <div class="card" style="width: 18rem;">
+      <img src="{% static '/img/empty_garage.jpg' %}" class="card-img-top" alt="empty_garage">
+      <div class="card-body">
+        <h5 class="card-title">Attention</h5>
+        <p class="card-text">Your garage is empty. You can add your first vehicle with the following button. </p>
+        <a href="{% url 'home' %}" class="btn btn-primary">Add new vehicle <i class="bi bi-plus-square"></i></a>
+      </div>
+    </div>
+  
+  {%else %}
 
   {% for l in object_list %}
   <br>
@@ -42,17 +55,18 @@
   </div>
   <br>
   {%endfor%}
+  {% endif %}
 
 {% else %}
 
-  <div class="card" style="width: 18rem;">
-    <img src="{% static '/img/cannot_access_garage.jpg' %}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Attention</h5>
-      <p class="card-text">You are a {{user.groups.all.0.name}}. If you want to have access a garage you have to create a DRIVER account</p>
-      <a href="{% url 'registerDriver' %}" class="btn btn-primary">Become a driver 🚕 </a>
+    <div class="card" style="width: 18rem;">
+      <img src="{% static '/img/cannot_access_garage.jpg' %}" class="card-img-top" alt="forbidden">
+      <div class="card-body">
+        <h5 class="card-title">Attention</h5>
+        <p class="card-text">You are a {{user.groups.all.0.name}}. If you want to have access a garage you have to create a DRIVER account</p>
+        <a href="{% url 'registerDriver' %}" class="btn btn-primary">Become a driver 🚕 </a>
+      </div>
     </div>
-  </div>
 
 {% endif %}
 

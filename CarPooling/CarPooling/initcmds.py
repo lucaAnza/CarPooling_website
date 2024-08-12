@@ -1,9 +1,10 @@
 from gestione.models import Car
+from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import datetime,timedelta
 
 def erase_db():
-    print("\nDeleting DB 🗑️ \n")
+    print("\nDeleting Car table DB 🗑️ \n")
     Car.objects.all().delete()
 
 def func_time(off_year=None, off_month=None, off_day=None):
@@ -38,6 +39,12 @@ def init_db():
                     c.km = cardict[k][i]
             if k == "last_inspection_date":
                     c.last_inspection_date = datetime.now()
+        try:
+            admin_user = User.objects.get(username='admin') # Try to get the user with username 'admin'
+        except User.DoesNotExist:
+            print("Errore - USERNAME admin doesn't exist! (initcmds.py) ")
+            admin_user = None # Handle the case where the user does not exist
+        c.user_id = admin_user
         c.save()
 
         
