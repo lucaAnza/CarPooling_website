@@ -83,7 +83,8 @@ def play_with_database(request):
     return render(request,template_name=templ,context=ctx)
 
 
-#class CarsListView(ListView):
+# GARAGE ---------------------------------------------------
+
 class CarsListView(GroupRequiredMixin, ListView):
     group_required = ["Driver" , "Passenger"]
     model = Car
@@ -132,5 +133,16 @@ class UpdateCarView(GroupRequiredMixin , UpdateView):
     template_name = "update_vehicle.html"
     fields = ["model" , "license_plate" , "km" , "last_inspection_date"]
     success_url = reverse_lazy("home")
-        
+
+# ----------------------------------------------------------------------
+
+
+# TRIPS ----------------------------------------------------------------
+
+class TripsListView(GroupRequiredMixin , ListView):
+    group_required = ["Passenger" , "Driver"]
+    model = Car
+    template_name = "trips.html"
+
+#-----------------------------------------------------------------------
 

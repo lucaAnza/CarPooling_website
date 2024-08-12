@@ -28,5 +28,6 @@ urlpatterns = [
     path("garage/", CarsListView.as_view(), name="garage"),
     path("addvehicle/", CreateVehicleView.as_view() , name="addvehicle" ),
     path("deletevehicle/<pk>/" ,  DeleteCarView.as_view() , name="deletevehicle" ),
-    path('updatevehicle/<pk>', UpdateCarView.as_view(), name="updatevehicle")
+    path('updatevehicle/<pk>', UpdateCarView.as_view(), name="updatevehicle"),
+    path("trips/", TripsListView.as_view(), name="trips"),
 ]
