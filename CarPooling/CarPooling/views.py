@@ -36,7 +36,6 @@ def createDriver(request):
 
 
 
-
 """ Example of Required Permission
 class CreateDriverView(GroupRequiredMixin, CreateView):
     group_required = ["Passenger"]

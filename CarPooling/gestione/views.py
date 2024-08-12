@@ -1,10 +1,24 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from datetime import datetime
-from .models import Car
 from django.utils import timezone
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404 , render , redirect
+from django.urls import reverse_lazy
+#Models
+from .models import *
+from .forms import *
+from django.contrib.auth.models import User
+
+#CBV
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
+
+#Authentication
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from braces.views import GroupRequiredMixin # pipenv install django-braces
+
 
 def home_page(request):
 
@@ -67,9 +81,25 @@ def play_with_database(request):
     return render(request,template_name=templ,context=ctx)
 
 
-class CarsListView(ListView):
+#class CarsListView(ListView):
+class CarsListView(GroupRequiredMixin, ListView):
+    group_required = ["Driver" , "Passenger"]
     model = Car
     template_name = "garage.html"
 
     def get_queryset(self):
         return Car.objects.filter(user_id=self.request.user)
+
+    
+class CreateVehicleView(GroupRequiredMixin, CreateView):
+    title = "Add a vehicle"
+    group_required = ["Driver"]
+    form_class = CreateVehicleForm
+    template_name = "add_vehicle.html"
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        print("Utente corrente:", self.request.user)
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+

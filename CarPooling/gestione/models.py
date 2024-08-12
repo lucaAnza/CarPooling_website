@@ -3,14 +3,17 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Car(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None, related_name="car_owner")
+    user_id = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True , related_name="my_cars")
     model = models.CharField(max_length=50)
     license_plate = models.CharField(max_length=15)
-    km = models.IntegerField(default=-1)
-    last_inspection_date = models.DateField(default=None)
+    km = models.IntegerField(default=0)
+    last_inspection_date = models.DateField(default=None , null = True , blank=True)
     
     def __str__(self):
-        out = f'[{self.user_id.username}] {self.model} ({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)} \n'
+        if(self.user_id != None) : 
+            out = f'[{self.user_id.username}] {self.model} ({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)} \n'
+        else:
+            out = f' {self.model} ({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)} \n'
         return out
 
     class Meta:
