@@ -98,8 +98,10 @@ class CreateVehicleView(GroupRequiredMixin, CreateView):
     template_name = "add_vehicle.html"
     success_url = reverse_lazy("home")
 
+    # Set car owner (logged user)
     def form_valid(self, form):
-        print("Utente corrente:", self.request.user)
-        form.instance.user = self.request.user
+        form.instance.user_id = self.request.user
         return super().form_valid(form)
+
+        
 
