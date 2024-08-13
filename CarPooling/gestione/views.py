@@ -164,7 +164,7 @@ def create_trip(request):
     
     # Post - Request
     if request.method == "POST":
-        form = CreateTripForm(request.POST)
+        form = CreateTripForm(request.POST , user = request.user)
         if form.is_valid():
             car_id = form.cleaned_data.get("car")
             departure_location = form.cleaned_data.get("departure_location")
@@ -177,9 +177,7 @@ def create_trip(request):
                 max_passenger = int(form.cleaned_data.get("max_passenger"))
             except:
                 max_passenger = 0
-            
-            print("test : " , max_passenger)
-            
+                        
             # Creation of Ride entry
             r = Ride()
             r.car = Car.objects.get(id = car_id)
@@ -187,17 +185,26 @@ def create_trip(request):
             r.arrival_location = arrival_location
             r.departure_time = departure_time
             r.arrival_time = arrival_time
+            try:
+                r.save()
+            except:
+                print("Error on riding save...")
 
-            """
+
+            # Creation of Booking entry
+
             b = Booking()
+            b.user = request.user
+            b.ride = r
             b.open_registration_time = open_registration_time
-            ...
+            b.close_registration_time = close_registration_time
+            b.max_passenger = max_passenger
             try:
                 b.save()
             except:
                 print("Error on booking save...")
-            """
-            #return redirect("polls:searchresults", sstring, where)
+
+            return redirect("home")
             
     else:  # GET - Request
         form = CreateTripForm(user = request.user)
