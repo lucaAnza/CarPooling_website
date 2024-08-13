@@ -34,7 +34,7 @@ class Review(models.Model):
         return f'Review {self.id}: Rating {self.rating} - Comment: {self.comment}'
 
 class Ride(models.Model):
-    car = models.ForeignKey(Car , on_delete=models.PROTECT ,null=False , related_name="my_bookings")
+    car = models.ForeignKey(Car , on_delete=models.PROTECT , default = None ,null=False , related_name="my_bookings")
     departure_location = models.CharField(max_length=30 , null  = False)
     arrival_location = models.CharField(max_length=30 , null = False)
     departure_time = models.DateField(null=False)
@@ -45,7 +45,7 @@ class Ride(models.Model):
 
 class Booking(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None, related_name="my_bookings")
-    ride = models.ForeignKey(Ride , on_delete=models.PROTECT ,null=False , related_name="booking")
+    ride = models.ForeignKey(Ride , on_delete=models.PROTECT , null=False , default = None, related_name="booking")
     open_registration_time = models.DateField(null = False)
     close_registration_time = models.DateField(null = False)
     max_passenger = models.IntegerField(default=0 , null = False)

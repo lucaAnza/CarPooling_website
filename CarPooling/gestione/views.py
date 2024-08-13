@@ -20,6 +20,7 @@ from django.views.generic.edit import UpdateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from braces.views import GroupRequiredMixin # pipenv install django-braces
+from django.contrib.auth.decorators import user_passes_test
 
 
 def home_page(request):
@@ -82,6 +83,11 @@ def play_with_database(request):
 
     return render(request,template_name=templ,context=ctx)
 
+# Authentication functions
+
+def is_a_driver(user):
+    return user.groups.filter(name='Driver').exists()
+
 
 # GARAGE ---------------------------------------------------
 
@@ -143,6 +149,36 @@ class TripsListView(GroupRequiredMixin , ListView):
     group_required = ["Passenger" , "Driver"]
     model = Car
     template_name = "trips.html"
+
+"""
+class CreateTripView(GroupRequiredMixin, CreateView):
+    title = "Create a new trip"
+    group_required = ["Driver"]
+    form_class = CreateTripForm
+    template_name = "createtrip.html"
+    success_url = reverse_lazy("home")
+"""
+
+@user_passes_test(is_a_driver)
+def create_trip(request):
+    
+    # Post - Request
+    if request.method == "POST":
+        print("POST request!")
+        
+        form = CreateTripForm(request.POST)
+        if form.is_valid():
+            print("is valid")
+            #sstring = form.cleaned_data.get("search_string")
+            #where = form.cleaned_data.get("search_where")
+            #return redirect("polls:searchresults", sstring, where)
+            
+        
+    else:  # GET - Request
+        form = CreateTripForm()
+    
+    
+    return render(request,template_name="createtrip.html",context={"form":form})
 
 #-----------------------------------------------------------------------
 
