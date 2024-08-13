@@ -12,11 +12,12 @@
 
 {% block content %} 
 
-    <h2> Your Garage has {{ object_list.count }} vehicle </h2>
-
-<br>
+    
 
 {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  {# TODO - Improve this check #}
+
+  <h2> Your Garage has {{ object_list.count }} vehicle </h2>
+  <br>
 
   {% if object_list.count == 0 %}
   

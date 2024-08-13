@@ -96,6 +96,7 @@ class CarsListView(GroupRequiredMixin, ListView):
     model = Car
     template_name = "garage.html"
 
+    # Filter on database model
     def get_queryset(self):
         return Car.objects.filter(user=self.request.user)
 
@@ -147,17 +148,13 @@ class UpdateCarView(GroupRequiredMixin , UpdateView):
 
 class TripsListView(GroupRequiredMixin , ListView):
     group_required = ["Passenger" , "Driver"]
-    model = Car
+    model = Booking
     template_name = "trips.html"
 
-"""
-class CreateTripView(GroupRequiredMixin, CreateView):
-    title = "Create a new trip"
-    group_required = ["Driver"]
-    form_class = CreateTripForm
-    template_name = "createtrip.html"
-    success_url = reverse_lazy("home")
-"""
+    # Get the last 3 elements
+    def get_queryset(self):
+        return Booking.objects.all().order_by('-id')[:3]
+
 
 @user_passes_test(is_a_driver)
 def create_trip(request):
@@ -211,6 +208,13 @@ def create_trip(request):
     
     
     return render(request,template_name="createtrip.html",context={"form":form})
+
+
+class DatailBookingView(GroupRequiredMixin , DetailView):
+    title = "Booking detail"
+    group_required = ["Passenger" , "Driver"]
+    model = Booking
+    template_name = "booking_detail.html"
 
 #-----------------------------------------------------------------------
 

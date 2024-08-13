@@ -12,7 +12,7 @@
 
 {% block content %} 
 
-    <h2> You have --- trips planned </h2>
+<h2> You have {{object_list.count}} trips planned </h2>
 
 <br>
 
@@ -20,18 +20,27 @@
 
   <h3> My Drivers Trips <i class="bi bi-award-fill"></i> </h3>
   
-  <br>
+  {% if object_list.count == 0 %}
+  
+  <div class="alert alert-primary" role="alert">
+    There are not planned ride, create one with the button </a> 
+  </div>
+  
+  {%else %}
 
+  <br>
   <div class="container text-center">
-    <div class="row">
+    <div class="row"></div>
+  {% for trip in object_list %}
+
       <div class="col">
         <div class="card" style="width: 18rem;">
-          <h4> <span class="badge rounded-pill text-bg-info">Rome - Milan </span> </h4>
+          <h4> <span class="badge rounded-pill text-bg-info"> {{trip.ride.departure_location}} - {{trip.ride.arrival_location}} </span> </h4>
           <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"> 20/04/2024 <i class="bi bi-calendar2-week-fill"></i></i> (12:30) <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> 20/04/2024 <i class="bi bi-calendar2-week-fill"></i></i> (18:30) <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> Land Rover <i class="bi bi-car-front"></i> </li>
+            <li class="list-group-item"> {{trip.ride.departure_time}} <i class="bi bi-calendar2-week-fill"></i></i> (12:30) <i class="bi bi-clock"></i>  </li>
+            <li class="list-group-item"> {{trip.ride.arrival_time}} <i class="bi bi-calendar2-week-fill"></i></i> (18:30) <i class="bi bi-clock"></i>  </li>
+            <li class="list-group-item"> {{trip.ride.car.model}} <i class="bi bi-car-front"></i> </li>
           </ul>
           <div class="card-body">
             <a href="#" class="card-link">More Information</a>
@@ -39,61 +48,29 @@
           </div>
         </div>
       </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          <h4> <span class="badge rounded-pill text-bg-info">Rome - Milan </span> </h4>
-          <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"> 20/04/2024 <i class="bi bi-calendar2-week-fill"></i></i> (12:30) <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> 20/04/2024 <i class="bi bi-calendar2-week-fill"></i></i> (18:30) <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> Land Rover <i class="bi bi-car-front"></i> </li>
-          </ul>
-          <div class="card-body">
-            <a href="#" class="card-link">More Information</a>
-            <a href="#" style = "color: red;"  class="card-link">Quit <i class="bi bi-escape"></i> </a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          <h4> <span class="badge rounded-pill text-bg-info">Rome - Milan </span> </h4>
-          <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"> 20/04/2024 <i class="bi bi-calendar2-week-fill"></i></i> (12:30) <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> 20/04/2024 <i class="bi bi-calendar2-week-fill"></i></i> (18:30) <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> Land Rover <i class="bi bi-car-front"></i> </li>
-          </ul>
-          <div class="card-body">
-            <a href="#" class="card-link">More Information</a>
-            <a href="#" style = "color: red;"  class="card-link">Quit <i class="bi bi-escape"></i> </a>
-          </div>
-        </div>
-      </div>
+  
+  {%endfor%}
     </div>
   </div>
 
-  
-
   <br>
 
-  <a href="{% url 'home' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
+  
+  {%endif %}
 
+  <a href="{% url 'createtrip' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
+
+
+{% endif %}
+  
   <br><br>
-
-  <h3> Planned trips <i class="bi bi-calendar-check"></i> </h3>
-
+  <h3 style="text-align: center;"> My Passengers Trips <i class="bi bi-calendar-check"></i> </h3>
   <br>
   <div class="alert alert-primary" role="alert">
     You have 0 Planned Trip. You can find one at the following link <a href="#" class="alert-link">Find Trip <i class="bi bi-search"></i></a>. 
   </div>
-  
-
-    
+  <br>
 
 
-
-<br>
-
-{% endif %}
 
 {% endblock %}
