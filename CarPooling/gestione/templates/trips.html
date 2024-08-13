@@ -12,76 +12,55 @@
 
 {% block content %} 
 
-    <h2> Your Garage has {{ object_list.count }} vehicle </h2>
+    <h2> You have --- trips planned </h2>
 
 <br>
 
 {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  {# TODO - Improve this check #}
 
-  {% if object_list.count == 0 %}
+  <h3> My Drivers Trips <i class="bi bi-award-fill"></i> </h3>
   
-    <div class="card" style="width: 18rem;">
-      <img src="{% static '/img/empty_garage.jpg' %}" class="card-img-top" alt="empty_garage">
-      <div class="card-body">
-        <h5 class="card-title">Attention</h5>
-        <p class="card-text">Your garage is empty. You can add your first vehicle with the following button. </p>
-        <a href="{% url 'addvehicle' %}" class="btn btn-primary">Add new vehicle <i class="bi bi-plus-square"></i></a>
-      </div>
-    </div>
-  
-  {%else %}
-
-  {% for l in object_list %}
   <br>
-  <div class="card">
-    <div class="card-header">
-      {{l.model}} ({{l.license_plate}})
-    </div>
 
+  <div class="card" style="width: 18rem;">
+    <h4> <span class="badge rounded-pill text-bg-info">Rome - Milan </span> </h4>
+
+    <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
     <div class="card-body">
-      <h5 class="card-title"> {{l.km}} Km 🛣️ </h5>
-      <p class="card-text"> 
-      "Experience the perfect blend of comfort and cutting-edge technology with this vehicle. 
-      Enjoy heated leather seats, an intuitive infotainment system, and a sleek design that turns heads. 
-      Advanced safety features ensure peace of mind, while impressive fuel efficiency helps you save and respect the environment. 
-      Hop in for a ride that combines luxury and innovation like never before. 
-      Don't miss out on this unique experience!"
-      </p>
-      <img src="{% static '/img/range_rover.jpg' %}"  height="300px" alt="car_img">
       
-      <br><br>
-
-      <a href="{% url 'updatevehicle' l.id %}" class="btn btn-info"> Modify </a> 
-      <a href="{% url 'deletevehicle' l.id %}" class="btn btn-danger"> Delete </a> 
-  
-
-
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"> 20/04/2024 <i class="bi bi-calendar2-week-fill"></i></i> (12:30) <i class="bi bi-clock"></i>  </li>
+      <li class="list-group-item"> 20/04/2024 <i class="bi bi-calendar2-week-fill"></i></i> (18:30) <i class="bi bi-clock"></i>  </li>
+      <li class="list-group-item">30€</li>
+    </ul>
+    <div class="card-body">
+      <a href="#" class="card-link">More Information</a>
+      <a href="#" style = "color: red;"  class="card-link">Quit <i class="bi bi-escape"></i> </a>
     </div>
   </div>
-  <br>
-  {%endfor%}
 
   <br>
-  <a href="{% url 'addvehicle' %}" class="btn btn-primary btn-lg btn-block"> Add new car <i class="bi bi-plus-square-fill"></i> <i class="bi bi-car-front-fill"></i> </a>
 
+  <a href="{% url 'home' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
 
-  {% endif %}
+  <br><br>
 
-{% else %}
+  <h3> Planned trips <i class="bi bi-calendar-check"></i> </h3>
 
-    <div class="card" style="width: 18rem;">
-      <img src="{% static '/img/cannot_access_garage.jpg' %}" class="card-img-top" alt="forbidden">
-      <div class="card-body">
-        <h5 class="card-title">Attention</h5>
-        <p class="card-text">You are a {{user.groups.all.0.name}}. If you want to have access a garage you have to create a DRIVER account</p>
-        <a href="{% url 'registerDriver' %}" class="btn btn-primary">Become a driver 🚕 </a>
-      </div>
-    </div>
+  <br>
+  <div class="alert alert-primary" role="alert">
+    You have 0 Planned Trip. You can find one at the following link <a href="#" class="alert-link">Find Trip <i class="bi bi-search"></i></a>. 
+  </div>
+  
 
-{% endif %}
+    
 
 
 
 <br>
+
+{% endif %}
 
 {% endblock %}
