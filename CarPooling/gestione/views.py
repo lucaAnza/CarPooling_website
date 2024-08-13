@@ -97,7 +97,7 @@ class CarsListView(GroupRequiredMixin, ListView):
     template_name = "garage.html"
 
     def get_queryset(self):
-        return Car.objects.filter(user_id=self.request.user)
+        return Car.objects.filter(user=self.request.user)
 
     
 class CreateVehicleView(GroupRequiredMixin, CreateView):
@@ -109,7 +109,7 @@ class CreateVehicleView(GroupRequiredMixin, CreateView):
 
     # Set car owner (logged user)
     def form_valid(self, form):
-        form.instance.user_id = self.request.user
+        form.instance.user = self.request.user
         return super().form_valid(form)
     
 class DeleteEntityView(DeleteView):

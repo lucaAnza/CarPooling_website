@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Car(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True , related_name="my_cars")
+    user = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True , related_name="my_cars")
     model = models.CharField(max_length=50)
     license_plate = models.CharField(max_length=15)
     km = models.IntegerField(default=0)
@@ -11,12 +11,12 @@ class Car(models.Model):
     
     def __str__(self):
         out = "{" + str(self.id) + "}"  # Primary key
-        if(self.user_id != None and self.last_inspection_date != None) : 
-            out = str(out) +  f'  [{self.user_id.username}] {self.model} ({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)} \n'
+        if(self.user != None and self.last_inspection_date != None) : 
+            out = str(out) +  f'  [{self.user.username}] {self.model} ({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)} \n'
         elif(self.last_inspection_date != None) :
             out = str(out) + f' {self.model} ({self.license_plate}) - {self.km} Km \n\tLast inspection : {str(self.last_inspection_date)} \n'
-        elif(self.user_id != None):
-            out = str(out) + f'  [{self.user_id.username}] {self.model} ({self.license_plate}) - {self.km} Km \n'
+        elif(self.user != None):
+            out = str(out) + f'  [{self.user.username}] {self.model} ({self.license_plate}) - {self.km} Km \n'
         else:
             out = str(out) + f' {self.model} ({self.license_plate}) - {self.km} Km \n'
 
