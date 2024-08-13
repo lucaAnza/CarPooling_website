@@ -164,16 +164,32 @@ def create_trip(request):
     
     # Post - Request
     if request.method == "POST":
-        print("POST request!")
-        
         form = CreateTripForm(request.POST)
         if form.is_valid():
-            print("is valid")
-            #sstring = form.cleaned_data.get("search_string")
-            #where = form.cleaned_data.get("search_where")
+            departure_location = form.cleaned_data.get("departure_location")
+            arrival_location = form.cleaned_data.get("arrival_location")
+            departure_time = form.cleaned_data.get("departure_time")
+            arrival_time = form.cleaned_data.get("arrival_time")
+            open_registration_time = form.cleaned_data.get("open_registration_time")
+            close_registration_time = form.cleaned_data.get("close_registration_time")
+            try:
+                max_passenger = int(form.cleaned_data.get("max_passenger"))
+            except:
+                max_passenger = 0
+            
+            print("test : " , max_passenger)
+            
+            """
+            b = Booking()
+            b.open_registration_time = open_registration_time
+            ...
+            try:
+                b.save()
+            except:
+                print("Error on booking save...")
+            """
             #return redirect("polls:searchresults", sstring, where)
             
-        
     else:  # GET - Request
         form = CreateTripForm()
     

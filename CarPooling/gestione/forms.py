@@ -43,7 +43,7 @@ class CreateTripForm(forms.Form):
     # Race
     car = forms.ChoiceField(label="Vehicle to use", required=True, choices=CHOICE_LIST)
     departure_location = forms.CharField(label="Departure location",max_length=30, min_length=3, required=True)
-    arrival_location_location = forms.CharField(label="Arrival   location",max_length=30, min_length=3, required=True)
+    arrival_location = forms.CharField(label="Arrival   location",max_length=30, min_length=3, required=True)
     departure_time = forms.DateTimeField(
         initial=datetime.now().strftime("%Y-%m-%dT%H:%M"),
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
