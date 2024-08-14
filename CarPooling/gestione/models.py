@@ -56,7 +56,7 @@ class Booking(models.Model):
 
 class Passenger(models.Model):
     ride = models.ForeignKey(Ride, on_delete=models.CASCADE , related_name = "passengers")
-    user = models.ForeignKey(User, on_delete=models.CASCADE )
+    user = models.ForeignKey(User, on_delete=models.CASCADE , related_name = "passengers_ride" )
     review_id = models.ForeignKey(Review, on_delete=models.CASCADE , null = True , default = None)
 
     # Primary Key (ride,user)

@@ -114,7 +114,7 @@ class CreateVehicleView(GroupRequiredMixin, CreateView):
         return super().form_valid(form)
     
 class DeleteEntityView(DeleteView):
-    template_name = "delete_vehicle.html"
+    template_name = "delete_entity.html"
 
     def get_context_data(self , **kwargs):
         ctx = super().get_context_data()
@@ -126,6 +126,8 @@ class DeleteEntityView(DeleteView):
     
     def get_success_url(self):
         if self.model == Car : 
+            return reverse("home")
+        else:
             return reverse("home")
 
 class DeleteCarView(GroupRequiredMixin , DeleteEntityView):
@@ -153,7 +155,7 @@ class TripsListView(GroupRequiredMixin , ListView):
 
     # Get the last 3 elements
     def get_queryset(self):
-        return Booking.objects.all().order_by('-id')[:3]
+        return Booking.objects.filter(user=self.request.user).order_by('-id')[:3]
 
 
 @user_passes_test(is_a_driver)
@@ -215,6 +217,12 @@ class DatailBookingView(GroupRequiredMixin , DetailView):
     group_required = ["Passenger" , "Driver"]
     model = Booking
     template_name = "booking_detail.html"
+
+class DeleteBookingView(GroupRequiredMixin , DeleteView):
+    template_name = "delete_entity.html"
+    title = "Delete a booking"
+    group_required = ["Driver"]
+    model = Booking
 
 #-----------------------------------------------------------------------
 

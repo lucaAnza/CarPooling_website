@@ -12,7 +12,6 @@
 
 {% block content %} 
 
-<h2> You have {{object_list.count}} trips planned </h2>
 
 <br>
 
@@ -43,7 +42,7 @@
           </ul>
           <div class="card-body">
             <a href="{% url 'booking_detail' trip.id %}" class="card-link"> More Information </a>
-            <a href="#" style = "color: red;"  class="card-link"> Delete <i class="bi bi-trash"></i> </a>
+            <a href="{% url 'booking_delete' trip.id %}" style = "color: red;"  class="card-link"> Delete <i class="bi bi-trash"></i> </a>
           </div>
         </div>
       </div>
@@ -62,13 +61,46 @@
 
 {% endif %}
   
-  <br><br>
+  <br><br><br>
   <h3 style="text-align: center;"> My Passengers Trips <i class="bi bi-calendar-check"></i> </h3>
   <br>
-  <div class="alert alert-primary" role="alert">
-    You have 0 Planned Trip. You can find one at the following link <a href="#" class="alert-link">Find Trip <i class="bi bi-search"></i></a>. 
-  </div>
-  <br>
+
+  {% if user.passengers_ride.count == 0 %}
+
+    <div class="alert alert-primary" role="alert">
+      You have 0 Planned Trip. You can find one at the following link <a href="#" class="alert-link">Find Trip <i class="bi bi-search"></i></a>. 
+    </div>
+    <br>
+
+  {% else %}
+
+    <div class="container text-center">
+      <div class="row">
+        {% for p in user.passengers_ride.all %}
+        <div class="col">
+          <div class="card" style="width: 18rem;">
+            <h4> <span class="badge rounded-pill text-bg-info"> {{p.ride.departure_location}} - {{p.ride.arrival_location}} </span> </h4>
+            <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{p.ride.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
+              <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{p.ride.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
+              <li class="list-group-item"> {{p.ride.car.model}} <i class="bi bi-car-front"></i> </li>
+            </ul>
+            <div class="card-body">
+              <a href="#" style = "color: red;"  class="card-link"> Leave <i class="bi bi-escape"></i>  </a>
+            </div>
+          </div>
+        </div>
+    
+    {%endfor%}
+      </div>
+    </div>
+
+  {% endif %}
+
+  
+  
+  
 
 
 

@@ -32,4 +32,5 @@ urlpatterns = [
     path("trips/", TripsListView.as_view(), name="trips"),
     path("createtrip/", create_trip , name="createtrip" ),
     path("bookingdetail/<pk>/", DatailBookingView.as_view(), name="booking_detail"),
+    path("bookingdelete/<pk>/" , DeleteBookingView.as_view() , name = "booking_delete"),
 ]
