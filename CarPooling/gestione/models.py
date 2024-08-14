@@ -37,8 +37,8 @@ class Ride(models.Model):
     car = models.ForeignKey(Car , on_delete=models.PROTECT , default = None ,null=False , related_name="my_bookings")
     departure_location = models.CharField(max_length=30 , null  = False)
     arrival_location = models.CharField(max_length=30 , null = False)
-    departure_time = models.DateField(null=False)
-    arrival_time = models.DateField(null=False)
+    departure_time = models.DateTimeField(null=False)
+    arrival_time = models.DateTimeField(null=False)
     
     def __str__(self):
         return f'Ride {self.id} - Departure: {self.departure_location} - Arrival: {self.arrival_location} - Departure Time: {self.departure_time} - Arrival Time: {self.arrival_time}'
@@ -46,8 +46,8 @@ class Ride(models.Model):
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None, related_name="my_bookings")
     ride = models.ForeignKey(Ride , on_delete=models.PROTECT , null=False , default = None, related_name="booking")
-    open_registration_time = models.DateField(null = False)
-    close_registration_time = models.DateField(null = False)
+    open_registration_time = models.DateTimeField(null = False)
+    close_registration_time = models.DateTimeField(null = False)
     max_passenger = models.IntegerField(default=0 , null = False)
     
     def __str__(self):
@@ -55,9 +55,9 @@ class Booking(models.Model):
 
 
 class Passenger(models.Model):
-    ride = models.ForeignKey(Ride, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    review_id = models.ForeignKey(Review, on_delete=models.CASCADE)
+    ride = models.ForeignKey(Ride, on_delete=models.CASCADE , related_name = "passengers")
+    user = models.ForeignKey(User, on_delete=models.CASCADE )
+    review_id = models.ForeignKey(Review, on_delete=models.CASCADE , null = True , default = None)
 
     # Primary Key (ride,user)
     class Meta:

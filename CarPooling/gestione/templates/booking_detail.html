@@ -1,6 +1,6 @@
 {% extends 'basebs.html' %}
 
-{% block title %} {{object.titolo}} {% endblock %} 
+{% block title %} {{view.title}} {% endblock %} 
 
 {% block header1 %}
   <div class="header-background">
@@ -16,14 +16,33 @@
 
 
 <ul class="list-group">
-    <li class="list-group-item disabled" aria-disabled="true">Information <i class="bi bi-info-square"></i></li>
+    <li class="list-group-item disabled" style="color: rgb(32, 102, 102);"  aria-disabled="true">Trip Information <i class="bi bi-info-square"></i></li>
     <li class="list-group-item">  Opening registration time : <b>  {{object.open_registration_time}} </b>  </li>
     <li class="list-group-item">  Closing registration time : <b> {{object.close_registration_time}} </b>  </li>
     <li class="list-group-item">  Max passengers : <b> {{object.max_passenger}} </b>  </li>
     <li class="list-group-item">  Departure : <b> {{object.ride.departure_location}} ( <i class="bi bi-calendar2-week"></i> {{object.ride.departure_time}} ) </b> </li>
     <li class="list-group-item">  Arrival :  <b> {{object.ride.arrival_location}} ( <i class="bi bi-calendar2-week"></i> {{object.ride.arrival_time}} ) </b> </li>
     <li class="list-group-item"> Car used : <b> {{object.ride.car.model}} <i class="bi bi-car-front"></i> </b> </li>
-    
+</ul>
+
+<br><br>
+
+<ul class="list-group">
+  <li class="list-group-item disabled" style="color: rgb(32, 102, 102);" aria-disabled="true">Passengers <i class="bi bi-person-circle"></i> </li>
+  {% if object.ride.passengers.count == 0 %}
+  <li class="list-group-item">    
+    <div class="alert alert-primary" role="alert">
+      This booking has actually {{object.ride.passengers.count}} passengers.
+    </div>
+  </li> 
+  {% else %}
+
+    {% for passenger in object.ride.passengers.all %}
+      <li class="list-group-item"> {{ passenger.user.username }} </li>
+    {% endfor %}
+
+  {% endif %}
+
 </ul>
 
 <br>

@@ -30,20 +30,20 @@
 
   <br>
   <div class="container text-center">
-    <div class="row"></div>
+    <div class="row">
   {% for trip in object_list %}
       <div class="col">
         <div class="card" style="width: 18rem;">
           <h4> <span class="badge rounded-pill text-bg-info"> {{trip.ride.departure_location}} - {{trip.ride.arrival_location}} </span> </h4>
           <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"> {{trip.ride.departure_time}} <i class="bi bi-calendar2-week-fill"></i></i> (12:30) <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> {{trip.ride.arrival_time}} <i class="bi bi-calendar2-week-fill"></i></i> (18:30) <i class="bi bi-clock"></i>  </li>
+            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.ride.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
+            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.ride.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
             <li class="list-group-item"> {{trip.ride.car.model}} <i class="bi bi-car-front"></i> </li>
           </ul>
           <div class="card-body">
             <a href="{% url 'booking_detail' trip.id %}" class="card-link"> More Information </a>
-            <a href="#" style = "color: red;"  class="card-link">Quit <i class="bi bi-escape"></i> </a>
+            <a href="#" style = "color: red;"  class="card-link"> Delete <i class="bi bi-trash"></i> </a>
           </div>
         </div>
       </div>
