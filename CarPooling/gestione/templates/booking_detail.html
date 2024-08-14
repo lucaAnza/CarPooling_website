@@ -10,7 +10,7 @@
 
 {% block content %} 
 
-<h2> Booking with ID   <i class="bi bi-person-vcard-fill"></i> {{object.id}}</h2>
+<h2> Booking with ID   <i class="bi bi-person-vcard-fill"></i> {{object.id}} </h2>
 
 <br>
 
@@ -20,8 +20,17 @@
     <li class="list-group-item">  Opening registration time : <b>  {{object.open_registration_time}} </b>  </li>
     <li class="list-group-item">  Closing registration time : <b> {{object.close_registration_time}} </b>  </li>
     <li class="list-group-item">  Max passengers : <b> {{object.max_passenger}} </b>  </li>
-    <li class="list-group-item">  ... </li>
-  </ul>
+    <li class="list-group-item">  Departure : <b> {{object.ride.departure_location}} ( <i class="bi bi-calendar2-week"></i> {{object.ride.departure_time}} ) </b> </li>
+    <li class="list-group-item">  Arrival :  <b> {{object.ride.arrival_location}} ( <i class="bi bi-calendar2-week"></i> {{object.ride.arrival_time}} ) </b> </li>
+    <li class="list-group-item"> Car used : <b> {{object.ride.car.model}} <i class="bi bi-car-front"></i> </b> </li>
+    
+</ul>
+
+<br>
+<a href="{% url 'trips' %}" class="btn btn-outline-primary" > Back <i class="bi bi-box-arrow-left"></i> </a>
+<br>
+
+
     
 
 {% endblock %}
