@@ -223,6 +223,23 @@ class DeleteBookingView(GroupRequiredMixin , DeleteView):
     title = "Delete a booking"
     group_required = ["Driver"]
     model = Booking
+    success_url = reverse_lazy("home")
+
+    # Delete elements linked with the booking
+    def post(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        # Get the booking we are deleting
+        b = self.object 
+        # Get all the passengers
+        passengers = b.ride.passengers.all() 
+        # Delete passengers
+        for p in passengers:
+            print("\nDeleting ->" , p)
+            p.delete()
+        # Delete the ride
+        print("Deleting -> " , b.ride , "\n")
+        b.ride.delete()
+        return response
 
 #-----------------------------------------------------------------------
 
