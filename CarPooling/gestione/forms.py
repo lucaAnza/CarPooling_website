@@ -67,4 +67,12 @@ class CreateTripForm(forms.Form):
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
     )
     max_passenger = forms.ChoiceField(label="Max passengers", required=True, choices=passenger_choice)
+
+
+class SearchTripForm(forms.Form):
+    
+    CHOICE_LIST = [("Destination","Search for destinations"), ("Departure","Search for departure") , ("Date","Search for Date")]
+    search_where = forms.ChoiceField(label="Filter", required=True, choices=CHOICE_LIST)
+    search_string = forms.CharField(label="Search String",max_length=100, min_length=3, required=True)
+    
     

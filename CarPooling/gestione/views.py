@@ -243,3 +243,42 @@ class DeleteBookingView(GroupRequiredMixin , DeleteView):
 
 #-----------------------------------------------------------------------
 
+
+
+# RESEARCH--------------------------------------------------------------
+
+def search(request):
+
+    if request.method == "POST":
+        form = SearchTripForm(request.POST)
+        if form.is_valid():
+            print("Form is valid!!!")
+            #sstring = form.cleaned_data.get("search_string")
+            #where = form.cleaned_data.get("search_where")
+            #return redirect("polls:searchresults", sstring, where)
+            return redirect("home")
+    else:
+        form = SearchTripForm()
+    
+    return render(request,template_name="search_trip.html", context={"form":form , "title" : "Search"} )
+
+class SearchResultsList(ListView):
+    model = Booking
+    template_name = ""
+    
+    """
+    def get_queryset(self):
+        sstring = self.request.resolver_match.kwargs["sstring"]
+        where = self.request.resolver_match.kwargs["where"]
+        if "Question" in where:
+        qq = Question.objects.filter(question_text__icontains=sstring)
+        else:
+        qc = Choice.objects.filter(choice_text__icontains=sstring)
+        qq = Question.objects.none()
+        for c in qc:
+        qq |= Question.objects.filter(pk=c.question_id)
+        return qq
+    """
+
+#-----------------------------------------------------------------------
+
