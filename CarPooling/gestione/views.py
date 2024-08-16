@@ -252,11 +252,9 @@ def search(request):
     if request.method == "POST":
         form = SearchTripForm(request.POST)
         if form.is_valid():
-            print("Form is valid!!!")
-            #sstring = form.cleaned_data.get("search_string")
-            #where = form.cleaned_data.get("search_where")
-            #return redirect("polls:searchresults", sstring, where)
-            return redirect("home")
+            where = form.cleaned_data.get("search_where")
+            string = form.cleaned_data.get("search_string")
+            return redirect("search_results_trip" , string , where)
     else:
         form = SearchTripForm()
     
@@ -264,21 +262,27 @@ def search(request):
 
 class SearchResultsList(ListView):
     model = Booking
-    template_name = ""
+    template_name = "search_results_trip.html"
     
-    """
     def get_queryset(self):
-        sstring = self.request.resolver_match.kwargs["sstring"]
+        string = self.request.resolver_match.kwargs["string"]
         where = self.request.resolver_match.kwargs["where"]
-        if "Question" in where:
-        qq = Question.objects.filter(question_text__icontains=sstring)
+        
+        if "Destination" in where:
+            qq = Booking.objects.all()
+        elif "Departure" in where:
+            qq = Booking.objects.filter(ride__departure_location=string)
         else:
-        qc = Choice.objects.filter(choice_text__icontains=sstring)
-        qq = Question.objects.none()
-        for c in qc:
-        qq |= Question.objects.filter(pk=c.question_id)
+            qq = Booking.objects.all()
+
         return qq
-    """
+    
+    #Override of contexts variables
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['where'] = self.request.resolver_match.kwargs["where"]
+        context['string'] = self.request.resolver_match.kwargs["string"]
+        return context
 
 #-----------------------------------------------------------------------
 

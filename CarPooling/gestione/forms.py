@@ -71,8 +71,8 @@ class CreateTripForm(forms.Form):
 
 class SearchTripForm(forms.Form):
     
-    CHOICE_LIST = [("Destination","Search for destinations"), ("Departure","Search for departure") , ("Date","Search for Date")]
-    search_where = forms.ChoiceField(label="Filter", required=True, choices=CHOICE_LIST)
+    choice_list = [("Destination","Search for destinations"), ("Departure","Search for departure") ]
+    search_where = forms.ChoiceField(label="Filter", required=True, choices=choice_list)
     search_string = forms.CharField(label="Search String",max_length=100, min_length=3, required=True)
     
     

@@ -34,4 +34,5 @@ urlpatterns = [
     path("bookingdetail/<pk>/", DatailBookingView.as_view(), name="booking_detail"),
     path("bookingdelete/<pk>/" , DeleteBookingView.as_view() , name = "booking_delete"),
     path("searchtrip/" , search , name = "search_trip" ),
+    path("searchtripresults/<str:string>/<str:where>/", SearchResultsList.as_view(), name="search_results_trip"),
 ]

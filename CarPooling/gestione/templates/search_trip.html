@@ -14,7 +14,8 @@
 
 <h2>Search Page</h2>
 <br>
-<form action="{% url 'home' %}" method="POST">
+<form action="{% url 'search_trip' %}" method="POST">
+    {% csrf_token %}
     {{ form|crispy }}
 <input type="submit" value="Search"> </form>
 
