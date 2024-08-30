@@ -5,8 +5,12 @@ name = "pypi"
 
 [packages]
 django = "*"
+crispy-bootstrap4 = "*"
+django-braces = "*"
+django-autocomplete-light = "*"
+pillow = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.12.4"
+python_version = "3.10"
