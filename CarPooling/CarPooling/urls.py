@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include, re_path
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 from .initcmds import init_db,erase_db
 from .views import *
 
@@ -27,8 +29,9 @@ urlpatterns = [
     path("register/", UserCreateView.as_view(), name="register"), # Register {templates/user_create.html}
     path("login/", auth_views.LoginView.as_view(), name="login"),   # Login (pre-built Django) {templates/registration/login.html}
     path("logout/", auth_views.LogoutView.as_view(), name="logout"), # Logout (pre-built Django) {templates/registration/logged_out.html}
-    path("registerDriver/" , createDriver , name="registerDriver" )
-]
+    path("registerDriver/" , createDriver , name="registerDriver" ),
+    path('gestione/', include('gestione.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #init_db()
 #erase_db()

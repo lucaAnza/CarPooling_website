@@ -14,6 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from .views import *
@@ -31,8 +33,13 @@ urlpatterns = [
     path('updatevehicle/<pk>', UpdateCarView.as_view(), name="updatevehicle"),
     path("trips/", TripsListView.as_view(), name="trips"),
     path("createtrip/", create_trip , name="createtrip" ),
-    path("bookingdetail/<pk>/", DatailBookingView.as_view(), name="booking_detail"),
-    path("bookingdelete/<pk>/" , DeleteBookingView.as_view() , name = "booking_delete"),
+    path("ridedetail/<pk>/", DatailRideView.as_view(), name="ridedetail"),
+    path("ridedelete/<pk>/" , DeleteRideView.as_view() , name = "ridedelete"),
     path("searchtrip/" , search , name = "search_trip" ),
     path("searchtripresults/<str:string>/<str:where>/", SearchResultsList.as_view(), name="search_results_trip"),
+    path('take_part/<int:pk>/', take_part, name='take_part'),
+    path('leave_trip/<int:pk>/', leave_trip, name='leave_trip'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

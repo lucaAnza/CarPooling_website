@@ -17,7 +17,10 @@
 
 <div class="d-flex justify-content-center">
 
-  {% crispy form %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% crispy form %}
+    </form>
 
 </div>
 <br>

@@ -32,38 +32,40 @@
   
   {%else %}
 
-  {% for l in object_list %}
-  <br>
-  <div class="card">
-    <div class="card-header">
-      {{l.model}} ({{l.license_plate}})
-    </div>
+      {% for l in object_list %}
+          <br>
+          <div class="card">
+              <div class="card-header">
+                  {{ l.model }} ({{ l.license_plate }})
+              </div>
 
-    <div class="card-body">
-      <h5 class="card-title"> {{l.km}} Km 🛣️ </h5>
-      <p class="card-text"> 
-      "Experience the perfect blend of comfort and cutting-edge technology with this vehicle. 
-      Enjoy heated leather seats, an intuitive infotainment system, and a sleek design that turns heads. 
-      Advanced safety features ensure peace of mind, while impressive fuel efficiency helps you save and respect the environment. 
-      Hop in for a ride that combines luxury and innovation like never before. 
-      Don't miss out on this unique experience!"
-      </p>
-      <img src="{% static '/img/range_rover.jpg' %}"  height="300px" alt="car_img">
-      
-      <br><br>
+              <div class="card-body">
+                  <h5 class="card-title"> {{ l.km }} Km 🛣️ </h5>
+                  <p class="card-text">
+                      "Experience the perfect blend of comfort and cutting-edge technology with this vehicle.
+                      Enjoy heated leather seats, an intuitive infotainment system, and a sleek design that turns heads.
+                      Advanced safety features ensure peace of mind, while impressive fuel efficiency helps you save and respect the environment.
+                      Hop in for a ride that combines luxury and innovation like never before.
+                      Don't miss out on this unique experience!"
+                  </p>
 
-      <a href="{% url 'updatevehicle' l.id %}" class="btn btn-info"> Modify </a> 
-      <a href="{% url 'deletevehicle' l.id %}" class="btn btn-danger"> Delete </a> 
-  
+                  {% if l.image %}
+                      <img src="{{ l.image.url }}" height="300px" alt="{{ l.model }}">
+                  {% else %}  <!-- Non carica l'immagine statica in caso di errore -->
+                      <img src="{% static '/img/default_car.jpg' %}" height="300px" alt="default_car_img">
+                  {% endif %}
 
+                  <br><br>
 
-    </div>
-  </div>
-  <br>
-  {%endfor%}
+                  <a href="{% url 'updatevehicle' l.id %}" class="btn btn-info"> Modify </a>
+                  <a href="{% url 'deletevehicle' l.id %}" class="btn btn-danger"> Delete </a>
+              </div>
+          </div>
+          <br>
+      {% endfor %}
 
-  <br>
-  <a href="{% url 'addvehicle' %}" class="btn btn-primary btn-lg btn-block"> Add new car <i class="bi bi-plus-square-fill"></i> <i class="bi bi-car-front-fill"></i> </a>
+      <br>
+      <a href="{% url 'addvehicle' %}" class="btn btn-primary btn-lg btn-block"> Add new car <i class="bi bi-plus-square-fill"></i> <i class="bi bi-car-front-fill"></i> </a>
 
 
   {% endif %}

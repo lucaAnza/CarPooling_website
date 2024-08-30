@@ -34,16 +34,16 @@
   {% for trip in object_list %}
       <div class="col">
         <div class="card" style="width: 18rem;">
-          <h4> <span class="badge rounded-pill text-bg-info"> {{trip.ride.departure_location}} - {{trip.ride.arrival_location}} </span> </h4>
+          <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
           <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.ride.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.ride.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> {{trip.ride.car.model}} <i class="bi bi-car-front"></i> </li>
+            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
+            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
+            <li class="list-group-item"> {{trip.car.model}} <i class="bi bi-car-front"></i> </li>
           </ul>
           <div class="card-body">
-            <a href="{% url 'booking_detail' trip.id %}" class="card-link"> More Information </a>
-            <a href="{% url 'booking_delete' trip.id %}" style = "color: red;"  class="card-link"> Delete <i class="bi bi-trash"></i> </a>
+            <a href="{% url 'ridedetail' pk=trip.id %}" class="card-link"> More Information </a>
+            <a href="{% url 'ridedelete' pk=trip.id %}" style = "color: red;"  class="card-link"> Delete <i class="bi bi-trash"></i> </a>
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@
               <li class="list-group-item"> {{p.ride.car.model}} <i class="bi bi-car-front"></i> </li>
             </ul>
             <div class="card-body">
-              <a href="#" style = "color: red;"  class="card-link"> Leave <i class="bi bi-escape"></i>  </a>
+              <a href="{% url 'leave_trip' pk=p.ride.id %}" style = "color: red;"  class="card-link"> Leave <i class="bi bi-escape"></i>  </a>
             </div>
           </div>
         </div>
@@ -99,10 +99,15 @@
 
   {% endif %}
 
-  
-  
-  
 
-
+    {% if messages %}
+        <div class="container mt-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
 {% endblock %}

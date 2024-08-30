@@ -1,9 +1,13 @@
+from django.db.models import Count, F
 from django.http import HttpResponse
 from django.shortcuts import render
 from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import get_object_or_404 , render , redirect
 from django.urls import reverse,reverse_lazy
+from django.utils import timezone
+from pytz import timezone as pytz_timezone
+
 #Models
 from .models import *
 from .forms import *
@@ -15,13 +19,13 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
+from django.contrib import messages
 
 #Authentication
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from braces.views import GroupRequiredMixin # pipenv install django-braces
 from django.contrib.auth.decorators import user_passes_test
-
 
 def home_page(request):
 
@@ -31,7 +35,7 @@ def home_page(request):
 
 def elenca_params(request):
     response = ""
-    
+
     for k in request.GET:
         response += request.GET[k] + " "
 
@@ -100,19 +104,19 @@ class CarsListView(GroupRequiredMixin, ListView):
     def get_queryset(self):
         return Car.objects.filter(user=self.request.user)
 
-    
+
 class CreateVehicleView(GroupRequiredMixin, CreateView):
     title = "Add a vehicle"
     group_required = ["Driver"]
     form_class = CreateVehicleForm
     template_name = "add_vehicle.html"
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("garage")
 
     # Set car owner (logged user)
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
-    
+
 class DeleteEntityView(DeleteView):
     template_name = "delete_entity.html"
 
@@ -123,9 +127,9 @@ class DeleteEntityView(DeleteView):
             entity = "Car"
         ctx["entity"] = entity
         return ctx
-    
+
     def get_success_url(self):
-        if self.model == Car : 
+        if self.model == Car :
             return reverse("home")
         else:
             return reverse("home")
@@ -134,111 +138,108 @@ class DeleteCarView(GroupRequiredMixin , DeleteEntityView):
     title = "Delete a vehicle"
     group_required = ["Driver"]
     model = Car
+    success_url = reverse_lazy("garage")
+
+    def get_success_url(self):
+        return self.success_url
 
 class UpdateCarView(GroupRequiredMixin , UpdateView):
     title = "Modify vehicle settings"
     group_required = ["Driver"]
     model = Car
+    form_class = CarForm
     template_name = "update_vehicle.html"
-    fields = ["model" , "license_plate" , "km" , "last_inspection_date"]
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("garage")
 
 # ----------------------------------------------------------------------
 
 
 # TRIPS ----------------------------------------------------------------
+@login_required
+def leave_trip(request, pk):
+    # Find the trip and ensure the user is a passenger
+    passenger = get_object_or_404(Passenger, ride_id=pk, user=request.user)
+
+    try:
+        passenger.delete()  # Remove the user from the trip
+        messages.success(request, "You have successfully left the trip.")
+    except Exception as e:
+        messages.error(request, f"An error occurred: {str(e)}")
+
+    # Reload the current page (user's trip list)
+    return redirect('trips')
 
 class TripsListView(GroupRequiredMixin , ListView):
     group_required = ["Passenger" , "Driver"]
-    model = Booking
+    model = Ride
     template_name = "trips.html"
 
     # Get the last 3 elements
     def get_queryset(self):
-        return Booking.objects.filter(user=self.request.user).order_by('-id')[:3]
+        return Ride.objects.filter(user=self.request.user).order_by('-id')[:3]
 
-
+@login_required
 @user_passes_test(is_a_driver)
 def create_trip(request):
-    
-    # Post - Request
     if request.method == "POST":
-        form = CreateTripForm(request.POST , user = request.user)
+        form = CreateTripForm(request.POST, user=request.user)
         if form.is_valid():
-            car_id = form.cleaned_data.get("car")
+            car = form.cleaned_data.get("car")
             departure_location = form.cleaned_data.get("departure_location")
             arrival_location = form.cleaned_data.get("arrival_location")
             departure_time = form.cleaned_data.get("departure_time")
             arrival_time = form.cleaned_data.get("arrival_time")
             open_registration_time = form.cleaned_data.get("open_registration_time")
             close_registration_time = form.cleaned_data.get("close_registration_time")
-            try:
-                max_passenger = int(form.cleaned_data.get("max_passenger"))
-            except:
-                max_passenger = 0
-                        
+            max_passenger = form.cleaned_data.get("max_passenger")
+
             # Creation of Ride entry
-            r = Ride()
-            r.car = Car.objects.get(id = car_id)
-            r.departure_location = departure_location
-            r.arrival_location = arrival_location
-            r.departure_time = departure_time
-            r.arrival_time = arrival_time
+            ride = Ride(
+                car=car,
+                departure_location=departure_location,
+                arrival_location=arrival_location,
+                departure_time=departure_time,
+                arrival_time=arrival_time,
+                user=request.user,
+                open_registration_time=open_registration_time,
+                close_registration_time=close_registration_time,
+                max_passenger=max_passenger
+            )
             try:
-                r.save()
-            except:
-                print("Error on riding save...")
+                ride.save()
+                return redirect("home")
+            except Exception as e:
+                print(f"Error on ride save: {e}")
+                form.add_error(None, "An error occurred while saving the ride. Please try again.")
+    else:
+        form = CreateTripForm(user=request.user)
+
+    return render(request, "createtrip.html", {"form": form})
 
 
-            # Creation of Booking entry
-
-            b = Booking()
-            b.user = request.user
-            b.ride = r
-            b.open_registration_time = open_registration_time
-            b.close_registration_time = close_registration_time
-            b.max_passenger = max_passenger
-            try:
-                b.save()
-            except:
-                print("Error on booking save...")
-
-            return redirect("home")
-            
-    else:  # GET - Request
-        form = CreateTripForm(user = request.user)
-    
-    
-    return render(request,template_name="createtrip.html",context={"form":form})
-
-
-class DatailBookingView(GroupRequiredMixin , DetailView):
-    title = "Booking detail"
+class DatailRideView(GroupRequiredMixin , DetailView):
+    title = "Ride detail"
     group_required = ["Passenger" , "Driver"]
-    model = Booking
-    template_name = "booking_detail.html"
+    model = Ride
+    template_name = "ride_detail.html"
 
-class DeleteBookingView(GroupRequiredMixin , DeleteView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Recover the url
+        referrer = self.request.META.get('HTTP_REFERER', '/')
+        context['referrer'] = referrer
+        return context
+
+class DeleteRideView(GroupRequiredMixin , DeleteView):
     template_name = "delete_entity.html"
-    title = "Delete a booking"
+    title = "Delete a ride"
     group_required = ["Driver"]
-    model = Booking
+    model = Ride
     success_url = reverse_lazy("home")
 
-    # Delete elements linked with the booking
+    # Delete elements linked with the ride
     def post(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
-        # Get the booking we are deleting
-        b = self.object 
-        # Get all the passengers
-        passengers = b.ride.passengers.all() 
-        # Delete passengers
-        for p in passengers:
-            print("\nDeleting ->" , p)
-            p.delete()
-        # Delete the ride
-        print("Deleting -> " , b.ride , "\n")
-        b.ride.delete()
         return response
 
 #-----------------------------------------------------------------------
@@ -247,42 +248,98 @@ class DeleteBookingView(GroupRequiredMixin , DeleteView):
 
 # RESEARCH--------------------------------------------------------------
 
-def search(request):
+def get_filtered_rides(user=None, search_string=None, search_where=None):
+    current_time = timezone.now()
 
+    # Base queryset: Rides that are valid (open for registration, not full)
+    rides = Ride.objects.filter(
+        open_registration_time__lte=current_time,  # Ride has opened registration
+        close_registration_time__gte=current_time  # Ride has not closed registration
+    ).annotate(
+        passenger_count=Count('passengers')  # Count the number of passengers in each ride
+    ).filter(
+        passenger_count__lt=F('max_passenger')  # Only include rides that are not full
+    )
+
+    # Exclude rides where the logged-in user is the owner
+    if user and user.is_authenticated:
+        rides = rides.exclude(user_id=user)
+        # Exclude rides where the user is already a passenger
+        rides = rides.exclude(passengers__user=user)
+
+    # Apply the filter based on the user's selection
+    if search_string and search_where:
+        if search_where == "Destination":
+            rides = rides.filter(arrival_location__icontains=search_string)
+        elif search_where == "Departure":
+            rides = rides.filter(departure_location__icontains=search_string)
+
+    return rides
+def search(request):
     if request.method == "POST":
         form = SearchTripForm(request.POST)
         if form.is_valid():
             where = form.cleaned_data.get("search_where")
             string = form.cleaned_data.get("search_string")
-            return redirect("search_results_trip" , string , where)
+
+            # Apply filters and redirect to results page
+            return redirect("search_results_trip", string=string, where=where)
     else:
         form = SearchTripForm()
-    
-    return render(request,template_name="search_trip.html", context={"form":form , "title" : "Search"} )
+
+    # Get the filtered trips for the initial load
+    trips = get_filtered_rides(user=request.user)
+
+    return render(request, "search_trip.html", context={"form": form, "title": "Search", "trips": trips})
 
 class SearchResultsList(ListView):
-    model = Booking
+    model = Ride
     template_name = "search_results_trip.html"
-    
+
     def get_queryset(self):
         string = self.request.resolver_match.kwargs["string"]
         where = self.request.resolver_match.kwargs["where"]
-        
-        if "Destination" in where:
-            qq = Booking.objects.all()
-        elif "Departure" in where:
-            qq = Booking.objects.filter(ride__departure_location=string)
-        else:
-            qq = Booking.objects.all()
 
-        return qq
-    
-    #Override of contexts variables
+        # Apply filters based on query parameters
+        return get_filtered_rides(user=self.request.user, search_string=string, search_where=where)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['where'] = self.request.resolver_match.kwargs["where"]
         context['string'] = self.request.resolver_match.kwargs["string"]
         return context
 
+
 #-----------------------------------------------------------------------
 
+# PASSENGERS------------------------------------------------------------
+
+@login_required
+def take_part(request, pk):
+    if not request.user.is_authenticated:
+        messages.error(request, "You need to be logged in to take part in a trip.")
+        return redirect('search_trip')
+
+    ride = get_object_or_404(Ride, pk=pk)
+    user = request.user
+
+    # Check if the user is the owner of the trip
+    if ride.user_id == user.pk:
+        messages.error(request, "You can't go on your own trip.")
+    # Check if there are seats available in the car
+    elif ride.passengers.count() >= ride.max_passenger:
+        messages.error(request, "The trip is already full.")
+    # Check if the user is already in that ride
+    elif Passenger.objects.filter(user=user, ride=ride).exists():
+        messages.error(request, "You are already signed up for this trip.")
+    else:
+        # If no errors, add the passenger
+        try:
+            Passenger.objects.create(user=user, ride=ride)
+            messages.success(request, "You have been added to the trip successfully!")
+        except Exception as e:
+            print("Error! " + str(e))
+            messages.error(request, "Error adding to trip.")
+
+    return redirect('search_trip')
+#-----------------------------------------------------------------------
