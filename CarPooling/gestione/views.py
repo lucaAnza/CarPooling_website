@@ -273,8 +273,8 @@ def get_filtered_rides(user=None, search_string=None, search_where=None):
             rides = rides.filter(arrival_location__icontains=search_string)
         elif search_where == "Departure":
             rides = rides.filter(departure_location__icontains=search_string)
-
     return rides
+
 def search(request):
     if request.method == "POST":
         form = SearchTripForm(request.POST)

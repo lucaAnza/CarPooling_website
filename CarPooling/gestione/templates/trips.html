@@ -13,8 +13,15 @@
 {% block content %} 
 
 
-<br>
+<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+  <a href="#" class="btn btn-outline-primary active" for="btnradio1">My Drivers Trips</a>
+  <a href="#" class="btn btn-outline-primary" for="btnradio2">My Passengers Trips</a>
+  <a href="#" class="btn btn-outline-primary" for="btnradio3">My recents Trips</a>
+</div>
 
+<br><br>
+
+<div style="background: linear-gradient(to right, #a8d2ff, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">
 {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  {# TODO - Improve this check #}
 
   <h3> My Drivers Trips <i class="bi bi-award-fill"></i> </h3>
@@ -58,16 +65,19 @@
   {%endif %}
 
   <a href="{% url 'createtrip' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
-
-
 {% endif %}
+</div>
+
   
   <br><br><br>
+  <div style="background: linear-gradient(to right, #a8d2ff, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">  
   <h3 style="text-align: center;"> My Passengers Trips <i class="bi bi-calendar-check"></i> </h3>
   <br>
+  
 
   {% if user.passengers_ride.count == 0 %}
 
+    </div>
     <div class="alert alert-primary" role="alert">
       You have 0 Planned Trip. You can find one at the following link <a href="{% url 'search_trip' %}" class="alert-link">Find Trip <i class="bi bi-search"></i></a>. 
     </div>
@@ -96,9 +106,19 @@
     {%endfor%}
       </div>
     </div>
-
+  </div>
   {% endif %}
 
+  
+
+  <br><br>
+  <div style="background: linear-gradient(to right, #ffce8e, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">  
+  <h3 style="text-align: center;"> My recents Trips <i class="bi bi-heart"></i> </h3>
+  </div>
+
+  
+  
+    
 
     {% if messages %}
         <div class="container mt-4">
