@@ -12,7 +12,7 @@
     {% if object_list.count == 0 %}
     
     <br>
-    <div class="alert alert-primary" role="alert">
+    <div class="alert alert-primary" style="background-color: #731cfd;color: white;" role="alert">
       There are not planned ride, create one with the button <i class="bi bi-arrow-down"></i> </a> 
     </div>
     
@@ -32,8 +32,8 @@
               <li class="list-group-item"> {{trip.car.model}} <i class="bi bi-car-front"></i> </li>
             </ul>
             <div class="card-body">
-              <a href="{% url 'ridedetail' pk=trip.id %}" class="card-link"> More Information </a>
-              <a href="{% url 'ridedelete' pk=trip.id %}" style = "color: red;"  class="card-link"> Delete <i class="bi bi-trash"></i> </a>
+              <a href="{% url 'ridedetail' pk=trip.id %}" style = "background-color: rgb(16, 167, 255); border-color: black ;" class="btn btn-primary btn-sm"> More Information <i class="bi bi-info-circle"></i> </a>
+              <a href="{% url 'ridedelete' pk=trip.id %}" style = "background-color: rgb(197, 23, 0); border-color: black ;" class="btn btn-primary btn-sm"> Delete <i class="bi bi-trash"></i> </a>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
   {% else %}
   
   <div class="alert alert-danger" role="alert">
-    You are not a driver!
+    You are not a driver! <i class="bi bi-ban"></i>
   </div>
   
   {% endif %}

@@ -191,8 +191,10 @@ class TripsListView(GroupRequiredMixin , ListView):
         trip_type = self.kwargs.get('str')
         if trip_type == 'driver':
             return Ride.objects.filter(user=self.request.user).order_by('-id')[:3]
+        elif trip_type == 'passenger':
+            return Passenger.objects.filter(user=self.request.user , ride__arrival_time__gt=timezone.now()).order_by('-id')[:3]
         elif trip_type == 'old':
-            return Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user)
+            return Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user).order_by('-id')[:3]
         else:
             return Ride.objects.filter(user=self.request.user).order_by('-id')[:3]
         

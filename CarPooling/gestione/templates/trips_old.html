@@ -10,7 +10,7 @@
 
   {% if user.passengers_ride.count == 0 %}
 
-  <div class="alert alert-primary" style="background-color: #007BFF;color: white;" role="alert">
+  <div class="alert alert-primary" style="background-color: #731cfd;color: white;" role="alert">
     You have not already done a trip <i class="bi bi-calendar-x"></i>
   </div>
   <br>
@@ -19,18 +19,18 @@
 
   <div class="container text-center">
     <div class="row">
-      {% for p in user.passengers_ride.all %}
+      {% for trip in object_list %}
       <div class="col">
         <div class="card" style="width: 18rem;">
-          <h4> <span class="badge rounded-pill text-bg-info"> {{p.ride.departure_location}} - {{p.ride.arrival_location}} </span> </h4>
+          <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
           <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{p.ride.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{p.ride.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> {{p.ride.car.model}} <i class="bi bi-car-front"></i> </li>
+            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
+            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
+            <li class="list-group-item"> {{trip.car.model}} <i class="bi bi-car-front"></i> </li>
           </ul>
           <div class="card-body">
-            <a href="{% url 'leave_trip' pk=p.ride.id %}" style = "color: red;"  class="card-link"> Leave <i class="bi bi-escape"></i>  </a>
+            <a href="#" style = "background-color: rgb(255, 187, 0); border-color: black ;" class="btn btn-primary btn-sm">Give Your Rating <i class="bi bi-star"> </i></a>
           </div>
         </div>
       </div>
