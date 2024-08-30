@@ -188,7 +188,14 @@ class TripsListView(GroupRequiredMixin , ListView):
 
     # Get the last 3 elements
     def get_queryset(self):
-        return Ride.objects.filter(user=self.request.user).order_by('-id')[:3]
+        trip_type = self.kwargs.get('str')
+        if trip_type == 'driver':
+            return Ride.objects.filter(user=self.request.user).order_by('-id')[:3]
+        elif trip_type == 'old':
+            return Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user)
+        else:
+            return Ride.objects.filter(user=self.request.user).order_by('-id')[:3]
+        
 
 @login_required
 @user_passes_test(is_a_driver)
@@ -279,12 +286,6 @@ def get_filtered_rides(user=None, search_string=None, search_where=None):
         # Exclude rides where the user is already a passenger
         rides = rides.exclude(passengers__user=user)
 
-    # Apply the filter based on the user's selection
-    if search_string and search_where:
-        if search_where == "Destination":
-            rides = rides.filter(arrival_location__icontains=search_string)
-        elif search_where == "Departure":
-            rides = rides.filter(departure_location__icontains=search_string)
     return rides
 
 def search(request):

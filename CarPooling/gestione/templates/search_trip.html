@@ -20,40 +20,49 @@
             {% endfor %}
         </div>
     {% endif %}
-
+    
     <h2>Search Page</h2>
     <br>
+
+    <div style="background: linear-gradient(to right, #a4d0ff, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">
     <form action="{% url 'search_trip' %}" method="POST">
         {% csrf_token %}
         {{ form|crispy }}
     <input type="submit" value="Search"> </form>
+    </div>
 
     <br><br>
     <h2>Most recently published trips</h2>
     <br>
-
-    <div class="container text-center">
-        <div class="row">
-            {% for trip in trips %}
-                <div class="col">
-                    <div class="card" style="width: 18rem;">
-                        <h4> <span class="badge rounded-pill text-bg-info">{{ trip.departure_location }} - {{ trip.arrival_location }}</span> </h4>
-                        <img src="{% static 'img/milano.jpg' %}" class="card-img-top" alt="City">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> Departure: {{ trip.departure_time}} </li>
-                            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> Arrival: {{ trip.arrival_time}}</li>
-                            <li class="list-group-item"> {{ trip.car.model }} <i class="bi bi-car-front"></i> </li>
-                        </ul>
-                        <div class="card-body">
-                            <a href="{% url 'ridedetail' pk=trip.id %}" class="card-link"> More Information </a>
-                            <a href="{% url 'take_part' pk=trip.id %}" style = "color: green;"  class="card-link"> Take part <i class="bi bi-bookmark-plus"></i> </a>
+    
+    <div style="background: linear-gradient(to right, #d9eafc, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">
+        <div class="container text-center">
+            <div class="row">
+                {% for trip in trips %}
+                    <div class="col">
+                        <div class="card" style="width: 18rem;">
+                            <h4> <span class="badge rounded-pill text-bg-info">{{ trip.departure_location }} - {{ trip.arrival_location }}</span> </h4>
+                            <img src="{% static 'img/milano.jpg' %}" class="card-img-top" alt="City">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> Departure: {{ trip.departure_time}} </li>
+                                <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> Arrival: {{ trip.arrival_time}}</li>
+                                <li class="list-group-item"> {{ trip.car.model }} <i class="bi bi-car-front"></i> </li>
+                            </ul>
+                            <div class="card-body">
+                                <a href="{% url 'ridedetail' pk=trip.id %}" class="card-link"> More Information </a>
+                                <a href="{% url 'take_part' pk=trip.id %}" style = "color: green;"  class="card-link"> Take part <i class="bi bi-bookmark-plus"></i> </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {% empty %}
-                <p>No trips available.</p>
-            {% endfor %}
+                    {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-warning" role="alert">
+                            In this moment there aren't trips available  <i class="bi bi-emoji-frown"></i>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-      </div>
+    </div>
 
 {% endblock %}
