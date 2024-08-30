@@ -385,6 +385,9 @@ class CreateReviewView(GroupRequiredMixin, CreateView):
             form.add_error(None, "The specified ride does not exist for the logged user!")
             return self.form_invalid(form)
         #TODO -> ADD Review at the Ride (using id)
+
+        # Add a success message
+        messages.success(self.request, "Review added successfully!")
         return super().form_valid(form)
 
 #-----------------------------------------------------------------------
