@@ -1,104 +1,48 @@
-{% extends 'basebs.html' %}
+{% extends 'base_trips.html' %}
 
 {% load static %}
 
-{% block title %} Trips {% endblock %} 
 
-{% block header1 %}
-  <div class="header-background">
-    <h1> Yours trips <i class="bi bi-suitcase-lg"></i> </h1>
+{% block sections %}
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+    <a href="#" class="btn btn-outline-primary active" for="btnradio1">My Drivers Trips</a>
+    <a href="#" class="btn btn-outline-primary" for="btnradio2">My Passengers Trips</a>
+    <a href="#" class="btn btn-outline-primary" for="btnradio3">My recents Trips</a>
   </div>
 {% endblock %}
 
-{% block content %} 
 
+{% block rides-card %}
 
-<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-  <a href="#" class="btn btn-outline-primary active" for="btnradio1">My Drivers Trips</a>
-  <a href="#" class="btn btn-outline-primary" for="btnradio2">My Passengers Trips</a>
-  <a href="#" class="btn btn-outline-primary" for="btnradio3">My recents Trips</a>
-</div>
+  {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  {# TODO - Improve this check #}
 
-<br><br>
-
-<div style="background: linear-gradient(to right, #a8d2ff, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">
-{% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  {# TODO - Improve this check #}
-
-  <h3> My Drivers Trips <i class="bi bi-award-fill"></i> </h3>
-  
-  {% if object_list.count == 0 %}
-  
-  <br>
-  <div class="alert alert-primary" role="alert">
-    There are not planned ride, create one with the button <i class="bi bi-arrow-down"></i> </a> 
-  </div>
-  
-  {%else %}
-
-  <br>
-  <div class="container text-center">
-    <div class="row">
-  {% for trip in object_list %}
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
-          <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> {{trip.car.model}} <i class="bi bi-car-front"></i> </li>
-          </ul>
-          <div class="card-body">
-            <a href="{% url 'ridedetail' pk=trip.id %}" class="card-link"> More Information </a>
-            <a href="{% url 'ridedelete' pk=trip.id %}" style = "color: red;"  class="card-link"> Delete <i class="bi bi-trash"></i> </a>
-          </div>
-        </div>
-      </div>
-  
-  {%endfor%}
-    </div>
-  </div>
-
-  <br>
-
-  
-  {%endif %}
-
-  <a href="{% url 'createtrip' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
-{% endif %}
-</div>
-
-  
-  <br><br><br>
-  <div style="background: linear-gradient(to right, #a8d2ff, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">  
-  <h3 style="text-align: center;"> My Passengers Trips <i class="bi bi-calendar-check"></i> </h3>
-  <br>
-  
-
-  {% if user.passengers_ride.count == 0 %}
-
-    </div>
-    <div class="alert alert-primary" role="alert">
-      You have 0 Planned Trip. You can find one at the following link <a href="{% url 'search_trip' %}" class="alert-link">Find Trip <i class="bi bi-search"></i></a>. 
-    </div>
+    <h3> My Drivers Trips <i class="bi bi-award-fill"></i> </h3>
+    
+    {% if object_list.count == 0 %}
+    
     <br>
+    <div class="alert alert-primary" role="alert">
+      There are not planned ride, create one with the button <i class="bi bi-arrow-down"></i> </a> 
+    </div>
+    
+    {% else %}
 
-  {% else %}
-
+    <br>
     <div class="container text-center">
       <div class="row">
-        {% for p in user.passengers_ride.all %}
+    {% for trip in object_list %}
         <div class="col">
           <div class="card" style="width: 18rem;">
-            <h4> <span class="badge rounded-pill text-bg-info"> {{p.ride.departure_location}} - {{p.ride.arrival_location}} </span> </h4>
+            <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
             <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
             <ul class="list-group list-group-flush">
-              <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{p.ride.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
-              <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{p.ride.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
-              <li class="list-group-item"> {{p.ride.car.model}} <i class="bi bi-car-front"></i> </li>
+              <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
+              <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
+              <li class="list-group-item"> {{trip.car.model}} <i class="bi bi-car-front"></i> </li>
             </ul>
             <div class="card-body">
-              <a href="{% url 'leave_trip' pk=p.ride.id %}" style = "color: red;"  class="card-link"> Leave <i class="bi bi-escape"></i>  </a>
+              <a href="{% url 'ridedetail' pk=trip.id %}" class="card-link"> More Information </a>
+              <a href="{% url 'ridedelete' pk=trip.id %}" style = "color: red;"  class="card-link"> Delete <i class="bi bi-trash"></i> </a>
             </div>
           </div>
         </div>
@@ -106,28 +50,16 @@
     {%endfor%}
       </div>
     </div>
+    <br>
+    {%endif %}
+    <a href="{% url 'createtrip' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
+  
+  {% else %}
+  
+  <div class="alert alert-danger" role="alert">
+    You are not a driver!
   </div>
+  
   {% endif %}
-
-  
-
-  <br><br>
-  <div style="background: linear-gradient(to right, #ffce8e, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">  
-  <h3 style="text-align: center;"> My recents Trips <i class="bi bi-heart"></i> </h3>
-  </div>
-
-  
-  
-    
-
-    {% if messages %}
-        <div class="container mt-4">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
 
 {% endblock %}

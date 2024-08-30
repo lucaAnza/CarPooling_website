@@ -1,0 +1,46 @@
+{% extends 'basebs.html' %}
+
+{% load static %}
+
+{% block title %} Trips {% endblock %} 
+
+{% block header1 %}
+  <div class="header-background">
+    <h1> Yours trips <i class="bi bi-suitcase-lg"></i> </h1>
+  </div>
+{% endblock %}
+
+{% block content %} 
+
+{% block sections %}
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+    {% if request.path == "/gestione/trips/passenger" %}
+      <a href="{% url 'trips' 'passenger' %}" class="btn btn-outline-primary active" for="btnradio1">My upcoming trips</a>
+      <a href="{% url 'trips' 'driver' %}" class="btn btn-outline-primary" for="btnradio2">My upcoming trips (DRIVER)</a>
+      <a href="{% url 'trips' 'old' %}" class="btn btn-outline-primary" for="btnradio3">My recents trips</a>
+    {% elif request.path == "/gestione/trips/driver" %}
+
+      <a href="{% url 'trips' 'passenger' %}" class="btn btn-outline-primary" for="btnradio1">My upcoming trips</a>
+      <a href="{% url 'trips' 'driver' %}" class="btn btn-outline-primary active" for="btnradio2">My upcoming trips (DRIVER)</a>
+      <a href="{% url 'trips' 'old' %}" class="btn btn-outline-primary" for="btnradio3">My recents trips</a>
+
+    {% elif request.path == "/gestione/trips/old" %}
+
+      <a href="{% url 'trips' 'passenger' %}" class="btn btn-outline-primary" for="btnradio1">My upcoming trips</a>
+      <a href="{% url 'trips' 'driver' %}" class="btn btn-outline-primary" for="btnradio2">My upcoming trips (DRIVER)</a>
+      <a href="{% url 'trips' 'old' %}" class="btn btn-outline-primary active" for="btnradio3">My recents trips</a>
+
+    {% endif %}
+    
+  </div>
+{% endblock %}
+
+<br><br>
+
+<div style="background: linear-gradient(to right, #a8d2ff, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">
+    {% block rides-card %}
+    {% endblock %}
+</div>
+
+
+{% endblock %}

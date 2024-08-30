@@ -172,7 +172,19 @@ def leave_trip(request, pk):
 class TripsListView(GroupRequiredMixin , ListView):
     group_required = ["Passenger" , "Driver"]
     model = Ride
-    template_name = "trips.html"
+    template_name = "trips_passenger.html"
+
+    # Choose template
+    def get_template_names(self):
+        trip_type = self.kwargs.get('str')
+        if trip_type == 'driver':
+            return ["trips_driver.html"]
+        elif trip_type == 'passenger':
+            return ["trips_passenger.html"]
+        elif trip_type == 'old':
+            return ["trips_old.html"]
+        else:
+            return ["home.html"]
 
     # Get the last 3 elements
     def get_queryset(self):
