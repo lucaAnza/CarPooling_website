@@ -371,12 +371,20 @@ class CreateReviewView(GroupRequiredMixin, CreateView):
     template_name = "createreview.html"
     success_url = reverse_lazy("home")
 
-    # Get ride id
+    # Add ride_id to the context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['ride_id'] = self.kwargs['pk']
+        return context
+
+    # Check on ride_id + add review on Ride table
     def form_valid(self, form):
         ride_id = self.kwargs['pk']
-        #TODO
-        print("Check validità pk! deve essere dell'utente specifico di una corsa che ha fatto")
-        print("Aggiunta recensione alla corsa n." , ride_id)
+        # Check if the ride exists in the Ride table of the logged user
+        if not Passenger.objects.filter(ride=ride_id , user = self.request.user).exists():
+            form.add_error(None, "The specified ride does not exist for the logged user!")
+            return self.form_invalid(form)
+        #TODO -> ADD Review at the Ride (using id)
         return super().form_valid(form)
 
 #-----------------------------------------------------------------------

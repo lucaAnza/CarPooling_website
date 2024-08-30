@@ -17,7 +17,7 @@
 
 <br>
 
-<form action="{% url 'create_review' '4' %}" method="POST">
+<form action="{% url 'create_review' ride_id %}" method="POST">
     {% csrf_token %}
     {{ form|crispy }}
     <input type="submit" class="btn btn-success" value="Send your review">  

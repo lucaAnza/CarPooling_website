@@ -2,7 +2,6 @@
 
 {% load static %}
 
-
 {% block rides-card %}
 
   <h3 style="text-align: center;"> My recents Trips <i class="bi bi-heart"></i> </h3>
@@ -31,12 +30,11 @@
             <li class="list-group-item"> {{trip.car.model}} <i class="bi bi-car-front"></i> </li>
           </ul>
           <div class="card-body">
-            <a href="#" style="background-color: rgb(255, 187, 0); border-color: black;" class="btn btn-primary btn-sm">Give Your Rating <i class="bi bi-star"> </i></a>
+            <a href="{% url 'create_review' trip.id %}" style="background-color: rgb(255, 187, 0); border-color: black;" class="btn btn-primary btn-sm">Give Your Rating <i class="bi bi-star"> </i></a>
           </div>
         </div>
       </div>
       {% endfor %}
-      
     </div>
   </div>
 {% endif %}
