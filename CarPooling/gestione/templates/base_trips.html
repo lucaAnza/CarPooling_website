@@ -37,10 +37,21 @@
 
 <br><br>
 
-<div style="background: linear-gradient(to right, #a8d2ff, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">
+<div style="background: linear-gradient(to right, #d9eafc, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">
     {% block rides-card %}
     {% endblock %}
 </div>
+
+
+{% if messages %}
+        <div class="container mt-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+{% endif %}
 
 
 {% endblock %}

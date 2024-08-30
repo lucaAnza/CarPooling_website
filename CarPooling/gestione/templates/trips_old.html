@@ -5,52 +5,8 @@
 
 {% block rides-card %}
 
-  {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  {# TODO - Improve this check #}
-
-    <h3> My Drivers Trips <i class="bi bi-award-fill"></i> </h3>
-    
-    {% if object_list.count == 0 %}
-    
-    <br>
-    <div class="alert alert-primary" role="alert">
-      There are not planned ride, create one with the button <i class="bi bi-arrow-down"></i> </a> 
-    </div>
-    
-    {% else %}
-
-    <br>
-    <div class="container text-center">
-      <div class="row">
-    {% for trip in object_list %}
-        <div class="col">
-          <div class="card" style="width: 18rem;">
-            <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
-            <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
-              <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
-              <li class="list-group-item"> {{trip.car.model}} <i class="bi bi-car-front"></i> </li>
-            </ul>
-            <div class="card-body">
-              <a href="{% url 'ridedetail' pk=trip.id %}" class="card-link"> More Information </a>
-              <a href="{% url 'ridedelete' pk=trip.id %}" style = "color: red;"  class="card-link"> Delete <i class="bi bi-trash"></i> </a>
-            </div>
-          </div>
-        </div>
-    
-    {%endfor%}
-      </div>
-    </div>
-    <br>
-    {%endif %}
-    <a href="{% url 'createtrip' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
+  <h3 style="text-align: center;"> My recents Trips <i class="bi bi-heart"></i> </h3>
+  <br>
   
-  {% else %}
-  
-  <div class="alert alert-danger" role="alert">
-    You are not a driver!
-  </div>
-  
-  {% endif %}
 
 {% endblock %}
