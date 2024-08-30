@@ -22,7 +22,12 @@
     padding: 40px; 
     color: white; 
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
   }
+
+
+
   </style>
   {% endblock %}
   {% load crispy_forms_tags %} 
@@ -34,7 +39,7 @@
 
 <body>
 
-<div class="jumbotron text-center" style="margin-bottom:0">
+<div class="jumbotron text-center" style="margin:0 ; padding: 0;">
 {% block header1 %}
   <h1>Header</h1>
   <p>Subtitle</p> 

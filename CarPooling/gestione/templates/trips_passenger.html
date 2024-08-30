@@ -19,9 +19,9 @@
 {% else %}
 
   <div class="container text-center">
-    <div class="row">
+    <div class="row justify-content-start">
       {% for p in object_list %}
-      <div class="col">
+      <div class="col-auto">
         <div class="card" style="width: 18rem;">
           <h4> <span class="badge rounded-pill text-bg-info"> {{p.ride.departure_location}} - {{p.ride.arrival_location}} </span> </h4>
           <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
