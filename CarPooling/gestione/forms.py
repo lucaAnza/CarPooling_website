@@ -2,7 +2,6 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.utils import timezone
-
 from .models import *
 from datetime import datetime , timedelta
 
@@ -136,4 +135,25 @@ class CarForm(forms.ModelForm):
             'type': 'date', 'class': 'form-control'})
     )
     
-    
+class CreateReviewForm(forms.ModelForm):
+
+    RATING_CHOICES = [
+        (1, '1 - Poor ⭐'),
+        (2, '2 - Fair ⭐⭐'),
+        (3, '3 - Good ⭐⭐⭐'),
+        (4, '4 - Very Good ⭐⭐⭐⭐'),
+        (5, '5 - Excellent ⭐⭐⭐⭐⭐'),
+    ]
+
+    rating = forms.ChoiceField(choices=RATING_CHOICES)
+
+    comment = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Enter your comments here (Max 100 character) ',
+            'class': 'form-control'
+        })
+    )
+
+    class Meta:
+        model = Review
+        fields = ["rating", "comment"]

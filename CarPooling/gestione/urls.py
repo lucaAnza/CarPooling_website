@@ -39,6 +39,7 @@ urlpatterns = [
     path("searchtripresults/<str:string>/<str:where>/", SearchResultsList.as_view(), name="search_results_trip"),
     path('take_part/<int:pk>/', take_part, name='take_part'),
     path('leave_trip/<int:pk>/', leave_trip, name='leave_trip'),
+    path('createreview/<int:pk>' , CreateReviewView.as_view() , name='create_review'),
 ]
 
 if settings.DEBUG:

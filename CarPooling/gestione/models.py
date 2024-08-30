@@ -39,7 +39,7 @@ class Car(models.Model):
 
 
 class Review(models.Model):
-    rating = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(10)])
+    rating = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
     comment = models.CharField(max_length = 100)
 
     def __str__(self):

@@ -196,7 +196,7 @@ class TripsListView(GroupRequiredMixin , ListView):
         elif trip_type == 'old':
             return Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user).order_by('-id')[:3]
         else:
-            return Ride.objects.filter(user=self.request.user).order_by('-id')[:3]
+            return None
         
 
 @login_required
@@ -244,6 +244,7 @@ class DatailRideView(GroupRequiredMixin , DetailView):
     model = Ride
     template_name = "ride_detail.html"
 
+    #TODO Check on this
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Recover the url
@@ -357,4 +358,25 @@ def take_part(request, pk):
             messages.error(request, "Error adding to trip.")
 
     return redirect('search_trip')
+#-----------------------------------------------------------------------
+
+
+
+# REVIEW ---------------------------------------------------------------
+
+class CreateReviewView(GroupRequiredMixin, CreateView):
+    title = "Share Your Feedback"
+    group_required = ["Driver" , "Passenger"]
+    form_class = CreateReviewForm
+    template_name = "createreview.html"
+    success_url = reverse_lazy("home")
+
+    # Get ride id
+    def form_valid(self, form):
+        ride_id = self.kwargs['pk']
+        #TODO
+        print("Check validità pk! deve essere dell'utente specifico di una corsa che ha fatto")
+        print("Aggiunta recensione alla corsa n." , ride_id)
+        return super().form_valid(form)
+
 #-----------------------------------------------------------------------

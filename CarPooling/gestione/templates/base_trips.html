@@ -15,20 +15,25 @@
 {% block sections %}
   <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
     {% if request.path == "/gestione/trips/passenger" %}
-      <a href="{% url 'trips' 'passenger' %}" class="btn btn-outline-primary active" for="btnradio1">My upcoming trips</a>
+      <a href="{% url 'trips' 'passenger' %}" class="btn btn-outline-primary active" for="btnradio1">My upcoming trips <i class="bi bi-list-task"></i></a>
+      {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  
       <a href="{% url 'trips' 'driver' %}" class="btn btn-outline-primary" for="btnradio2">My upcoming trips (DRIVER)</a>
-      <a href="{% url 'trips' 'old' %}" class="btn btn-outline-primary" for="btnradio3">My recents trips</a>
+      {% endif %}
+      <a href="{% url 'trips' 'old' %}" class="btn btn-outline-primary" for="btnradio3">My recents trips <i class="bi bi-check2-circle"></i></a>
     {% elif request.path == "/gestione/trips/driver" %}
 
-      <a href="{% url 'trips' 'passenger' %}" class="btn btn-outline-primary" for="btnradio1">My upcoming trips</a>
+      <a href="{% url 'trips' 'passenger' %}" class="btn btn-outline-primary" for="btnradio1">My upcoming trips <i class="bi bi-list-task"></i></a>
+      {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  
       <a href="{% url 'trips' 'driver' %}" class="btn btn-outline-primary active" for="btnradio2">My upcoming trips (DRIVER)</a>
-      <a href="{% url 'trips' 'old' %}" class="btn btn-outline-primary" for="btnradio3">My recents trips</a>
+      {% endif %}
+      <a href="{% url 'trips' 'old' %}" class="btn btn-outline-primary" for="btnradio3">My recents trips <i class="bi bi-check2-circle"></i></a>
+      {% elif request.path == "/gestione/trips/old" %}
 
-    {% elif request.path == "/gestione/trips/old" %}
-
-      <a href="{% url 'trips' 'passenger' %}" class="btn btn-outline-primary" for="btnradio1">My upcoming trips</a>
+      <a href="{% url 'trips' 'passenger' %}" class="btn btn-outline-primary" for="btnradio1">My upcoming trips <i class="bi bi-list-task"></i></a>
+      {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  
       <a href="{% url 'trips' 'driver' %}" class="btn btn-outline-primary" for="btnradio2">My upcoming trips (DRIVER)</a>
-      <a href="{% url 'trips' 'old' %}" class="btn btn-outline-primary active" for="btnradio3">My recents trips</a>
+      {% endif %}
+      <a href="{% url 'trips' 'old' %}" class="btn btn-outline-primary active" for="btnradio3">My recents trips <i class="bi bi-check2-circle"></i></a>
 
     {% endif %}
     
