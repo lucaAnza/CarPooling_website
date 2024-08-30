@@ -45,19 +45,19 @@ class CreateTripForm(forms.Form):
     departure_location = forms.CharField(label="Departure location", max_length=30, min_length=3, required=True)
     arrival_location = forms.CharField(label="Arrival location", max_length=30, min_length=3, required=True)
     departure_time = forms.DateTimeField(
-        initial=datetime.now().strftime("%Y-%m-%dT%H:%M"),
+        initial=(datetime.now() + timedelta(hours=2)).strftime("%Y-%m-%dT%H:%M"),
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
     )
     arrival_time = forms.DateTimeField(
-        initial=datetime.now().strftime("%Y-%m-%dT%H:%M"),
+        initial=(datetime.now() + timedelta(hours=3)).strftime("%Y-%m-%dT%H:%M"),
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
     )
     open_registration_time = forms.DateTimeField(
-        initial=datetime.now().strftime("%Y-%m-%dT%H:%M"),
+        initial=(datetime.now() + timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M"),
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
     )
     close_registration_time = forms.DateTimeField(
-        initial=(datetime.now() + timedelta(hours=5)).strftime("%Y-%m-%dT%H:%M"),
+        initial=(datetime.now() + timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M"),
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
     )
     max_passenger = forms.ChoiceField(label="Max passengers", required=True, choices=passenger_choice)
@@ -71,7 +71,9 @@ class CreateTripForm(forms.Form):
     def clean_arrival_time(self):
         departure_time = self.cleaned_data.get('departure_time')
         arrival_time = self.cleaned_data.get('arrival_time')
-        if arrival_time is None or departure_time is None or arrival_time <= departure_time:
+        if departure_time is None:
+            return arrival_time
+        elif arrival_time is None or arrival_time <= departure_time:
             raise ValidationError("Arrival time must be after the departure time.")
         return arrival_time
 

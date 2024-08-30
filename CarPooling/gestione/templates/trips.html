@@ -69,7 +69,7 @@
   {% if user.passengers_ride.count == 0 %}
 
     <div class="alert alert-primary" role="alert">
-      You have 0 Planned Trip. You can find one at the following link <a href="#" class="alert-link">Find Trip <i class="bi bi-search"></i></a>. 
+      You have 0 Planned Trip. You can find one at the following link <a href="{% url 'search_trip' %}" class="alert-link">Find Trip <i class="bi bi-search"></i></a>. 
     </div>
     <br>
 

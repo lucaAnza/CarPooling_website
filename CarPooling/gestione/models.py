@@ -20,6 +20,7 @@ class Car(models.Model):
             if os.path.isfile(image_path):
                 os.remove(image_path)
         super(Car, self).delete(*args, **kwargs)
+        
     def __str__(self):
         out = "{" + str(self.id) + "}"  # Primary key
         if(self.user != None and self.last_inspection_date != None) :
