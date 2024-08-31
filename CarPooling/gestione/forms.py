@@ -60,6 +60,13 @@ class CreateTripForm(forms.Form):
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
     )
     max_passenger = forms.ChoiceField(label="Max passengers", required=True, choices=passenger_choice)
+    image = forms.ImageField(
+        label='Select an image',
+        required=False,
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control-file  mt-3 col-2'})
+    )
+
+    
 
     def clean_departure_time(self):
         departure_time = self.cleaned_data.get('departure_time')

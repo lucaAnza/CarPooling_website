@@ -19,7 +19,7 @@ from django.urls import path,include, re_path
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
-from .initcmds import init_db,erase_db
+from .initcmds import init_db,erase_car_tables
 from .views import *
 
 urlpatterns = [
@@ -34,4 +34,4 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #init_db()
-#erase_db()
+#erase_car_tables()

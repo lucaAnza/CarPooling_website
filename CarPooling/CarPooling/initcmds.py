@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import datetime,timedelta
 
-def erase_db():
+def erase_car_tables():
     print("\nDeleting Car table DB 🗑️ \n")
     Car.objects.all().delete()
 

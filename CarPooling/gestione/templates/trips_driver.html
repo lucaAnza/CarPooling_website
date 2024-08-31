@@ -9,12 +9,12 @@
 
     <h3> My Drivers Trips <i class="bi bi-award-fill"></i> </h3>
     
-    {% if object_list.count == 0 %}
+    {% if object_list.count == 0 and user.my_cars.count != 0 %}
     
-    <br>
-    <div class="alert alert-primary" style="background-color: #731cfd;color: white;" role="alert">
-      There are not planned ride, create one with the button <i class="bi bi-arrow-down"></i> </a> 
-    </div>
+      <br>
+      <div class="alert alert-primary" style="background-color: #731cfd;color: white;" role="alert">
+        There are not planned ride, create one with the button <i class="bi bi-arrow-down"></i> </a> 
+      </div>
     
     {% else %}
 
@@ -25,7 +25,11 @@
         <div class="col-auto">
           <div class="card" style="width: 18rem;">
             <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
-            <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
+            {% if l.image %}
+              <img src="{{ trip.image.url }}" height="300px" alt="{{ l.model }}">
+            {% else %}  
+                <img src="{% static '/img/no_img.jpg' %}" height="300px" alt="default_city_img">
+            {% endif %}
             <ul class="list-group list-group-flush">
               <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
               <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
@@ -41,12 +45,18 @@
     {%endfor%}
       </div>
     </div>
-    <br>
     {%endif %}
-    <a href="{% url 'createtrip' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
+
+    {% if user.my_cars.count == 0 %}
+      <div class="alert alert-primary" style="background-color: #731cfd;color: white;" role="alert">
+        You have not car. In order to create a new trip you need one <i class="bi bi-arrow-right-short"></i> <a href="{% url 'garage' %}" class="alert-link"> Go to garage <i class="bi bi-car-front-fill"></i></a></a> 
+      </div>
+    {% else %}
+      <a href="{% url 'createtrip' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
+    {% endif %}
+    <br>
   
   {% else %}
-  
   <div class="alert alert-danger" role="alert">
     You are not a driver! <i class="bi bi-ban"></i>
   </div>

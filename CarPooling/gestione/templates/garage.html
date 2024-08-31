@@ -51,7 +51,7 @@
 
                   {% if l.image %}
                       <img src="{{ l.image.url }}" height="300px" alt="{{ l.model }}">
-                  {% else %}  <!-- Non carica l'immagine statica in caso di errore -->
+                  {% else %}  
                       <img src="{% static '/img/default_car.jpg' %}" height="300px" alt="default_car_img">
                   {% endif %}
 

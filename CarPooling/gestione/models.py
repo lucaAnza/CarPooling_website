@@ -55,6 +55,7 @@ class Ride(models.Model):
     open_registration_time = models.DateTimeField(null = False)
     close_registration_time = models.DateTimeField(null = False)
     max_passenger = models.IntegerField(default=0 , null = False)
+    image = models.ImageField(upload_to='ride_images/', null=True, blank=True)
 
     #TODO: aggiungere campi mancanti
     def __str__(self):
