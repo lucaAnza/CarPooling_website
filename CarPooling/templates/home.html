@@ -11,8 +11,28 @@
   </div>
 {% endblock %}
 
-
 {% block content %} 
+
+<!--
+<div class="toast" style="background-color: rgb(189, 255, 189);" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <strong class="mr-auto"> Success <i class="bi bi-emoji-smile"></i></strong>
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body">
+    Review added correctly
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('.toast').toast({ autohide: false }).toast('show');
+  });
+</script>
+-->
+
 
 {% if messages %}
       <div class="container mt-4">
@@ -20,6 +40,7 @@
               <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                   {{ message }}
               </div>
+              
           {% endfor %}
       </div>
 {% endif %}

@@ -71,4 +71,8 @@ class Passenger(models.Model):
             models.UniqueConstraint(fields=['ride', 'user'], name='passenger_primary_key') # Composite Key
         ]
     def __str__(self):
-        return f'Passenger [ID={self.id}] : (User-{self.user.id} , Ride {self.ride.id}) ---> Review {self.review_id.id}'
+        if self.review_id != None : 
+            return f'Passenger [ID={self.id}] : (User-{self.user.id} , Ride {self.ride.id}) ---> Review {self.review_id.id}'
+        else:
+            return f'Passenger [ID={self.id}] : (User-{self.user.id} , Ride {self.ride.id})'
+            

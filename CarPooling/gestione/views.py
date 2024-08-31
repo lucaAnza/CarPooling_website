@@ -6,7 +6,6 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404 , render , redirect
 from django.urls import reverse,reverse_lazy
 from django.utils import timezone
-from pytz import timezone as pytz_timezone
 
 #Models
 from .models import *
@@ -365,7 +364,7 @@ def take_part(request, pk):
 # REVIEW ---------------------------------------------------------------
 
 class CreateReviewView(GroupRequiredMixin, CreateView):
-    title = "Share Your Feedback"
+    title = "Review"
     group_required = ["Driver" , "Passenger"]
     form_class = CreateReviewForm
     template_name = "createreview.html"
@@ -384,9 +383,15 @@ class CreateReviewView(GroupRequiredMixin, CreateView):
         if not Passenger.objects.filter(ride=ride_id , user = self.request.user).exists():
             form.add_error(None, "The specified ride does not exist for the logged user!")
             return self.form_invalid(form)
-        #TODO -> ADD Review at the Ride (using id)
 
-        # Add a success message
+        # Get review from the form
+        review = form.save()
+        # Get the passenger
+        passenger = Passenger.objects.get(ride=ride_id, user=self.request.user)
+        # Set the review to the passenger
+        passenger.review_id = review
+        passenger.save()
+
         messages.success(self.request, "Review added successfully!")
         return super().form_valid(form)
 
