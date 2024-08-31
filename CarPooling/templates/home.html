@@ -13,37 +13,26 @@
 
 {% block content %} 
 
-<!--
-<div class="toast" style="background-color: rgb(189, 255, 189);" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="toast-header">
-    <strong class="mr-auto"> Success <i class="bi bi-emoji-smile"></i></strong>
-    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="toast-body">
-    Review added correctly
-  </div>
+<div id="message-container" class="container mt-4">
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
 </div>
 
 <script>
-  $(document).ready(function(){
-    $('.toast').toast({ autohide: false }).toast('show');
-  });
+  setTimeout(function() {
+    var messageContainer = document.getElementById('message-container');
+    if (messageContainer) {
+      messageContainer.classList.add('fade-out'); 
+      setTimeout(function() {
+        messageContainer.style.display = 'none';
+      }, 2000); 
+    }
+  }, 1000);
 </script>
--->
 
-
-{% if messages %}
-      <div class="container mt-4">
-          {% for message in messages %}
-              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                  {{ message }}
-              </div>
-              
-          {% endfor %}
-      </div>
-{% endif %}
 
 <h2>Homepage CarPooling</h2>
 <img src="{% static '/img/taxi_ferrari.jpg' %}" width="800"  height="400px" alt="taxi">
