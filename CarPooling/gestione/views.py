@@ -146,7 +146,7 @@ class UpdateCarView(GroupRequiredMixin , UpdateView):
     title = "Modify vehicle settings"
     group_required = ["Driver"]
     model = Car
-    form_class = CarForm
+    form_class = UpdateCarForm
     template_name = "update_vehicle.html"
     success_url = reverse_lazy("garage")
 

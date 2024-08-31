@@ -25,10 +25,10 @@
         <div class="col-auto">
           <div class="card" style="width: 18rem;">
             <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
-            {% if l.image %}
-              <img src="{{ trip.image.url }}" height="300px" alt="{{ l.model }}">
+            {% if trip.image %}
+              <img src="{{ trip.image.url }}" height="200px" alt="city_img">
             {% else %}  
-                <img src="{% static '/img/no_img.jpg' %}" height="300px" alt="default_city_img">
+                <img src="{% static '/img/no_img.jpg' %}" height="200px" alt="default_city_img">
             {% endif %}
             <ul class="list-group list-group-flush">
               <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
@@ -52,6 +52,7 @@
         You have not car. In order to create a new trip you need one <i class="bi bi-arrow-right-short"></i> <a href="{% url 'garage' %}" class="alert-link"> Go to garage <i class="bi bi-car-front-fill"></i></a></a> 
       </div>
     {% else %}
+      <br>
       <a href="{% url 'createtrip' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
     {% endif %}
     <br>

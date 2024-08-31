@@ -60,11 +60,7 @@ class CreateTripForm(forms.Form):
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
     )
     max_passenger = forms.ChoiceField(label="Max passengers", required=True, choices=passenger_choice)
-    image = forms.ImageField(
-        label='Select an image',
-        required=False,
-        widget=forms.ClearableFileInput(attrs={'class': 'form-control-file  mt-3 col-2'})
-    )
+    image = forms.ImageField(label='Select an image', required=False,)
 
     
 
@@ -131,7 +127,7 @@ class SearchTripForm(forms.Form):
     search_where = forms.ChoiceField(label="Filter", required=True, choices=choice_list)
     search_string = forms.CharField(label="Search String",max_length=100, min_length=3, required=True)
 
-class CarForm(forms.ModelForm):
+class UpdateCarForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = ["model", "license_plate", "km", "last_inspection_date", "image"]
