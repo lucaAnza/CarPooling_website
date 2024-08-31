@@ -212,6 +212,9 @@ def create_trip(request):
             open_registration_time = form.cleaned_data.get("open_registration_time")
             close_registration_time = form.cleaned_data.get("close_registration_time")
             max_passenger = form.cleaned_data.get("max_passenger")
+            image = form.cleaned_data.get("image")
+
+            print("immagine = ",  image)
 
             # Creation of Ride entry
             ride = Ride(
@@ -223,7 +226,8 @@ def create_trip(request):
                 user=request.user,
                 open_registration_time=open_registration_time,
                 close_registration_time=close_registration_time,
-                max_passenger=max_passenger
+                max_passenger=max_passenger,
+                image = image
             )
             try:
                 ride.save()
