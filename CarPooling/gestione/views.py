@@ -202,7 +202,7 @@ class TripsListView(GroupRequiredMixin , ListView):
 @user_passes_test(is_a_driver)
 def create_trip(request):
     if request.method == "POST":
-        form = CreateTripForm(request.POST, user=request.user)
+        form = CreateTripForm(request.POST, request.FILES,  user=request.user )
         if form.is_valid():
             car = form.cleaned_data.get("car")
             departure_location = form.cleaned_data.get("departure_location")
@@ -213,8 +213,6 @@ def create_trip(request):
             close_registration_time = form.cleaned_data.get("close_registration_time")
             max_passenger = form.cleaned_data.get("max_passenger")
             image = form.cleaned_data.get("image")
-
-            print("immagine = ",  image)
 
             # Creation of Ride entry
             ride = Ride(

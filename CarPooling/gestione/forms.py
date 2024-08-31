@@ -60,7 +60,7 @@ class CreateTripForm(forms.Form):
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
     )
     max_passenger = forms.ChoiceField(label="Max passengers", required=True, choices=passenger_choice)
-    image = forms.ImageField(label='Select an image', required=False,)
+    image = forms.ImageField(label='Select an image', required=False)
 
     
 
