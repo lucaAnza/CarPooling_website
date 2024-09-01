@@ -114,6 +114,7 @@ class CreateVehicleView(GroupRequiredMixin, CreateView):
     # Set car owner (logged user)
     def form_valid(self, form):
         form.instance.user = self.request.user
+        messages.success(self.request, "You have successfully add a new car")
         return super().form_valid(form)
 
 class DeleteEntityView(DeleteView):
@@ -229,9 +230,11 @@ def create_trip(request):
             )
             try:
                 ride.save()
+                messages.success(request, "You have successfully add a new trip.")
                 return redirect("home")
             except Exception as e:
                 print(f"Error on ride save: {e}")
+                messages.error(request, "Error - Please contact the amministrator")
                 form.add_error(None, "An error occurred while saving the ride. Please try again.")
     else:
         form = CreateTripForm(user=request.user)
