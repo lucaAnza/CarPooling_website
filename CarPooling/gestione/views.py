@@ -417,8 +417,19 @@ class RankingView(GroupRequiredMixin, ListView):
             LEFT JOIN gestione_ride ON auth_user.id = gestione_ride.user_id
             GROUP BY auth_user.id, auth_user.username
             ORDER BY ride_count DESC
+            LIMIT 5
         """
         return User.objects.raw(raw_query)
 
     
+#-----------------------------------------------------------------------
+
+# RANKING ---------------------------------------------------------------
+
+class MyProfileView(GroupRequiredMixin, ListView):
+    group_required = ["Passenger", "Driver"]
+    model = User
+    template_name = "profile.html"
+    title = "My Profile"
+
 #-----------------------------------------------------------------------

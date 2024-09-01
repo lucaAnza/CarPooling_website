@@ -131,7 +131,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">My Profile 👤</a>
+          <a class="nav-link" href="{% url 'profile' %}">My Profile 👤</a>
         </li>
 
         
@@ -145,7 +145,7 @@
               {% if user.is_superuser %}
               <a href="/admin" type="button" class="btn btn-primary"> 👤 {{user.username}} </a>
               {% else %}
-              <a href="#" type="button" class="btn btn-primary"> 👤 {{user.username}} </a>
+              <a href="{% url 'profile' %}" type="button" class="btn btn-primary"> 👤 {{user.username}} </a>
               {% endif %}
               <button type="submit" class="btn btn-info">Log out</button>
             </form>

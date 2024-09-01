@@ -1,0 +1,54 @@
+{% extends 'basebs.html' %}
+
+{% load static %}
+
+{% block title %} {{ view.title }} {% endblock %}
+
+{% block header1 %}
+  <div class="header-background">
+    <h1> My Profile </h1>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+  <h2> Your information <i class="bi bi-file-person"></i> </h2>
+  <br>
+  <table class="table col-md-8">
+    <tbody>
+      <tr>
+        <td>Username</td>
+        <td>{{ user.username }}</td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td>{{ user.email|default:"✗" }}</td>
+      </tr>
+      <tr>
+        <td>First Name</td>
+        <td>{{ user.first_name|default:"✗" }}</td>
+      </tr>
+      <tr>
+        <td>Last Name</td>
+        <td>{{ user.last_name|default:"✗" }}</td>
+      </tr>
+      <tr>
+        <td>Date Joined</td>
+        <td>{{ user.date_joined|date:"d M Y H:i" }}</td>
+      </tr>
+      <tr>
+        <td>Last Login</td>
+        <td>{{ user.last_login|date:"d M Y H:i" }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+{% else %}
+  <p>You need to <a href="{% url 'login' %}">log in</a> to view your profile.</p>
+{% endif %}
+
+<br>
+
+{% endblock %}

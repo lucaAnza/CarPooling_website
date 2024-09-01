@@ -41,6 +41,7 @@ urlpatterns = [
     path('leave_trip/<int:pk>/', leave_trip, name='leave_trip'),
     path('createreview/<int:pk>' , CreateReviewView.as_view() , name='create_review'),
     path('ranking/' , RankingView.as_view() , name='ranking' ),
+    path('my_profile/' , MyProfileView.as_view() , name='profile'),
 ]
 
 if settings.DEBUG:
