@@ -40,6 +40,7 @@ urlpatterns = [
     path('take_part/<int:pk>/', take_part, name='take_part'),
     path('leave_trip/<int:pk>/', leave_trip, name='leave_trip'),
     path('createreview/<int:pk>' , CreateReviewView.as_view() , name='create_review'),
+    path('ranking/' , RankingView.as_view() , name='ranking' ),
 ]
 
 if settings.DEBUG:

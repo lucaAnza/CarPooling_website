@@ -398,3 +398,27 @@ class CreateReviewView(GroupRequiredMixin, CreateView):
         return super().form_valid(form)
 
 #-----------------------------------------------------------------------
+
+
+
+
+# RANKING ---------------------------------------------------------------
+
+class RankingView(GroupRequiredMixin, ListView):
+    group_required = ["Passenger", "Driver"]
+    model = User
+    template_name = "drivers_ranking.html"
+    title = "Ranking"
+
+    def get_queryset(self):
+        raw_query = """
+            SELECT  auth_user.id , auth_user.username, COUNT(gestione_ride.id) as ride_count
+            FROM auth_user
+            LEFT JOIN gestione_ride ON auth_user.id = gestione_ride.user_id
+            GROUP BY auth_user.id, auth_user.username
+            ORDER BY ride_count DESC
+        """
+        return User.objects.raw(raw_query)
+
+    
+#-----------------------------------------------------------------------
