@@ -64,6 +64,14 @@ class Ride(models.Model):
         else:
             return f'Ride {self.id} - Departure: {self.departure_location} - Arrival: {self.arrival_location} - Departure Time: {self.departure_time} - Arrival Time: {self.arrival_time}'
     
+    def delete(self, *args, **kwargs):
+        #Before the deletion of the element, the image must be deleted in the directory
+        if self.image:
+            image_path = os.path.join(settings.MEDIA_ROOT, self.image.name)
+            if os.path.isfile(image_path):
+                os.remove(image_path)
+        super(Ride, self).delete(*args, **kwargs)
+    
 class Passenger(models.Model):
     ride = models.ForeignKey(Ride, on_delete=models.CASCADE , related_name = "passengers")
     user = models.ForeignKey(User, on_delete=models.CASCADE , related_name = "passengers_ride" )
