@@ -29,7 +29,7 @@ def home_page(request):
         SELECT id, arrival_location, COUNT(id) as count, MAX(image) as max_img
         FROM gestione_ride
         GROUP BY arrival_location
-        ORDER BY arrival_location
+        ORDER BY count DESC
         LIMIT 3
     """)
 
