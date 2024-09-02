@@ -14,6 +14,8 @@
 
 {% block content %} 
 
+<h2> Please provide the required details</h2>
+<br><br>
 <form method="post"> {% csrf_token %}
 
   {{form | crispy}}   
@@ -24,4 +26,3 @@
 
 {% endblock %}
 
-{% block footer %} {% endblock %}

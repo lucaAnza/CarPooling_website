@@ -6,12 +6,14 @@
 {% block title %} Login {% endblock %} 
 
 {% block header1 %}
-  <h1>Pagina di Login</h1>
-  <p>Si prega di compilare i campi necessari</p> 
+  <div class="header-background">
+    <h1> Login </h1>
+  </div>
 {% endblock %}
 
 {% block content %} 
 
+<br><br><br>
 {% if "needed" in request.GET.login %}
 <div class="alert alert-danger" role="alert">
   <i class="bi bi-exclamation-triangle"></i> You have arrived here because you do not have the necessary permissions for the chosen service! Please sign in.
@@ -28,5 +30,3 @@
   </form>
 
 {% endblock %}
-
-{% block footer %} {% endblock %}

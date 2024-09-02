@@ -6,14 +6,19 @@
 {% block title %} Logout {% endblock %} 
 
 {% block header1 %}
-  <h1 class="header-background">Pagina di Logout</h1>
+  <div class="header-background">
+    <h1> Logout <i class="bi bi-box-arrow-left"></i> </h1>
+  </div>
 {% endblock %}
 
 {% block content %} 
 
-<h2>Logout successful</h2>
-<h5>See you soon!</h5>
+
+<div class="jumbotron jumbotron-fluid" style="margin-top: 70px;">
+  <div class="container">
+    <h1 class="display-4">Logout successful</h1>
+    <p class="lead">See you soon!</p>
+  </div>
+</div>
 
 {% endblock %}
-
-{% block footer %} {% endblock %}
