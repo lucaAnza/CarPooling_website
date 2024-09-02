@@ -16,33 +16,33 @@
 
 {% block content %} 
 
-{% if user.is_authenticated %}
 
-  <h2> Ranking <i class="bi bi-trophy"></i> ( Top {{ object_list|length }}) </h2>
-  <br><br><br>
+<br>
+<h2> Ranking <i class="bi bi-trophy"></i> ( Top {{ object_list|length }}) </h2>
+<br><br><br>
 
-  <ol class="list-group list-group-numbered">
-    {% for user in object_list %}
+<ol class="list-group list-group-numbered">
+  {% for user in object_list %}
 
-    
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                {% if forloop.counter == 1 %}
-                    <i style="color: #ffd700;" class="bi bi-1-circle"></i> {{ user.username }}
-                {% elif forloop.counter == 2 %}
-                    <i style="color: #a5a9b4;" class="bi bi-2-circle"></i> {{ user.username }}
-                {% elif forloop.counter == 3 %}
-                    <i style="color: #cd7f32;" class="bi bi-3-circle"></i> {{ user.username }}
-                {% else %}
-                    <i class="bi bi-{{forloop.counter}}-circle"></i> {{ user.username }}
-                {% endif %}
-            </div>
-            <span class="badge text-bg-primary rounded-pill">{{ user.ride_count }} rides </span>
-        </li>
-    {% endfor %}
-  </ol>
   
-{% endif %}
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+              {% if forloop.counter == 1 %}
+                  <i style="color: #ffd700;" class="bi bi-1-circle"></i> {{ user.username }}
+              {% elif forloop.counter == 2 %}
+                  <i style="color: #a5a9b4;" class="bi bi-2-circle"></i> {{ user.username }}
+              {% elif forloop.counter == 3 %}
+                  <i style="color: #cd7f32;" class="bi bi-3-circle"></i> {{ user.username }}
+              {% else %}
+                  <i class="bi bi-{{forloop.counter}}-circle"></i> {{ user.username }}
+              {% endif %}
+          </div>
+          <span class="badge text-bg-primary rounded-pill">{{ user.ride_count }} rides </span>
+      </li>
+  {% endfor %}
+</ol>
+  
+
 
 
 

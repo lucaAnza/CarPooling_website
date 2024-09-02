@@ -125,18 +125,19 @@ class TripsListView(GroupRequiredMixin , ListView):
         else:
             return ["home.html"]
 
-    # Get the last 3 elements
+    # Get the last {limit} elements
     def get_queryset(self):
         trip_type = self.kwargs.get('str')
+        limit = 6
         if trip_type == 'driver':
             # Show only incoming rides
             current_time = timezone.now()
             rides = Ride.objects.filter( open_registration_time__lte=current_time,  close_registration_time__gte=current_time ) 
-            return rides.filter(user=self.request.user).order_by('-id')[:3]
+            return rides.filter(user=self.request.user).order_by('-id')[:limit]
         elif trip_type == 'passenger':
-            return Passenger.objects.filter(user=self.request.user , ride__arrival_time__gt=timezone.now()).order_by('-id')[:3]
+            return Passenger.objects.filter(user=self.request.user , ride__arrival_time__gt=timezone.now()).order_by('-id')[:limit]
         elif trip_type == 'old':
-            return Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user).order_by('-id')[:3]
+            return Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user).order_by('-id')[:limit]
         else:
             return None
         
@@ -356,8 +357,7 @@ class CreateReviewView(GroupRequiredMixin, CreateView):
 
 # RANKING ---------------------------------------------------------------
 
-class RankingView(GroupRequiredMixin, ListView):
-    group_required = ["Passenger", "Driver"]
+class RankingView(ListView):
     model = User
     template_name = "drivers_ranking.html"
     title = "Ranking"
@@ -378,7 +378,7 @@ class RankingView(GroupRequiredMixin, ListView):
 
 # RANKING ---------------------------------------------------------------
 
-class MyProfileView(GroupRequiredMixin, ListView):
+class MyProfileView(ListView):
     group_required = ["Passenger", "Driver"]
     model = User
     template_name = "profile.html"
