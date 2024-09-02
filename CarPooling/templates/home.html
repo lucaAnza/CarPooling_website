@@ -13,6 +13,13 @@
 
 {% block content %} 
 
+<h1>Top Destinations</h1>
+    <ul>
+        {% for destination in top_destination %}
+            <li>{{ destination.arrival_location }}: {{ destination.count }}</li>
+        {% endfor %}
+    </ul>
+
 <!-- Log:message section -->
 <div id="message-container" class="container mt-4">
   {% for message in messages %}

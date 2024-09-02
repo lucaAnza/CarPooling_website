@@ -21,12 +21,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('home/' , home_page , name="homepage"),
-    path("", home_page,name="homepage"),
-    path("elenca/", elenca_params ,name="elenca"), # Parametri passati con ?
-    path('parametri/<str:nome>/<int:eta>/', two_params, name='alias'),  # Parametri passati con /
-    path('template/', hello_template, name='template'),
-    path('database/', play_with_database , name='database'),
     path("garage/", CarsListView.as_view(), name="garage"),
     path("addvehicle/", CreateVehicleView.as_view() , name="addvehicle" ),
     path("deletevehicle/<pk>/" ,  DeleteCarView.as_view() , name="deletevehicle" ),
