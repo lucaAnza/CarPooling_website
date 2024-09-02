@@ -233,6 +233,13 @@ def get_filtered_rides(user=None, search_string=None, search_where=None):
         # Exclude rides where the user is already a passenger
         rides = rides.exclude(passengers__user=user)
 
+    # Apply the filter based on the user's selection
+    if search_string and search_where:
+        if search_where == "Destination":
+            rides  = rides.filter(arrival_location__icontains = search_string)
+        elif search_where == "Departure":
+            rides = rides.filter(departure_location__icontains = search_string)
+
     return rides
 
 def search(request):
@@ -249,6 +256,8 @@ def search(request):
 
     # Get the filtered trips for the initial load
     trips = get_filtered_rides(user=request.user)
+
+    print("test" , trips)
 
     return render(request, "search_trip.html", context={"form": form, "title": "Search", "trips": trips})
 
