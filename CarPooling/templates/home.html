@@ -13,12 +13,7 @@
 
 {% block content %} 
 
-<h1>Top Destinations</h1>
-    <ul>
-        {% for destination in top_destination %}
-            <li>{{ destination.arrival_location }}: {{ destination.count }}</li>
-        {% endfor %}
-    </ul>
+
 
 <!-- Log:message section -->
 <div id="message-container" class="container mt-4">
@@ -43,72 +38,39 @@
 <!----------------------->
 
 
+<!--Site-descriptions-->
 <br><br>
 <div class="jumbotron" style="background: url('/static/img/test.jpg') no-repeat center center; background-size: cover; color: rgb(255, 255, 255);">
   <h1 style="background: linear-gradient(to right, #343A40, #3d6b4f) black; border-radius: 50px; padding: 20px;" class="display-4">Welcome to Car Pooling website <i class="bi bi-car-front-fill"></i> </h1>
   <p style="background: linear-gradient(to right, #3d6b4f, #343A40) black; border-radius: 50px; padding: 10px;" class="lead">This website facilitates car pooling by connecting drivers with empty seats to passengers looking for a ride, helping to reduce traffic congestion and environmental impact <i class="bi bi-recycle"></i></p>
 </div>
-
 <br>
 <div style="background: linear-gradient(to right, #d9eafc, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">
 
-  <h3> The most popular destinations <i class="bi bi-award-fill"></i> </h3>
-  <br>
-
-  <div class="container text-center">
+<!--Most Popular destinations-->
+<h3> The most popular destinations <i class="bi bi-award-fill"></i> </h3>
+<br>
+<div class="container text-center">
   <div class="row justify-content-start">
 
-      <div class="col-auto" style="margin-left: 45px;">
-        <div class="card" style="width: 18rem;">
-          <h4> <span class="badge rounded-pill text-bg-info"> Salerno - Napoli </span> </h4>
-          <img src="{% static '/img/no_img.jpg' %}" height="200px" alt="default_city_img">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> 2020-12-21 </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> 2020-12-21   </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> Ferrari <i class="bi bi-car-front"></i> </li>
-          </ul>
-          <div class="card-body">
-            <a href="#" style = "background-color: rgb(16, 167, 255); border-color: black ;" class="btn btn-primary btn-sm"> More Information <i class="bi bi-info-circle"></i> </a>
-            <a href="#" style = "background-color: rgb(197, 23, 0); border-color: black ;" class="btn btn-primary btn-sm"> Delete <i class="bi bi-trash"></i> </a>
-          </div>
+    {% for destination in top_destination %}
+    <div class="col-auto" style="margin-left: 45px;">
+      <div class="card" style="width: 18rem;">
+        <h4> <span class="badge rounded-pill text-bg-info"> {{destination.arrival_location}} </span> </h4>
+        {% if destination.image %}
+          <img src="{{ destination.image.url }}" height="200px" alt="city_img">
+        {% else %}  
+            <img src="{% static '/img/no_img.jpg' %}" height="200px" alt="default_city_img">
+        {% endif %}
+        <div class="card-body">
+          <a href="#" style = "background-color: rgb(16, 167, 255); border-color: black ;" class="btn btn-primary btn-sm"> Search a trip for {{destination.arrival_location}} <i class="bi bi-search"></i> </a>
         </div>
       </div>
-
-      <div class="col-auto">
-        <div class="card" style="width: 18rem;">
-          <h4> <span class="badge rounded-pill text-bg-info"> Salerno - Napoli </span> </h4>
-          <img src="{% static '/img/no_img.jpg' %}" height="200px" alt="default_city_img">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> 2020-12-21 </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> 2020-12-21   </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> Ferrari <i class="bi bi-car-front"></i> </li>
-          </ul>
-          <div class="card-body">
-            <a href="#" style = "background-color: rgb(16, 167, 255); border-color: black ;" class="btn btn-primary btn-sm"> More Information <i class="bi bi-info-circle"></i> </a>
-            <a href="#" style = "background-color: rgb(197, 23, 0); border-color: black ;" class="btn btn-primary btn-sm"> Delete <i class="bi bi-trash"></i> </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-auto">
-        <div class="card" style="width: 18rem;">
-          <h4> <span class="badge rounded-pill text-bg-info"> Salerno - Napoli </span> </h4>
-          <img src="{% static '/img/no_img.jpg' %}" height="200px" alt="default_city_img">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> 2020-12-21 </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> 2020-12-21   </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> Ferrari <i class="bi bi-car-front"></i> </li>
-          </ul>
-          <div class="card-body">
-            <a href="#" style = "background-color: rgb(16, 167, 255); border-color: black ;" class="btn btn-primary btn-sm"> More Information <i class="bi bi-info-circle"></i> </a>
-            <a href="#" style = "background-color: rgb(197, 23, 0); border-color: black ;" class="btn btn-primary btn-sm"> Delete <i class="bi bi-trash"></i> </a>
-          </div>
-        </div>
-      </div>
-
+    </div>
+    {% endfor %}
 
   </div>
 </div>
-</div>
+
 
 {% endblock %}

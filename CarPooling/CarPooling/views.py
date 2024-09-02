@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 # Top destination import
 from gestione.models import Ride
-from django.db.models import Count  
+from django.db.models import Count,Max
 
 
 # Function for authentication
@@ -25,7 +25,12 @@ def home_page(request):
     
     
     # Get top destinations
-    top_destination = Ride.objects.values('arrival_location').annotate(count=Count('id')).order_by('arrival_location')
+    top_destination = Ride.objects.raw("""
+        SELECT id, arrival_location, COUNT(id) as count, MAX(image) as max_img
+        FROM gestione_ride
+        GROUP BY arrival_location
+        ORDER BY arrival_location
+    """)
 
     ctx = { "top_destination": top_destination}
     return render(request, template_name="home.html" , context=ctx)
