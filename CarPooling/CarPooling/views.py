@@ -48,5 +48,3 @@ def createDriver(request):
     gruppo_driver , created = Group.objects.get_or_create(name='Driver') # Get reference of driver group
     user.groups.add(gruppo_driver) # Add user to the group
     return render(request, template_name = 'driver_create.html' , context = ctx)
-
-

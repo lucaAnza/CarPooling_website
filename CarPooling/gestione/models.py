@@ -74,7 +74,7 @@ class Ride(models.Model):
     
     def is_running(self):
         current_time = timezone.now()
-        if(current_time >= self.departure_time and self.current_time <= arrival_time):
+        if(current_time >= self.departure_time and current_time <= self.arrival_time):
             return True
         else:
             return False
