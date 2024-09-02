@@ -21,7 +21,7 @@
     <br>
     <div class="container text-center">
       <div class="row justify-content-start">
-    {% for trip in object_list %}
+        {% for trip in object_list %}
         <div class="col-auto card-container">
           <div class="card" style="width: 18rem;">
             {% if trip.is_running %}
@@ -46,7 +46,7 @@
           </div>
         </div>
     
-    {%endfor%}
+        {%endfor%}
       </div>
     </div>
     {%endif %}

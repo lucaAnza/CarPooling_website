@@ -137,7 +137,10 @@ class TripsListView(GroupRequiredMixin , ListView):
         elif trip_type == 'passenger':
             return Passenger.objects.filter(user=self.request.user , ride__arrival_time__gt=timezone.now()).order_by('-id')[:limit]
         elif trip_type == 'old':
-            return Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user).order_by('-id')[:limit]
+            set1 = Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user).order_by('-id')[:limit]
+            set2 = Ride.objects.filter(arrival_time__lt=timezone.now() , user = self.request.user).order_by('-id')[:limit]
+            final_set = set1 | set2
+            return final_set
         else:
             return None
         
@@ -334,6 +337,10 @@ class CreateReviewView(GroupRequiredMixin, CreateView):
     # Check on ride_id + add review on Ride table
     def form_valid(self, form):
         ride_id = self.kwargs['pk']
+        if Ride.objects.filter(id = ride_id , user = self.request.user):
+            form.add_error(None, "You try to review yourself! You cant!")
+            return self.form_invalid(form)
+            
         # Check if the ride exists in the Ride table of the logged user
         if not Passenger.objects.filter(ride=ride_id , user = self.request.user).exists():
             form.add_error(None, "The specified ride does not exist for the logged user!")

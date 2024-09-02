@@ -20,18 +20,27 @@
     <div class="row justify-content-start">
       
       {% for trip in object_list %}
-      <i class="bi bi-person-vcard"></i>
       <div class="col-auto card-container">
         <div class="card" style="width: 18rem;">
+          <!--Check if you drive in the recent trip-->
+          {% if trip.user.id == user.id %}
+            <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} ( <i class="bi bi-person-vcard"></i> ) </span> </h4>
+          {% else %}
           <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
-          <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
+          {% endif %}
+            <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
           <ul class="list-group list-group-flush">
             <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
             <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
             <li class="list-group-item"> {{trip.car.model}} <i class="bi bi-car-front"></i> </li>
           </ul>
           <div class="card-body">
-            <a href="{% url 'create_review' trip.id %}" style="background-color: rgb(255, 187, 0); border-color: black;" class="btn btn-primary btn-sm">Give Your Rating <i class="bi bi-star"> </i></a>
+            {% if trip.user.id == user.id %}
+              <a href="#" style="background-color: rgb(255, 233, 172); border-color: black; pointer-events: none; color: grey;" class="btn btn-primary btn-sm disabled-link">Give Your Rating <i class="bi bi-star"> </i></a>
+            {% else %}
+              <a href="{% url 'create_review' trip.id %}" style="background-color: rgb(255, 187, 0); border-color: black;" class="btn btn-primary btn-sm">Give Your Rating <i class="bi bi-star"> </i></a>
+            {% endif %}
+            
           </div>
         </div>
       </div>
