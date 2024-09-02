@@ -130,7 +130,10 @@ class TripsListView(GroupRequiredMixin , ListView):
     def get_queryset(self):
         trip_type = self.kwargs.get('str')
         if trip_type == 'driver':
-            return Ride.objects.filter(user=self.request.user).order_by('-id')[:3]
+            # Show only incoming rides
+            current_time = timezone.now()
+            rides = Ride.objects.filter( open_registration_time__lte=current_time,  close_registration_time__gte=current_time ) 
+            return rides.filter(user=self.request.user).order_by('-id')[:3]
         elif trip_type == 'passenger':
             return Passenger.objects.filter(user=self.request.user , ride__arrival_time__gt=timezone.now()).order_by('-id')[:3]
         elif trip_type == 'old':
