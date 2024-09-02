@@ -63,7 +63,7 @@
             <img src="{% static '/img/no_img.jpg' %}" height="200px" alt="default_city_img">
         {% endif %}
         <div class="card-body">
-          <a href="#" style = "background-color: rgb(16, 167, 255); border-color: black ;" class="btn btn-primary btn-sm"> Search a trip for {{destination.arrival_location}} <i class="bi bi-search"></i> </a>
+          <a href="{% url 'search_results_trip' destination.arrival_location 'Departure' %}" style = "background-color: rgb(16, 167, 255); border-color: black ;" class="btn btn-primary btn-sm"> Search a trip for {{destination.arrival_location}} <i class="bi bi-search"></i> </a>
         </div>
       </div>
     </div>
