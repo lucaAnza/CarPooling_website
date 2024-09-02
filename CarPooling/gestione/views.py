@@ -5,7 +5,6 @@ from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import get_object_or_404 , render , redirect
 from django.urls import reverse,reverse_lazy
-from django.utils import timezone
 
 #Models
 from .models import *

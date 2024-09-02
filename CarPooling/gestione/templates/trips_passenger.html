@@ -23,7 +23,11 @@
       {% for p in object_list %}
       <div class="col-auto">
         <div class="card" style="width: 18rem;">
-          <h4> <span class="badge rounded-pill text-bg-info"> {{p.ride.departure_location}} - {{p.ride.arrival_location}} </span> </h4>
+          {% if p.ride.is_running %}
+            <h4> <span class="badge rounded-pill text-bg-info"> {{p.ride.departure_location}} - {{p.ride.arrival_location}} (<i id="is_running" class="bi bi-car-front"></i>) </span> </h4>
+            {% else %}
+            <h4> <span class="badge rounded-pill text-bg-info"> {{p.ride.departure_location}} - {{p.ride.arrival_location}} </span> </h4>
+            {% endif %}
           <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
           <ul class="list-group list-group-flush">
             <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{p.ride.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>

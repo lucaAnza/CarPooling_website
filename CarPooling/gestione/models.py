@@ -1,9 +1,9 @@
 import os
-
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 class Car(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True , related_name="my_cars")
@@ -74,7 +74,7 @@ class Ride(models.Model):
     
     def is_running(self):
         current_time = timezone.now()
-        if(current_time >= departure_time and current_time <= arrival_time):
+        if(current_time >= self.departure_time and self.current_time <= arrival_time):
             return True
         else:
             return False

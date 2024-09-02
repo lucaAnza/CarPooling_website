@@ -22,10 +22,13 @@
     <div class="container text-center">
       <div class="row justify-content-start">
     {% for trip in object_list %}
-        
         <div class="col-auto card-container">
           <div class="card" style="width: 18rem;">
-            <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
+            {% if trip.is_running %}
+            <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} (<i id="is_running" class="bi bi-car-front"></i>) </span> </h4>
+            {% else %}
+              <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
+            {% endif %}
             {% if trip.image %}
               <img src="{{ trip.image.url }}" height="200px" alt="city_img">
             {% else %}  
