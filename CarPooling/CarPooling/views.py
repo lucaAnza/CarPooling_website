@@ -30,6 +30,7 @@ def home_page(request):
         FROM gestione_ride
         GROUP BY arrival_location
         ORDER BY arrival_location
+        LIMIT 3
     """)
 
     ctx = { "top_destination": top_destination}

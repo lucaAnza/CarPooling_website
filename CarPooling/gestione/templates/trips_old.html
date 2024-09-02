@@ -20,7 +20,8 @@
     <div class="row justify-content-start">
       
       {% for trip in object_list %}
-      <div class="col-auto">
+      <i class="bi bi-person-vcard"></i>
+      <div class="col-auto card-container">
         <div class="card" style="width: 18rem;">
           <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
           <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">

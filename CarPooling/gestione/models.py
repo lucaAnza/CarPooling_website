@@ -72,6 +72,13 @@ class Ride(models.Model):
                 os.remove(image_path)
         super(Ride, self).delete(*args, **kwargs)
     
+    def is_running(self):
+        current_time = timezone.now()
+        if(current_time >= departure_time and current_time <= arrival_time):
+            return True
+        else:
+            return False
+    
 class Passenger(models.Model):
     ride = models.ForeignKey(Ride, on_delete=models.CASCADE , related_name = "passengers")
     user = models.ForeignKey(User, on_delete=models.CASCADE , related_name = "passengers_ride" )

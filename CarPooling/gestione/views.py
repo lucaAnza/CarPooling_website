@@ -260,8 +260,6 @@ def search(request):
     # Get the filtered trips for the initial load
     trips = get_filtered_rides(user=request.user)
 
-    print("test" , trips)
-
     return render(request, "search_trip.html", context={"form": form, "title": "Search", "trips": trips})
 
 class SearchResultsList(ListView):
