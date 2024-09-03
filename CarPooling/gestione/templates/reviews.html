@@ -9,7 +9,26 @@
 {% endblock %}
 
 {% block content %}
-
-    
-
+    <h3> List of reviews: </h1>
+    <div class="reviews-container col-md-5">
+        {% for passenger in object_list %}
+            {% if passenger.review_id %}
+                <div class="review">
+                    <div class="reviewer">
+                        <p><strong>Reviewed by:</strong> {{ passenger.user.username }}</p>
+                        <p><strong>Rating:</strong> <i style="color: yellow;" class="bi bi-star"></i> <i style="color: yellow;" class="bi bi-star"></i> <i style="color: yellow;" class="bi bi-star"></i>
+                        <p><strong>Comment:</strong> {{ passenger.review_id.comment }}
+                    </div>
+                </div>
+            {% endif %}
+        {% empty %}
+        <div class="alert alert-primary" style="background-color: #731cfd;color: white;" role="alert">
+            There aren't reviews
+          </div>
+        {% endfor %}
+    </div>
 {% endblock %}
+
+
+
+
