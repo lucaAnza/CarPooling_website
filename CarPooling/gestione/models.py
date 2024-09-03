@@ -107,4 +107,13 @@ class Passenger(models.Model):
             return f'Passenger [ID={self.id}] : (User-{self.user.id} , Ride {self.ride.id}) ---> Review {self.review_id.id}'
         else:
             return f'Passenger [ID={self.id}] : (User-{self.user.id} , Ride {self.ride.id})'
+
+    def somma(self , ride_id = None):
+        print("They called me")
+        if(ride_id == None):
+            return 0
+        else:
+            Passenger.objects.filter(ride = ride_id)
+            return False
+            
             

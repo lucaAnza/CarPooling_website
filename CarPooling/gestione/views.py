@@ -372,6 +372,31 @@ class CreateReviewView(GroupRequiredMixin, CreateView):
         messages.success(self.request, "Review added successfully!")
         return super().form_valid(form)
 
+@login_required
+def show_review(request , pk):
+    ride_id = pk
+    reviews = Passenger.objects.filter(ride = ride_id)
+    
+    # Calculate medium of all ratings
+    temp_list = Passenger.objects.filter(ride = ride_id)
+    sum = 0
+    count = 0
+    for p in temp_list:
+        if(p.review_id):
+            sum = sum + p.review_id.rating
+            count = count + 1
+    result = int(sum / count)
+
+    ctx = {
+        'title': 'Reviews',
+        'object_list' : reviews,
+        'rating_sum' : result,
+        'ride_id' : ride_id,
+    }
+
+    return render(request, "reviews.html", context = ctx )
+
+"""
 class ReviewView(GroupRequiredMixin, ListView):
     model = Passenger
     template_name = "reviews.html"
@@ -381,6 +406,14 @@ class ReviewView(GroupRequiredMixin, ListView):
     def get_queryset(self):
         ride_id = self.request.resolver_match.kwargs["pk"]
         return Passenger.objects.filter(ride = ride_id)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for i in Passenger.objects.filter(ride = ride_id):
+            print(i)
+        context['rating_sum'] = 3
+        return context
+"""
 
 #-----------------------------------------------------------------------
 

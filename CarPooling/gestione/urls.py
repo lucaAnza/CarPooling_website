@@ -36,7 +36,7 @@ urlpatterns = [
     path('createreview/<int:pk>' , CreateReviewView.as_view() , name='create_review'),
     path('ranking/' , RankingView.as_view() , name='ranking' ),
     path('my_profile/' , MyProfileView.as_view() , name='profile'),
-    path('review/<int:pk>' , ReviewView.as_view() , name='review'),
+    path('review/<int:pk>' , show_review , name='review'),
 ]
 
 if settings.DEBUG:
