@@ -8,6 +8,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 
 
+# Test on Ride Model
 class RideModelTest(TestCase):
 
     def setUp(self):
@@ -22,9 +23,6 @@ class RideModelTest(TestCase):
             last_inspection_date=timezone.now().date(),
             image=None
         )
-
-        
-        
 
         # Create a Ride test
         self.ride = Ride.objects.create(
@@ -84,3 +82,5 @@ class RideModelTest(TestCase):
             last_inspection_date=timezone.now().date(),
             image=None)
 		
+
+# TODO - Test a View
