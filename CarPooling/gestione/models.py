@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 class Car(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True , related_name="my_cars")
@@ -33,6 +34,14 @@ class Car(models.Model):
             out = str(out) + f' {self.model} ({self.license_plate}) - {self.km} Km \n'
 
         return out
+
+    def clean(self):
+        if self.km < 0:
+            raise ValidationError('Kilometers cannot be negative.')
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  
+        super(Car, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "Cars"
