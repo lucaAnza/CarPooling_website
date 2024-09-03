@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from datetime import datetime
 
 class Car(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True , related_name="my_cars")
@@ -63,10 +64,10 @@ class Ride(models.Model):
     arrival_location = models.CharField(max_length=30 , null = False , default = "NO_LOCATION_A")
     arrival_state = models.CharField(max_length=30 , null  = False , default = "NO_STATE_A")
     arrival_address = models.CharField(max_length=30 , null  = False , default = "NO_ADDRESS_A")
-    departure_time = models.DateTimeField(null=False , default = "NO_TIME_D")
-    arrival_time = models.DateTimeField(null=False , default = "NO_TIME_A")
-    open_registration_time = models.DateTimeField(null = False , default = "NO_OPEN_TIME")
-    close_registration_time = models.DateTimeField(null = False , default = "NO_CLOSE_TIME")
+    departure_time = models.DateTimeField(null=False , default=timezone.make_aware(timezone.datetime(1970, 1, 1, 0, 0, 0)))
+    arrival_time = models.DateTimeField(null=False , default=timezone.make_aware(timezone.datetime(1970, 1, 1, 0, 0, 0)))
+    open_registration_time = models.DateTimeField(null = False , default=timezone.make_aware(timezone.datetime(1970, 1, 1, 0, 0, 0)))
+    close_registration_time = models.DateTimeField(null = False , default=timezone.make_aware(timezone.datetime(1970, 1, 1, 0, 0, 0)))
     max_passenger = models.IntegerField(default=0 , null = False )
     image = models.ImageField(upload_to='ride_images/', null=True, blank=True)
 

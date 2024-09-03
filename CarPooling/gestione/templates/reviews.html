@@ -11,8 +11,10 @@
 {% endblock %}
 
 {% block content %}
-    <h3> Rating of ride({{ride_id}}) : {{rating_sum}} / 5 <i style="color: yellow;" class="bi bi-star"></i> </h3>
-    <br>
+    {% if object_list|length != 0 %}
+        <h3> Rating of ride({{ride_id}}) : {{rating_sum}} / 5 <i style="color: yellow;" class="bi bi-star"></i> </h3>
+    {% endif %}
+    <br><br>
     <h4> List of reviews: </h1>
     <div class="reviews-container col-md-5">
         <div class="row">
@@ -51,11 +53,15 @@
                 </div>
             {% endif %}
         {% empty %}
+        <br>
         <div class="alert alert-primary" style="background-color: #731cfd;color: white;" role="alert">
             There aren't reviews
           </div>
         {% endfor %}
     </div>
+    <br>
+    <a href="{{ referrer }}">Back</a>
+    <br><br><br>
 {% endblock %}
 
 

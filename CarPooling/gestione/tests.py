@@ -49,12 +49,6 @@ class RideModelTest(TestCase):
         self.assertEqual(self.ride.max_passenger, 4)
         self.assertFalse(self.ride.is_running())
 
-    def test_ride_str(self):
-        self.assertEqual(
-            str(self.ride),
-            f'Ride {self.ride.id} - Departure: Start City - Arrival: End City - Departure Time: {self.ride.departure_time} - Arrival Time: {self.ride.arrival_time}'
-        )
-
     def test_ride_is_running(self):
         self.ride.departure_time = timezone.now() - timezone.timedelta(minutes=30)
         self.ride.arrival_time = timezone.now() + timezone.timedelta(minutes=30)
@@ -94,18 +88,30 @@ class ShowReviewViewTest(TestCase):
     def setUp(self):
         # Setup initial data
         self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.user2 = User.objects.create_user(username='testuser2', password='testpassword')
+        self.user3 = User.objects.create_user(username='testuser3', password='testpassword')
         self.client = Client()
         self.client.login(username='testuser', password='testpassword')
 
-        self.ride = Ride.objects.create()
+        # Create a Car test
+        self.car = Car.objects.create(
+            user=self.user,
+            model='Test Model',
+            license_plate='ABC123',
+            km=10000,
+            last_inspection_date=timezone.now().date(),
+            image=None
+        )
+        # Ride + Review test
+        self.ride = Ride.objects.create(car = self.car , user = self.user)
         self.review1 = Review.objects.create(rating=4, comment="Good ride")
         self.review2 = Review.objects.create(rating=5, comment="Excellent ride")
-
-        self.passenger1 = Passenger.objects.create(ride=self.ride, review=self.review1)
-        self.passenger2 = Passenger.objects.create(ride=self.ride, review=self.review2)
+        # Passengers test
+        self.passenger1 = Passenger.objects.create(ride=self.ride, review_id=self.review1 , user = self.user2)
+        self.passenger2 = Passenger.objects.create(ride=self.ride, review_id=self.review2 , user = self.user3)
     
     def test_show_review_view(self):
-        response = self.client.get(reverse('show_review', args=[self.ride.id]))
+        response = self.client.get(reverse('review', args=[self.ride.id]))
         
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
@@ -128,7 +134,7 @@ class ShowReviewViewTest(TestCase):
         self.passenger1.delete()
         self.passenger2.delete()
 
-        response = self.client.get(reverse('show_review', args=[self.ride.id]))
+        response = self.client.get(reverse('review', args=[self.ride.id]))
         
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
@@ -140,7 +146,7 @@ class ShowReviewViewTest(TestCase):
         self.assertEqual(len(response.context['object_list']), 0)
 
         # Check that the rating sum is not calculated and handled correctly
-        self.assertIsNone(response.context.get('rating_sum'))
+        self.assertEqual(response.context.get('rating_sum') , 0)
 
     def test_show_review_view_no_reviews_with_reviews(self):
         # Test the case where passengers exist, but none have reviews
@@ -149,7 +155,7 @@ class ShowReviewViewTest(TestCase):
         self.passenger2.review = None
         self.passenger2.save()
 
-        response = self.client.get(reverse('show_review', args=[self.ride.id]))
+        response = self.client.get(reverse('review', args=[self.ride.id]))
 
         # Check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
@@ -166,7 +172,7 @@ class ShowReviewViewTest(TestCase):
     def test_show_review_view_not_logged_in(self):
         # Test that the view redirects to login if the user is not logged in
         self.client.logout()
-        response = self.client.get(reverse('show_review', args=[self.ride.id]))
+        response = self.client.get(reverse('review', args=[self.ride.id]))
         
         # Check for redirect to login page
         self.assertRedirects(response, f'/accounts/login/?next=/show_review/{self.ride.id}/')

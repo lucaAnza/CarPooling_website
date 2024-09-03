@@ -378,21 +378,27 @@ def show_review(request , pk):
     ride_id = pk
     reviews = Passenger.objects.filter(ride = ride_id)
     
+    # Back button
+    referrer = request.META.get('HTTP_REFERER', '/')
+
     # Calculate medium of all ratings
     temp_list = Passenger.objects.filter(ride = ride_id)
     sum = 0
     count = 0
+    result = 0
     for p in temp_list:
         if(p.review_id):
             sum = sum + p.review_id.rating
             count = count + 1
-    result = int(sum / count)
+    if(count != 0):
+        result = int(sum / count)
     # Context
     ctx = {
         'title': 'Reviews',
         'object_list' : reviews,
         'rating_sum' : result,
         'ride_id' : ride_id,
+        'referrer' : referrer,
     }
     return render(request, "reviews.html", context = ctx )
 #-----------------------------------------------------------------------
