@@ -209,7 +209,7 @@ class DatailRideView(GroupRequiredMixin , DetailView):
     model = Ride
     template_name = "ride_detail.html"
 
-    #TODO Check on this
+    #Back button
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Recover the url
@@ -372,6 +372,16 @@ class CreateReviewView(GroupRequiredMixin, CreateView):
         messages.success(self.request, "Review added successfully!")
         return super().form_valid(form)
 
+class ReviewView(GroupRequiredMixin, ListView):
+    model = Passenger
+    template_name = "reviews.html"
+    title = "Reviews"
+    group_required = ["Driver" , "Passenger"]
+
+    def get_queryset(self):
+        ride_id = self.request.resolver_match.kwargs["pk"]
+        return Passenger.objects.filter(ride = ride_id)
+
 #-----------------------------------------------------------------------
 
 
@@ -398,7 +408,7 @@ class RankingView(ListView):
     
 #-----------------------------------------------------------------------
 
-# RANKING ---------------------------------------------------------------
+# MY-PROFILE ------------------------------------------------------------
 
 class MyProfileView(ListView):
     group_required = ["Passenger", "Driver"]
