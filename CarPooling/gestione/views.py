@@ -186,6 +186,7 @@ def create_trip(request):
                 print(f"Error on ride save: {e}")
                 messages.error(request, "Error - Please contact the amministrator")
                 form.add_error(None, "An error occurred while saving the ride. Please try again.")
+                return redirect("home")
         else:
             messages.error(request, "Error - Please contact the amministrator")
     else:
