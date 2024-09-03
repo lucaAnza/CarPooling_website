@@ -386,35 +386,14 @@ def show_review(request , pk):
             sum = sum + p.review_id.rating
             count = count + 1
     result = int(sum / count)
-
+    # Context
     ctx = {
         'title': 'Reviews',
         'object_list' : reviews,
         'rating_sum' : result,
         'ride_id' : ride_id,
     }
-
     return render(request, "reviews.html", context = ctx )
-
-"""
-class ReviewView(GroupRequiredMixin, ListView):
-    model = Passenger
-    template_name = "reviews.html"
-    title = "Reviews"
-    group_required = ["Driver" , "Passenger"]
-
-    def get_queryset(self):
-        ride_id = self.request.resolver_match.kwargs["pk"]
-        return Passenger.objects.filter(ride = ride_id)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        for i in Passenger.objects.filter(ride = ride_id):
-            print(i)
-        context['rating_sum'] = 3
-        return context
-"""
-
 #-----------------------------------------------------------------------
 
 
