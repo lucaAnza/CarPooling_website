@@ -1,14 +1,19 @@
-from django.test import TestCase
+from django.test import TestCase , Client
 from django.contrib.auth.models import User
 from django.utils import timezone
-from .models import Car, Ride, Passenger, Review
-import os
+from .models import Car, Ride, Passenger, Review 
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
+from django.test import TestCase, Client
+from django.urls import reverse
+from django.contrib.auth.models import User
+import os
 
 
-# Test on Ride Model
+
+
+# Test on Model(Ride)
 class RideModelTest(TestCase):
 
     def setUp(self):
@@ -83,4 +88,85 @@ class RideModelTest(TestCase):
             image=None)
 		
 
-# TODO - Test a View
+# Test on FBV (show_review)
+class ShowReviewViewTest(TestCase):
+    
+    def setUp(self):
+        # Setup initial data
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.client = Client()
+        self.client.login(username='testuser', password='testpassword')
+
+        self.ride = Ride.objects.create()
+        self.review1 = Review.objects.create(rating=4, comment="Good ride")
+        self.review2 = Review.objects.create(rating=5, comment="Excellent ride")
+
+        self.passenger1 = Passenger.objects.create(ride=self.ride, review=self.review1)
+        self.passenger2 = Passenger.objects.create(ride=self.ride, review=self.review2)
+    
+    def test_show_review_view(self):
+        response = self.client.get(reverse('show_review', args=[self.ride.id]))
+        
+        # Check that the response is 200 OK
+        self.assertEqual(response.status_code, 200)
+
+        # Check that the context contains the correct ride ID
+        self.assertEqual(response.context['ride_id'], self.ride.id)
+
+        # Check that the context contains the correct number of reviews
+        self.assertEqual(len(response.context['object_list']), 2)
+
+        # Check that the context contains the correct rating sum (average rating)
+        self.assertEqual(response.context['rating_sum'], 4)  # (4+5)/2 = 4
+
+        # Check that the template used is correct
+        self.assertTemplateUsed(response, 'reviews.html')
+
+    def test_show_review_view_no_reviews(self):
+        
+        # Test the case where there are no reviews for the ride
+        self.passenger1.delete()
+        self.passenger2.delete()
+
+        response = self.client.get(reverse('show_review', args=[self.ride.id]))
+        
+        # Check that the response is 200 OK
+        self.assertEqual(response.status_code, 200)
+
+        # Check that the context contains the correct ride ID
+        self.assertEqual(response.context['ride_id'], self.ride.id)
+
+        # Check that the context contains an empty object list
+        self.assertEqual(len(response.context['object_list']), 0)
+
+        # Check that the rating sum is not calculated and handled correctly
+        self.assertIsNone(response.context.get('rating_sum'))
+
+    def test_show_review_view_no_reviews_with_reviews(self):
+        # Test the case where passengers exist, but none have reviews
+        self.passenger1.review = None
+        self.passenger1.save()
+        self.passenger2.review = None
+        self.passenger2.save()
+
+        response = self.client.get(reverse('show_review', args=[self.ride.id]))
+
+        # Check that the response is 200 OK
+        self.assertEqual(response.status_code, 200)
+
+        # Check that the context contains the correct ride ID
+        self.assertEqual(response.context['ride_id'], self.ride.id)
+
+        # Check that the context contains an empty object list
+        self.assertEqual(len(response.context['object_list']), 0)
+
+        # Check that the rating sum is not calculated and handled correctly
+        self.assertIsNone(response.context.get('rating_sum'))
+
+    def test_show_review_view_not_logged_in(self):
+        # Test that the view redirects to login if the user is not logged in
+        self.client.logout()
+        response = self.client.get(reverse('show_review', args=[self.ride.id]))
+        
+        # Check for redirect to login page
+        self.assertRedirects(response, f'/accounts/login/?next=/show_review/{self.ride.id}/')

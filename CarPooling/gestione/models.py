@@ -57,25 +57,25 @@ class Review(models.Model):
 class Ride(models.Model):
     car = models.ForeignKey(Car , on_delete=models.CASCADE , default = None ,null=False , related_name="my_rides")
     user = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None, related_name="my_rides")
-    departure_location = models.CharField(max_length=30 , null  = False)
+    departure_location = models.CharField(max_length=30 , null  = False , default = "NO_LOCATION_D")
     departure_state = models.CharField(max_length=30 , null  = False , default = "NO_STATE_D")
     departure_address = models.CharField(max_length=30 , null  = False , default = "NO_ADDRESS_D")
-    arrival_location = models.CharField(max_length=30 , null = False)
+    arrival_location = models.CharField(max_length=30 , null = False , default = "NO_LOCATION_A")
     arrival_state = models.CharField(max_length=30 , null  = False , default = "NO_STATE_A")
     arrival_address = models.CharField(max_length=30 , null  = False , default = "NO_ADDRESS_A")
-    departure_time = models.DateTimeField(null=False)
-    arrival_time = models.DateTimeField(null=False)
-    open_registration_time = models.DateTimeField(null = False)
-    close_registration_time = models.DateTimeField(null = False)
-    max_passenger = models.IntegerField(default=0 , null = False)
+    departure_time = models.DateTimeField(null=False , default = "NO_TIME_D")
+    arrival_time = models.DateTimeField(null=False , default = "NO_TIME_A")
+    open_registration_time = models.DateTimeField(null = False , default = "NO_OPEN_TIME")
+    close_registration_time = models.DateTimeField(null = False , default = "NO_CLOSE_TIME")
+    max_passenger = models.IntegerField(default=0 , null = False )
     image = models.ImageField(upload_to='ride_images/', null=True, blank=True)
 
     #TODO: aggiungere campi mancanti
     def __str__(self):
         if self.image != None : 
-            return f'Ride {self.id} - Departure: {self.departure_location} - Arrival: {self.arrival_location} - Departure Time: {self.departure_time} - Arrival Time: {self.arrival_time} - IMG : {self.image}'
+            return f'Ride : {self.id} - Departure: {self.departure_state} , {self.departure_location} ,  {self.departure_address} - Arrival: {self.arrival_state} , {self.arrival_location} , {self.arrival_address} - Trip : ({self.departure_time} to {self.arrival_time} ) - Booking : ({self.open_registration_time} to {self.close_registration_time} ) - IMG : {self.image}'
         else:
-            return f'Ride {self.id} - Departure: {self.departure_location} - Arrival: {self.arrival_location} - Departure Time: {self.departure_time} - Arrival Time: {self.arrival_time}'
+            return f'Ride : {self.id} - Departure: {self.departure_state} , {self.departure_location} ,  {self.departure_address} - Arrival: {self.arrival_state} , {self.arrival_location} , {self.arrival_address} - Trip : ({self.departure_time} to {self.arrival_time} ) - Booking : ({self.open_registration_time} to {self.close_registration_time} ) '
     
     def delete(self, *args, **kwargs):
         #Before the deletion of the element, the image must be deleted in the directory
