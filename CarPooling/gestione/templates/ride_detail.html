@@ -14,19 +14,26 @@
 
     <br>
 
-
+    <!--Trip information-->
     <ul class="list-group">
         <li class="list-group-item disabled" style="color: rgb(32, 102, 102);"  aria-disabled="true">Trip Information <i class="bi bi-info-square"></i></li>
         <li class="list-group-item">  Opening registration time : <b>  {{object.open_registration_time}} </b>  </li>
         <li class="list-group-item">  Closing registration time : <b> {{object.close_registration_time}} </b>  </li>
         <li class="list-group-item">  Max passengers : <b> {{object.max_passenger}} </b>  </li>
-        <li class="list-group-item">  Departure : <b> {{object.departure_location}} ( <i class="bi bi-calendar2-week"></i> {{object.departure_time}} ) </b> </li>
-        <li class="list-group-item">  Arrival :  <b> {{object.arrival_location}} ( <i class="bi bi-calendar2-week"></i> {{object.arrival_time}} ) </b> </li>
+        <li class="list-group-item">  
+            <p> Departure : <b> {{object.departure_location}} ( <i class="bi bi-calendar2-week"></i> {{object.departure_time}} ) </b> </p>
+            <p> {{object.departure_state}} , {{object.departure_address}} ( <a href="https://www.google.it/maps/place/{{object.departure_location}}" class="bi bi-geo-alt" target="_blank"></a> )  </p>
+        </li>
+        <li class="list-group-item">  
+            <p> Arrival :  <b> {{object.arrival_location}} ( <i class="bi bi-calendar2-week"></i> {{object.arrival_time}} ) </b> </p>
+            <p> {{object.arrival_state}} , {{object.arrival_address}} ( <a href="https://www.google.it/maps/place/{{object.arrival_location}}" class="bi bi-geo-alt" target="_blank"></a> )  </p>
+        </li>
         <li class="list-group-item"> Car used : <b> {{object.car.model}} <i class="bi bi-car-front"></i> </b> </li>
     </ul>
 
-    <br><br>
+    <br><br><br>
 
+    <!--Passenger information-->
     <ul class="list-group">
         <li class="list-group-item disabled" style="color: rgb(32, 102, 102);" aria-disabled="true">Passengers <i class="bi bi-person-circle"></i> </li>
         {% if object.passengers.count == 0 %}

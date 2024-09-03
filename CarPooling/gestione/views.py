@@ -169,7 +169,11 @@ def create_trip(request):
             ride = Ride(
                 car=car,
                 departure_location=departure_location,
+                departure_state = departure_state,
+                departure_address = departure_address,
                 arrival_location=arrival_location,
+                arrival_state = arrival_state,
+                arrival_address = arrival_address,
                 departure_time=departure_time,
                 arrival_time=arrival_time,
                 user=request.user,
