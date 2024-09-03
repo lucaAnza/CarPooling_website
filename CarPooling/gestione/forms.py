@@ -41,8 +41,12 @@ class CreateTripForm(forms.Form):
     passenger_choice = [("1", "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5"), ("6", "6"), ("7", "7")]
 
     car = forms.ChoiceField(label="Vehicle to use", required=True, choices=[])
-    departure_location = forms.CharField(label="Departure location", max_length=30, min_length=3, required=True)
-    arrival_location = forms.CharField(label="Arrival location", max_length=30, min_length=3, required=True)
+    departure_location = forms.CharField(label="City / Location", max_length=30, min_length=3, required=True)
+    departure_state = forms.CharField(label="State", max_length=30, min_length=3, required=True , initial = "Italy")
+    departure_address = forms.CharField(label="Address", max_length=30, min_length=3, required=True)
+    arrival_location = forms.CharField(label="City / Location", max_length=30, min_length=3, required=True) 
+    arrival_state = forms.CharField(label="State", max_length=30, min_length=3, required=True , initial = "Italy")
+    arrival_address = forms.CharField(label="Address", max_length=30, min_length=3, required=True )
     departure_time = forms.DateTimeField(
         initial=(datetime.now() + timedelta(hours=2)).strftime("%Y-%m-%dT%H:%M"),
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
@@ -60,8 +64,11 @@ class CreateTripForm(forms.Form):
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
     )
     max_passenger = forms.ChoiceField(label="Max passengers", required=True, choices=passenger_choice)
-    image = forms.ImageField(label='Select an image', required=False , widget=forms.ClearableFileInput(attrs={'class': 'col-md-2'})  )
-
+    image = forms.ImageField(
+        label='Trip image 🖼️',
+        required=False,
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control', 'id': 'formFile'})
+    )
     
 
     def clean_departure_time(self):

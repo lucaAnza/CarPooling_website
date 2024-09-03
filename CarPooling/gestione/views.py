@@ -153,7 +153,11 @@ def create_trip(request):
         if form.is_valid():
             car = form.cleaned_data.get("car")
             departure_location = form.cleaned_data.get("departure_location")
+            departure_state = form.cleaned_data.get("departure_state")
+            departure_address = form.cleaned_data.get("departure_address")
             arrival_location = form.cleaned_data.get("arrival_location")
+            arrival_state = form.cleaned_data.get("arrival_state")
+            arrival_address = form.cleaned_data.get("arrival_address")
             departure_time = form.cleaned_data.get("departure_time")
             arrival_time = form.cleaned_data.get("arrival_time")
             open_registration_time = form.cleaned_data.get("open_registration_time")
@@ -182,10 +186,16 @@ def create_trip(request):
                 print(f"Error on ride save: {e}")
                 messages.error(request, "Error - Please contact the amministrator")
                 form.add_error(None, "An error occurred while saving the ride. Please try again.")
+        else:
+            messages.error(request, "Error - Please contact the amministrator")
     else:
         form = CreateTripForm(user=request.user)
 
-    return render(request, "createtrip.html", {"form": form})
+    ctx = {
+        'form': form,
+        'title': 'Create a New Trip'  
+    }
+    return render(request, "createtrip.html", context = ctx )
 
 
 class DatailRideView(GroupRequiredMixin , DetailView):
