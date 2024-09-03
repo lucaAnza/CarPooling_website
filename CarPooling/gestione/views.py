@@ -137,9 +137,10 @@ class TripsListView(GroupRequiredMixin , ListView):
         elif trip_type == 'passenger':
             return Passenger.objects.filter(user=self.request.user , ride__arrival_time__gt=timezone.now()).order_by('-id')[:limit]
         elif trip_type == 'old':
-            set1 = Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user).order_by('-id')[:limit]
-            set2 = Ride.objects.filter(arrival_time__lt=timezone.now() , user = self.request.user).order_by('-id')[:limit]
+            set1 = Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user).order_by('-id')
+            set2 = Ride.objects.filter(arrival_time__lt=timezone.now() , user = self.request.user).order_by('-id')
             final_set = set1 | set2
+            final_set = final_set[:limit]
             return final_set
         else:
             return None
@@ -237,7 +238,7 @@ class DeleteRideView(GroupRequiredMixin , DeleteView):
 
 def get_filtered_rides(user=None, search_string=None, search_where=None):
     current_time = timezone.now()
-
+    limit = 9
     # Base queryset: Rides that are valid (open for registration, not full)
     rides = Ride.objects.filter(
         open_registration_time__lte=current_time,  # Ride has opened registration
@@ -261,7 +262,7 @@ def get_filtered_rides(user=None, search_string=None, search_where=None):
         elif search_where == "Departure":
             rides = rides.filter(departure_location__icontains = search_string)
 
-    return rides
+    return rides[:limit]
 
 def search(request):
     if request.method == "POST":
