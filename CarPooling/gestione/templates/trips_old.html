@@ -32,7 +32,7 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
             <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
-            <li class="list-group-item"> {{trip.car.model}} <i class="bi bi-car-front"></i> </li>
+            <li class="list-group-item"> {{ trip.car.model }} <i class="bi bi-car-front"></i> ( {{trip.user.username}}<i class="bi bi-person-circle"></i> )  </li>
           </ul>
           <div class="card-body">
             <a href="{% url 'ridedetail' pk=trip.id %}" style = "background-color: rgb(16, 167, 255); border-color: black ;" class="btn btn-primary btn-sm"> <i class="bi bi-info-circle"></i> </a>
