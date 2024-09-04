@@ -64,12 +64,24 @@
   /* ---------- */
   </style>
 
-  <!--Init all tooltip-->
   <script>
+  // Init all tooltip
   $(function () {
     $('[data-toggle="tooltip"]').tooltip()
   })
+  
+  // Modal
+  <!--Modal-->
+  $(document).ready(function () {
+    $('#confirmModal').on('show.bs.modal', function (e) {
+        var button = $(e.relatedTarget); // Pulsante che ha attivato il modale
+        var href = button.data('href'); // Estrai l'URL dal data-href
+        var confirmButton = $(this).find('#confirmButton'); // Trova il bottone di conferma nel modale
+        confirmButton.attr('href', href); // Imposta l'href del bottone di conferma
+    });
+  });
   </script>
+
   
   {% endblock %}
   {% load crispy_forms_tags %} 
