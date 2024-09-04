@@ -95,8 +95,6 @@ class RideModelTest(TestCase):
 
     def test_get_count_passengers(self):
 
-        # TODO -> Automatize with the for
-
         self.p1 = User.objects.create_user(username='passenger1', password='12345')
         self.p2 = User.objects.create_user(username='passenger2', password='12345')
         self.p3 = User.objects.create_user(username='passenger3', password='12345')
@@ -107,6 +105,17 @@ class RideModelTest(TestCase):
 
         # Check if number of passengers is correct
         self.assertEqual(self.ride.get_count_passenger() , 2)
+    
+
+    def test_passengers_cannot_be_more_than_max(self):
+
+        self.p1 = User.objects.create_user(username='passenger1', password='12345')
+        self.p2 = User.objects.create_user(username='passenger2', password='12345')
+        self.p3 = User.objects.create_user(username='passenger3', password='12345')
+
+        # Add 2 passengers on that ride
+        Passenger.objects.create(ride = self.ride , user = self.p1)
+        Passenger.objects.create(ride = self.ride , user = self.p2)
 
         # Add the 3° passengers (the max is actual 2)
         self.assertRaises(
@@ -119,12 +128,9 @@ class RideModelTest(TestCase):
         
         # Check if number of passengers is still 2
         self.assertEqual(self.ride.get_count_passenger(), 2)
-        
-    """
-    def test_passengers_cannot_be_more_than_max(self):
 
-        self.
-	"""
+        
+	
 
 # Test on FBV (show_review)
 class ShowReviewViewTest(TestCase):
