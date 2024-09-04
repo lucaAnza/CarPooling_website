@@ -44,7 +44,11 @@
                     <div class="col-auto card-container">
                         <div class="card" style="width: 18rem;">
                             <h4> <span class="badge rounded-pill text-bg-info">{{ trip.departure_location }} - {{ trip.arrival_location }}</span> </h4>
-                            <img src="{% static 'img/milano.jpg' %}" class="card-img-top" alt="City">
+                            {% if trip.image %}
+                                <img src="{{ trip.image.url }}" height="200px" alt="city_img">
+                            {% else %}  
+                                <img src="{% static '/img/no_img.jpg' %}" height="200px" alt="default_city_img">
+                            {% endif %}
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> Departure: {{ trip.departure_time}} </li>
                                 <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> Arrival: {{ trip.arrival_time}}</li>
