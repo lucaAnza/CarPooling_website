@@ -42,7 +42,12 @@ class UserCreateView(CreateView):
     form_class = CreateUserPassenger
     template_name = "user_create.html"
     messages = "You have successfully create a new Account. Please Login "
-    success_url = reverse_lazy("login?msg=success")
+    success_url = reverse_lazy("login")
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "You have successfully created a new Account. Please Login.")
+        return response
 
 @user_passes_test(is_a_passenger)
 def createDriver(request):
