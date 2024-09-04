@@ -16,13 +16,13 @@
 
 <div class="alert alert-success" role="alert">
     <h4 class="alert-heading">Well done!</h4>
-    <p>Aww yeah, you successfully upgrade your Account! Now you have the opportunity to add personal vehicles and create personal races where other users can join.</p>
+    <p>You successfully upgrade your Account! Now you have the opportunity to add personal vehicles and create personal races where other users can join.</p>
     <hr>
     <p class="mb-0">If you need other information ask to this account fakeEmail@gmail.com </p>
 </div>
 
 
 <a href="{% url 'garage' %}" type="button" style="margin-top: 40px;" class="btn btn-primary btn-lg">Go to the garage <i class="bi bi-box-arrow-in-up"></i></a>
-
+<a href="{% url 'createtrip' %}" class="btn btn-primary btn-lg btn-block"> Create a new trip  <i class="bi bi-plus-square-fill"></i> <i class="bi bi-suitcase-lg"></i> </a>
 
 {% endblock %}

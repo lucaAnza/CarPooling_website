@@ -13,11 +13,32 @@
 
 {% block content %}
 
+<!-- Log:message section -->
+<div id="message-container" class="container mt-4">
+  {% if request.GET.msg == 'success' %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      You have successfully create a new User. Please Login. 
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  setTimeout(function() {
+    var messageContainer = document.getElementById('message-container');
+    if (messageContainer) {
+      messageContainer.classList.add('fade-out'); 
+      setTimeout(function() {
+        messageContainer.style.display = 'none';
+      }, 3000); 
+    }
+  }, 2000);
+</script>
+<!----------------------->
 <br><br><br>
+
 {% if "needed" in request.GET.login %}
 <div class="alert alert-danger" role="alert">
   <i class="bi bi-exclamation-triangle"></i> You have arrived here because you do not have the necessary permissions for the chosen service! Please sign in.
-</div>
 </div>
 {% endif %}
 

@@ -4,10 +4,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from .forms import *
-from django.contrib.auth.models import Group
+from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+# User-Groups models
+from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 # Top destination import
 from gestione.models import Ride
@@ -39,7 +41,8 @@ def home_page(request):
 class UserCreateView(CreateView):
     form_class = CreateUserPassenger
     template_name = "user_create.html"
-    success_url = reverse_lazy("login")
+    messages = "You have successfully create a new Account. Please Login "
+    success_url = reverse_lazy("login?msg=success")
 
 @user_passes_test(is_a_passenger)
 def createDriver(request):
