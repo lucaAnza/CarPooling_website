@@ -106,7 +106,7 @@ def leave_trip(request, pk):
         messages.error(request, f"An error occurred: {str(e)}")
 
     # Reload the current page (user's trip list)
-    return redirect('trips')
+    return redirect(reverse('trips', kwargs={'str': 'passenger'}))
 
 class TripsListView(GroupRequiredMixin , ListView):
     group_required = ["Passenger" , "Driver"]

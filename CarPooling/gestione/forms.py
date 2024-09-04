@@ -132,7 +132,7 @@ class SearchTripForm(forms.Form):
 
     choice_list = [("Destination","Search for destinations"), ("Departure","Search for departure") ]
     search_where = forms.ChoiceField(label="Filter", required=True, choices=choice_list)
-    search_string = forms.CharField(label="Search String",max_length=100, min_length=3, required=True)
+    search_string = forms.CharField(label="City / Location",max_length=100, min_length=3, required=True)
 
 class UpdateCarForm(forms.ModelForm):
     class Meta:

@@ -12,16 +12,26 @@
 
 {% block content %}
 
-    <!-- Display messages -->
-    {% if messages %}
-        <div class="container mt-4">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    <!-- Log:message section -->
+    <div id="message-container" class="container mt-4">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+  
+  <script>
+    setTimeout(function() {
+      var messageContainer = document.getElementById('message-container');
+      if (messageContainer) {
+        messageContainer.classList.add('fade-out'); 
+        setTimeout(function() {
+          messageContainer.style.display = 'none';
+        }, 2000); 
+      }
+    }, 1000);
+  </script>
     
     <h2>Search Page</h2>
     <br>

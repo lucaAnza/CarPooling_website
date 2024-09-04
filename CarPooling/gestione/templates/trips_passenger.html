@@ -40,6 +40,8 @@
           </ul>
           <div class="card-body">
             <a href="{% url 'leave_trip' pk=p.ride.id %}" style = "background-color: rgb(201, 0, 0);border-color: black ;" class="btn btn-primary btn-sm"> Leave <i class="bi bi-escape"></i>  </a>
+            <a href="{% url 'ridedetail' pk=p.ride.id %}" style = "background-color: rgb(16, 167, 255); border-color: black ;" class="btn btn-primary btn-sm"> <i class="bi bi-info-circle"></i> </a>
+            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#confirmModal" data-href="your-action-url">Delete</a>
           </div>
         </div>
       </div>

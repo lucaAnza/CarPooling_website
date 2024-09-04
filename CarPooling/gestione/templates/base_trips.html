@@ -42,21 +42,31 @@
 
 <br><br><br>
 
+<!-- Log:message section -->
+<div id="message-container" class="container mt-4">
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+
+<script>
+  setTimeout(function() {
+    var messageContainer = document.getElementById('message-container');
+    if (messageContainer) {
+      messageContainer.classList.add('fade-out'); 
+      setTimeout(function() {
+        messageContainer.style.display = 'none';
+      }, 2000); 
+    }
+  }, 1000);
+</script>
+
 <div style="background: linear-gradient(to right, #d9eafc, #b2d7e7); padding: 20px; text-align: center; border-radius: 10px;">
     {% block rides-card %}
     {% endblock %}
 </div>
-
-
-{% if messages %}
-        <div class="container mt-4">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-{% endif %}
 
 
 {% endblock %}
