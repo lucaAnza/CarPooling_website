@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from datetime import datetime
 
 class Car(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True , related_name="my_cars")
+    user = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,null=True , related_name="my_cars")
     model = models.CharField(max_length=50)
     license_plate = models.CharField(max_length=15)
     km = models.IntegerField(default=0)
