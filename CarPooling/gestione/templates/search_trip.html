@@ -56,7 +56,7 @@
                             </ul>
                             <div class="card-body">
                                 <a href="{% url 'ridedetail' pk=trip.id %}" class="card-link"> More Information </a>
-                                <a href="{% url 'take_part' pk=trip.id %}" style = "color: green;"  class="card-link"> Take part <i class="bi bi-bookmark-plus"></i> </a>
+                                <a href="#" style = "color: green;"  class="card-link" data-toggle="modal" data-target="#confirmModal" data-href="{% url 'take_part' pk=trip.id %}"> Take part <i class="bi bi-bookmark-plus"></i> </a>
                             </div>
                         </div>
                     </div>
