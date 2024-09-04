@@ -28,11 +28,11 @@ class Car(models.Model):
         if(self.user != None and self.last_inspection_date != None) :
             out = str(out) +  f'  [{self.user.username}] {self.model} ({self.license_plate}) - {self.km} Km\n\tLast inspection : {str(self.last_inspection_date)} \n'
         elif(self.last_inspection_date != None) :
-            out = str(out) + f' {self.model} ({self.license_plate}) - {self.km} Km \n\tLast inspection : {str(self.last_inspection_date)} \n'
+            out = str(out) + f' [👤🗑] {self.model} ({self.license_plate}) - {self.km} Km \n\tLast inspection : {str(self.last_inspection_date)} \n'
         elif(self.user != None):
             out = str(out) + f'  [{self.user.username}] {self.model} ({self.license_plate}) - {self.km} Km \n'
         else:
-            out = str(out) + f' {self.model} ({self.license_plate}) - {self.km} Km \n'
+            out = str(out) + f' [👤🗑] {self.model} ({self.license_plate}) - {self.km} Km \n'
 
         return out
 
