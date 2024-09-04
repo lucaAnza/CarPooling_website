@@ -105,10 +105,7 @@ class Ride(models.Model):
             raise ValidationError('Arrival time cannot be before the Departure time')
         if self.open_registration_time > self.close_registration_time:
             raise ValidationError("Close registration cannot be before the Open registration time")
-        count = int(self.get_count_passenger())
-        if count > self.max_passenger:
-            raise ValidationError(f"A Ride cannot passenger > max_passenger ({count} / {self.max_passenger})")
-        
+
     def save(self, *args, **kwargs):
         self.full_clean()  # Call validations
         super().save(*args, **kwargs)
@@ -116,7 +113,7 @@ class Ride(models.Model):
 class Passenger(models.Model):
     ride = models.ForeignKey(Ride, on_delete=models.CASCADE , related_name = "passengers")
     user = models.ForeignKey(User, on_delete=models.CASCADE , related_name = "passengers_ride" )
-    review_id = models.ForeignKey(Review, on_delete=models.CASCADE , null = True , default = None)
+    review_id = models.ForeignKey(Review, on_delete=models.CASCADE , null = True , default = None , blank = True)
 
     # Primary Key (ride,user)
     class Meta:
@@ -128,6 +125,18 @@ class Passenger(models.Model):
             return f'Passenger [ID={self.id}] : (User-{self.user.id} , Ride {self.ride.id}) ---> Review {self.review_id.id}'
         else:
             return f'Passenger [ID={self.id}] : (User-{self.user.id} , Ride {self.ride.id})'
+
+    def clean(self):
+        count = int(self.ride.get_count_passenger())
+        # Condition is == because we are testing before the Passenger is created
+        if count == self.ride.max_passenger:
+            raise ValidationError(f"A Ride cannot has [passenger > max_passenger] ({count} / {self.ride.max_passenger})")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  # Call validations
+        super().save(*args, **kwargs)
+
+    
 
             
             
