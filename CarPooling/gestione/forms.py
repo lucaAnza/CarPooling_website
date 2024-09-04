@@ -21,6 +21,10 @@ class CreateVehicleForm(forms.ModelForm):
 
     class Meta:
         model = Car
+        # Suggest license plate format
+        help_texts = {
+            'license_plate': 'Standard license plate format: ABC123DE',
+        }
         fields = ["model", "license_plate", "km", "last_inspection_date", "image"]
 
 

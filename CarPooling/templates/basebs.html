@@ -80,6 +80,17 @@
         confirmButton.attr('href', href); // Imposta l'href del bottone di conferma
     });
   });
+
+  // Log -messagge
+  setTimeout(function() {
+    var messageContainer = document.getElementById('message-container');
+    if (messageContainer) {
+      messageContainer.classList.add('fade-out'); 
+      setTimeout(function() {
+        messageContainer.style.display = 'none';
+      }, 2000); 
+    }
+  }, 1000);
   </script>
 
   
