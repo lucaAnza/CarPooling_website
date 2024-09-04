@@ -39,14 +39,14 @@ class RideModelTest(TestCase):
             arrival_time=timezone.now() + timezone.timedelta(hours=3),
             open_registration_time=timezone.now() - timezone.timedelta(days=1),
             close_registration_time=timezone.now() + timezone.timedelta(hours=0.5),
-            max_passenger=4,
+            max_passenger=2,
             image=None
         )
 
     def test_ride_creation(self):
         self.assertEqual(self.ride.departure_location, 'Start City')
         self.assertEqual(self.ride.arrival_location, 'End City')
-        self.assertEqual(self.ride.max_passenger, 4)
+        self.assertEqual(self.ride.max_passenger, 2)
         self.assertFalse(self.ride.is_running())
 
     def test_ride_is_running(self):
@@ -80,8 +80,28 @@ class RideModelTest(TestCase):
             km=-100,
             last_inspection_date=timezone.now().date(),
             image=None)
-		
 
+    def test_departure_time_cannot_be_after_arrival_time(self):
+        self.ride.departure_time = timezone.now() + timezone.timedelta(hours=2)
+        self.ride.arrival_time = timezone.now() + timezone.timedelta(hours=1)
+        
+        self.assertRaises(ValidationError , self.ride.save )
+    
+    def test_open_registration_time_cannot_be_after_close_registration_time(self):
+        self.ride.open_registration_time = timezone.now() + timezone.timedelta(days=2)
+        self.ride.close_registration_time = timezone.now() + timezone.timedelta(days=1)
+        
+        self.assertRaises(ValidationError , self.ride.save )
+
+    """
+    def test_get_count_passengers(self):
+
+
+    def test_passengers_cannot_be_more_than_max(self):
+
+        self.
+    """
+	
 # Test on FBV (show_review)
 class ShowReviewViewTest(TestCase):
     

@@ -56,7 +56,7 @@ class Review(models.Model):
         return f'Review {self.id}: Rating {self.rating} - Comment: {self.comment}'
 
     def save(self, *args, **kwargs):
-        self.full_clean()  # Esegue la validazione prima del salvataggio
+        self.full_clean()  # Make validation of rating
         super().save(*args, **kwargs)
 
 class Ride(models.Model):
@@ -96,6 +96,22 @@ class Ride(models.Model):
             return True
         else:
             return False
+        
+    def get_count_passenger(self):
+        return int(len(Passenger.objects.filter(ride = self.id)))
+         
+    def clean(self):
+        if self.departure_time > self.arrival_time:
+            raise ValidationError('Arrival time cannot be before the Departure time')
+        if self.open_registration_time > self.close_registration_time:
+            raise ValidationError("Close registration cannot be before the Open registration time")
+        count = int(self.get_count_passenger())
+        if count > self.max_passenger:
+            raise ValidationError(f"A Ride cannot passenger > max_passenger ({count} / {self.max_passenger})")
+        
+    def save(self, *args, **kwargs):
+        self.full_clean()  # Call validations
+        super().save(*args, **kwargs)
     
 class Passenger(models.Model):
     ride = models.ForeignKey(Ride, on_delete=models.CASCADE , related_name = "passengers")
@@ -113,12 +129,5 @@ class Passenger(models.Model):
         else:
             return f'Passenger [ID={self.id}] : (User-{self.user.id} , Ride {self.ride.id})'
 
-    def somma(self , ride_id = None):
-        print("They called me")
-        if(ride_id == None):
-            return 0
-        else:
-            Passenger.objects.filter(ride = ride_id)
-            return False
             
             
