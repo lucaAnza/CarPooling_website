@@ -16,13 +16,16 @@
 
 <h2> Please provide the required details</h2>
 <br><br>
-<form method="post"> {% csrf_token %}
+
+<div class="col-md-6">
+  <form method="post"> {% csrf_token %}
 
   {{form | crispy}}   
   
   <input type="submit" class="btn btn-success" value="Registrati ora!">
   
   </form>
+</div>
 
 {% endblock %}
 
