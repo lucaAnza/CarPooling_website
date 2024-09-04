@@ -24,7 +24,11 @@
       <div class="col-auto">
         <div class="card" style="width: 18rem;">
           {% if p.ride.is_running %}
-            <h4> <span class="badge rounded-pill text-bg-info"> {{p.ride.departure_location}} - {{p.ride.arrival_location}} (<i id="is_running" class="bi bi-car-front"></i>) </span> </h4>
+            <h4> 
+              <span class="badge rounded-pill text-bg-info"> 
+                {{p.ride.departure_location}} - {{p.ride.arrival_location}} (<i class="bi bi-car-front is_running" data-toggle="tooltip" data-placement="top" title="You are travelling now..."></i>) 
+              </span> 
+            </h4>
             {% else %}
             <h4> <span class="badge rounded-pill text-bg-info"> {{p.ride.departure_location}} - {{p.ride.arrival_location}} </span> </h4>
             {% endif %}

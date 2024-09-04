@@ -42,7 +42,7 @@
       100% { opacity: 1; }
   }
   
-  #is_running {
+  .is_running {
       animation: blink 3s infinite;
       color: green;
   }
@@ -62,10 +62,15 @@
       color: #555;
   }
   /* ---------- */
-
-
-
   </style>
+
+  <!--Init all tooltip-->
+  <script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+  </script>
+  
   {% endblock %}
   {% load crispy_forms_tags %} 
 

@@ -8,7 +8,7 @@
   {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  {# TODO - Improve this check #}
 
     <h3> My Drivers Trips <i class="bi bi-person-vcard"></i> </h3>
-    
+
     {% if object_list.count == 0 and user.my_cars.count != 0 %}
     
       <br>
@@ -25,9 +25,19 @@
         <div class="col-auto card-container">
           <div class="card" style="width: 18rem;">
             {% if trip.is_running %}
-            <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} (<i id="is_running" class="bi bi-car-front"></i>) </span> </h4>
+              <h4> 
+                <span class="badge rounded-pill text-bg-info"> 
+                  {{trip.departure_location}} - {{trip.arrival_location}} (<i class="bi bi-car-front is_running" data-toggle="tooltip" data-placement="top" title="You are travelling now..."></i>) 
+                </span> 
+            </h4>
+            {% elif trip.is_future_planned %}
+              <h4> 
+                <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} 
+                (<i class="bi bi-stopwatch is_running" data-toggle="tooltip" data-placement="top" title="Will be online on {{trip.open_registration_time}}"></i>)
+                </span> 
+            </h4>
             {% else %}
-              <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
+                <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
             {% endif %}
             {% if trip.image %}
               <img src="{{ trip.image.url }}" height="200px" alt="city_img">

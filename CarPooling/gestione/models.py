@@ -99,6 +99,13 @@ class Ride(models.Model):
         
     def get_count_passenger(self):
         return int(len(Passenger.objects.filter(ride = self.id)))
+    
+    def is_future_planned(self):
+        current_time = timezone.now()
+        if(current_time < self.open_registration_time):
+            return True
+        else:
+            return False
          
     def clean(self):
         if self.departure_time > self.arrival_time:

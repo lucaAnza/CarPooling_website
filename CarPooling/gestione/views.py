@@ -132,7 +132,7 @@ class TripsListView(GroupRequiredMixin , ListView):
         if trip_type == 'driver':
             # Show only incoming rides
             current_time = timezone.now()
-            rides = Ride.objects.filter( open_registration_time__lte=current_time,  close_registration_time__gte=current_time ) 
+            rides = Ride.objects.filter(  arrival_time__gte=current_time ) 
             return rides.filter(user=self.request.user).order_by('-id')[:limit]
         elif trip_type == 'passenger':
             return Passenger.objects.filter(user=self.request.user , ride__arrival_time__gt=timezone.now()).order_by('-id')[:limit]
