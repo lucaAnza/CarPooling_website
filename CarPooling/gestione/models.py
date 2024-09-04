@@ -55,6 +55,10 @@ class Review(models.Model):
     def __str__(self):
         return f'Review {self.id}: Rating {self.rating} - Comment: {self.comment}'
 
+    def save(self, *args, **kwargs):
+        self.full_clean()  # Esegue la validazione prima del salvataggio
+        super().save(*args, **kwargs)
+
 class Ride(models.Model):
     car = models.ForeignKey(Car , on_delete=models.CASCADE , default = None ,null=False , related_name="my_rides")
     user = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None, related_name="my_rides")

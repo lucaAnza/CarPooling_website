@@ -376,17 +376,16 @@ class CreateReviewView(GroupRequiredMixin, CreateView):
 @login_required
 def show_review(request , pk):
     ride_id = pk
-    reviews = Passenger.objects.filter(ride = ride_id)
+    passengers = Passenger.objects.filter(ride = ride_id).exclude(review_id = None)
     
     # Back button
     referrer = request.META.get('HTTP_REFERER', '/')
 
     # Calculate medium of all ratings
-    temp_list = Passenger.objects.filter(ride = ride_id)
     sum = 0
     count = 0
     result = 0
-    for p in temp_list:
+    for p in passengers:
         if(p.review_id):
             sum = sum + p.review_id.rating
             count = count + 1
@@ -395,7 +394,7 @@ def show_review(request , pk):
     # Context
     ctx = {
         'title': 'Reviews',
-        'object_list' : reviews,
+        'object_list' : passengers,
         'rating_sum' : result,
         'ride_id' : ride_id,
         'referrer' : referrer,

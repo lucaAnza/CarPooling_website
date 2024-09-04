@@ -150,9 +150,9 @@ class ShowReviewViewTest(TestCase):
 
     def test_show_review_view_no_reviews_with_reviews(self):
         # Test the case where passengers exist, but none have reviews
-        self.passenger1.review = None
+        self.passenger1.review_id = None
         self.passenger1.save()
-        self.passenger2.review = None
+        self.passenger2.review_id = None
         self.passenger2.save()
 
         response = self.client.get(reverse('review', args=[self.ride.id]))
@@ -167,12 +167,30 @@ class ShowReviewViewTest(TestCase):
         self.assertEqual(len(response.context['object_list']), 0)
 
         # Check that the rating sum is not calculated and handled correctly
-        self.assertIsNone(response.context.get('rating_sum'))
+        self.assertEqual(response.context.get('rating_sum') , 0)
 
     def test_show_review_view_not_logged_in(self):
         # Test that the view redirects to login if the user is not logged in
         self.client.logout()
-        response = self.client.get(reverse('review', args=[self.ride.id]))
+        response = self.client.get(reverse('review', args=[self.ride.id]) , follow = True)
         
         # Check for redirect to login page
-        self.assertRedirects(response, f'/accounts/login/?next=/show_review/{self.ride.id}/')
+        self.assertRedirects(response, f'/login/?login=needed&next=/gestione/review/{self.ride.id}')
+    
+    def test_forbidden_rating(self):
+
+        self.assertRaises(
+			ValidationError,
+			# Create a Rating forbidden
+            Review.objects.create,
+            rating = 6,
+            comment = 'i am trying to cheat'
+            )
+        
+        #Check the content of the passenger1
+        self.passenger1.review_id = self.review1
+
+        
+
+        
+        
