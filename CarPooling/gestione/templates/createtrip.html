@@ -15,6 +15,16 @@
 
 <h2> Please provide the required details </h2>
 
+<!-- Log:message section -->
+<div class="container mt-4">
+  {% for message in messages %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+<!----------------------->
+
 <br><br>
 
 <div class="col-md-7">
