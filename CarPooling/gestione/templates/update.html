@@ -17,11 +17,14 @@
 
 <br><br>
 
-<form method="post">
+<div class="col-md-6"> 
+  <form method="post">
     {% csrf_token %}  
-    {{ form.as_p }}  
-    <input type="submit" value="Save">  
-</form>  
+    {{ form|crispy }}
+    <br>
+    <input type="submit" class="btn btn-success" value="Save">  
+  </form>  
+</div>
 
 <br>
 
