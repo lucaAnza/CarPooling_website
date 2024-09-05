@@ -60,7 +60,7 @@ class Review(models.Model):
         super().save(*args, **kwargs)
 
 class Ride(models.Model):
-    car = models.ForeignKey(Car , on_delete=models.CASCADE , default = None ,null=False , related_name="my_rides")
+    car = models.ForeignKey(Car , on_delete=models.SET_NULL , default = None ,null=True , related_name="my_rides")
     user = models.ForeignKey(User, on_delete=models.PROTECT,blank=True,null=True,default=None, related_name="my_rides")
     departure_location = models.CharField(max_length=30 , null  = False , default = "NO_LOCATION_D")
     departure_state = models.CharField(max_length=30 , null  = False , default = "NO_STATE_D")
@@ -78,10 +78,15 @@ class Ride(models.Model):
     #TODO: aggiungere campi mancanti
     def __str__(self):
         if self.image != None : 
-            return f'Ride : {self.id} - Departure: {self.departure_state} , {self.departure_location} ,  {self.departure_address} - Arrival: {self.arrival_state} , {self.arrival_location} , {self.arrival_address} - Trip : ({self.departure_time} to {self.arrival_time} ) - Booking : ({self.open_registration_time} to {self.close_registration_time} ) - IMG : {self.image} [{self.user.username}]  '
+            string =  f'Ride : {self.id} - Departure: {self.departure_state} , {self.departure_location} ,  {self.departure_address} - Arrival: {self.arrival_state} , {self.arrival_location} , {self.arrival_address} - Trip : ({self.departure_time} to {self.arrival_time} ) - Booking : ({self.open_registration_time} to {self.close_registration_time} ) - IMG : {self.image} [{self.user.username}]  '
         else:
-            return f'Ride : {self.id} - Departure: {self.departure_state} , {self.departure_location} ,  {self.departure_address} - Arrival: {self.arrival_state} , {self.arrival_location} , {self.arrival_address} - Trip : ({self.departure_time} to {self.arrival_time} ) - Booking : ({self.open_registration_time} to {self.close_registration_time} ) [{self.user.username}] '
-    
+            string =  f'Ride : {self.id} - Departure: {self.departure_state} , {self.departure_location} ,  {self.departure_address} - Arrival: {self.arrival_state} , {self.arrival_location} , {self.arrival_address} - Trip : ({self.departure_time} to {self.arrival_time} ) - Booking : ({self.open_registration_time} to {self.close_registration_time} ) [{self.user.username}] '
+        
+        if(self.car != None):
+            string = string + "CAR [" + str(self.car) + "]"
+
+        return string
+
     def delete(self, *args, **kwargs):
         #Before the deletion of the element, the image must be deleted in the directory
         if self.image:

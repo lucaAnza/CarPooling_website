@@ -67,31 +67,27 @@ class CreateVehicleView(GroupRequiredMixin, CreateView):
         messages.success(self.request, "You have successfully add a new car")
         return super().form_valid(form)
 
-class DeleteEntityView(DeleteView):
+class DeleteCarView(GroupRequiredMixin , DeleteView):
     template_name = "delete_entity.html"
-
-    def get_context_data(self , **kwargs):
-        ctx = super().get_context_data()
-        # Car case
-        if(self.model == Car):
-            entity = "Car"
-        ctx["entity"] = entity
-        return ctx
-
-    def get_success_url(self):
-        if self.model == Car :
-            return reverse("home")
-        else:
-            return reverse("home")
-
-class DeleteCarView(GroupRequiredMixin , DeleteEntityView):
     title = "Delete a vehicle"
     group_required = ["Driver"]
     model = Car
     success_url = reverse_lazy("garage")
 
-    def get_success_url(self):
-        return self.success_url
+    def form_valid(self, form):
+        car = self.get_object()    
+        rides = car.my_rides.all() 
+        current_time = timezone.now()
+        
+
+        for r in rides:
+            if current_time <= r.arrival_time: 
+                messages.error(self.request, "This car cannot be deleted because it has active or upcoming rides.")
+                return redirect('garage')  
+
+        messages.success(self.request, "Car deleted successfully 🗑 ")
+        return super().form_valid(form)
+
 
 class UpdateCarView(GroupRequiredMixin , Update):
     title = "Modify vehicle settings"
@@ -237,6 +233,7 @@ class DeleteRideView(GroupRequiredMixin , DeleteView):
 
     # Delete elements linked with the ride
     def post(self, request, *args, **kwargs):
+        messages.success(self.request, "Trip deleted successfully 🗑")
         response = super().delete(request, *args, **kwargs)
         return response
 

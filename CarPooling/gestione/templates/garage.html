@@ -17,16 +17,19 @@
 {% if "Driver" in user.groups.all.0.name or  "Driver" in user.groups.all.1.name or user.is_staff %}  {# TODO - Improve this check #}
 
   <h2> Your Garage has {{ object_list.count }} vehicle </h2>
+  <br>
 
   <!-- Log:message section -->
   {% if messages|length > 0 %}
-  <div id="message-container" class="container mt-4">
     {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
+      {% if message.tags == 'error' %}  
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">  {{ message }} </div>
+      {% else %}
+      <div id="message-container" class="container mt-4">
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"> {{ message }} </div>
       </div>
+      {% endif %}
     {% endfor %}
-  </div>
   {% endif %}
   <!----------------------->
 
