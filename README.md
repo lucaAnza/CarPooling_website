@@ -40,13 +40,12 @@ python3 manage.py runserver
 2. Search:
 	* Destination location.
 	* Departure location.
-	* Specific user.
 3. User vehicle registration (Model, Year, License Plate, Photo).
 4. Carpooling reservation management.
 5. Driver rating system.
 6. User profile with travel history and owned vehicles.
 7. Recommendation system based on popular destinations.
-8. Section with ranking of best drivers (Kilometers traveled, reviews, etc.).
+8. Section with ranking of best drivers (Number of rides).
 
 <br>
 
