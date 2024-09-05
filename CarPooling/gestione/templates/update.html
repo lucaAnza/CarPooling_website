@@ -6,16 +6,18 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
 
 {% block header1 %}
-  <h1 class="header-background"> {{view.title}} </h1>
+<div class="header-background">
+  <h1> {{view.title}} <i class="bi bi-suitcase-lg"></i> </h1>
+</div>
 {% endblock %}
 
 {% block content %} 
 
-<h2> Your car information :  </h2>
+<h2> Your information :  </h3>
 
-<br>
+<br><br>
 
-<form method="post" enctype="multipart/form-data">
+<form method="post">
     {% csrf_token %}  
     {{ form.as_p }}  
     <input type="submit" value="Save">  

@@ -46,7 +46,7 @@
               {% for p in trip.passengers.all %}
               <!--Review alredy exist for the logged user-->
               {% if p.user.id == user.id and p.review_id != None %}
-              <a href="#" style="background-color: rgb(255, 187, 0); border-color: black;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#confirmModal" data-href="{% url 'create_review' trip.id %}">Modify Rate <i class="bi bi-star"> </i></a>  
+              <a href="#" style="background-color: rgb(255, 187, 0); border-color: black;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#confirmModal" data-href="{% url 'update_review' p.review_id.id %}">Modify Rate <i class="bi bi-star"> </i></a>  
               <!--Review not exist for the logged user-->
               {% elif p.user.id == user.id and p.review_id == None %}
                 <a href="{% url 'create_review' trip.id %}" style="background-color: rgb(255, 187, 0); border-color: black;" class="btn btn-primary btn-sm">Rate <i class="bi bi-star"> </i></a>  

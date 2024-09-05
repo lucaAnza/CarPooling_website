@@ -31,6 +31,17 @@ def is_a_driver(user):
     return user.groups.filter(name='Driver').exists()
 
 
+# BASE - CLASS
+
+class Update(UpdateView):
+    
+    template_name = "update.html"
+
+    def form_valid(self, form):
+        messages.success(self.request, "The update was completed successfully.")
+        return super().form_valid(form)
+
+
 # GARAGE ---------------------------------------------------
 
 class CarsListView(GroupRequiredMixin, ListView):
@@ -82,12 +93,11 @@ class DeleteCarView(GroupRequiredMixin , DeleteEntityView):
     def get_success_url(self):
         return self.success_url
 
-class UpdateCarView(GroupRequiredMixin , UpdateView):
+class UpdateCarView(GroupRequiredMixin , Update):
     title = "Modify vehicle settings"
     group_required = ["Driver"]
     model = Car
     form_class = UpdateCarForm
-    template_name = "update_vehicle.html"
     success_url = reverse_lazy("garage")
 
 # ----------------------------------------------------------------------
@@ -400,6 +410,13 @@ def show_review(request , pk):
         'referrer' : referrer,
     }
     return render(request, "reviews.html", context = ctx )
+
+class UpdateReviewView(GroupRequiredMixin , Update):
+    title = "Modify your review"
+    group_required = ["Driver" , "Passenger"]
+    model = Review
+    form_class = CreateReviewForm
+    success_url = reverse_lazy("home")
 #-----------------------------------------------------------------------
 
 
