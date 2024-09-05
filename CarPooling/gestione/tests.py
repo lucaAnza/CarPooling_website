@@ -153,7 +153,7 @@ class ShowReviewViewTest(TestCase):
             image=None
         )
         # Ride + Review test
-        self.ride = Ride.objects.create(car = self.car , user = self.user , max_passenger = 4)
+        self.ride = Ride.objects.create(car = self.car , user = self.user , max_passenger = 2)
         self.review1 = Review.objects.create(rating=4, comment="Good ride")
         self.review2 = Review.objects.create(rating=5, comment="Excellent ride")
         # Passengers test
@@ -239,7 +239,6 @@ class ShowReviewViewTest(TestCase):
         
         #Check the content of the passenger1
         self.passenger1.review_id = self.review1
-
         
 
         

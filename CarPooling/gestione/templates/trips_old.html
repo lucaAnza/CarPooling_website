@@ -7,7 +7,7 @@
   <h3 style="text-align: center;"> My recents Trips </h3>
   <br>
 
-  {% if user.passengers_ride.count == 0 %}
+  {% if object_list.count == 0 %}
 
   <div class="alert alert-primary" style="background-color: #731cfd;color: white;" role="alert">
     You have not already done a trip <i class="bi bi-calendar-x"></i>
@@ -28,7 +28,11 @@
           {% else %}
           <h4> <span class="badge rounded-pill text-bg-info"> {{trip.departure_location}} - {{trip.arrival_location}} </span> </h4>
           {% endif %}
-            <img src="{% static '/img/milano.jpg' %}" class="card-img-top" alt="City">
+          {% if trip.image %}
+              <img src="{{ trip.image.url }}" height="200px" alt="city_img">
+          {% else %}  
+              <img src="{% static '/img/no_img.jpg' %}" height="200px" alt="default_city_img">
+          {% endif %}
           <ul class="list-group list-group-flush">
             <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.departure_time}} </i>  <i class="bi bi-clock"></i>  </li>
             <li class="list-group-item"> <i class="bi bi-calendar2-week-fill"></i> {{trip.arrival_time}}   </i>  <i class="bi bi-clock"></i>  </li>
@@ -37,9 +41,18 @@
           <div class="card-body">
             <a href="{% url 'ridedetail' pk=trip.id %}" style = "background-color: rgb(16, 167, 255); border-color: black ;" class="btn btn-primary btn-sm"> <i class="bi bi-info-circle"></i> </a>
             <a href="{% url 'review' pk=trip.id %}" style="background-color: rgb(43, 184, 0); border-color: black;" class="btn btn-primary btn-sm"> Reviews <i class="bi bi-star"> </i></a>
-            <!--Check if the user is driving on that ride-->
+            <!--Check if the user is a passenger on that ride-->
             {% if trip.user.id != user.id %}
-              <a href="{% url 'create_review' trip.id %}" style="background-color: rgb(255, 187, 0); border-color: black;" class="btn btn-primary btn-sm">Rate <i class="bi bi-star"> </i></a>  
+              {% for p in trip.passengers.all %}
+              <!--Review alredy exist for the logged user-->
+              {% if p.user.id == user.id and p.review_id != None %}
+              <a href="#" style="background-color: rgb(255, 187, 0); border-color: black;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#confirmModal" data-href="{% url 'create_review' trip.id %}">Modify Rate <i class="bi bi-star"> </i></a>  
+              <!--Review not exist for the logged user-->
+              {% elif p.user.id == user.id and p.review_id == None %}
+                <a href="{% url 'create_review' trip.id %}" style="background-color: rgb(255, 187, 0); border-color: black;" class="btn btn-primary btn-sm">Rate <i class="bi bi-star"> </i></a>  
+              {% endif %}
+            {% endfor %}
+              
             {% endif %}
             
           </div>

@@ -120,7 +120,7 @@ class Ride(models.Model):
 class Passenger(models.Model):
     ride = models.ForeignKey(Ride, on_delete=models.CASCADE , related_name = "passengers")
     user = models.ForeignKey(User, on_delete=models.CASCADE , related_name = "passengers_ride" )
-    review_id = models.ForeignKey(Review, on_delete=models.CASCADE , null = True , default = None , blank = True)
+    review_id = models.ForeignKey(Review, on_delete=models.SET_NULL , null = True , default = None , blank = True)
 
     # Primary Key (ride,user)
     class Meta:
@@ -136,8 +136,10 @@ class Passenger(models.Model):
     def clean(self):
         count = int(self.ride.get_count_passenger())
         # Condition is == because we are testing before the Passenger is created
-        if count == self.ride.max_passenger:
-            raise ValidationError(f"A Ride cannot has [passenger > max_passenger] ({count} / {self.ride.max_passenger})")
+        if count == self.ride.max_passenger and self.pk == None:
+            raise ValidationError(f"[CREATION] A Ride cannot has [passenger > max_passenger] ({count} / {self.ride.max_passenger})")
+        elif count > self.ride.max_passenger:
+            raise ValidationError(f"[UPDATING] A Ride cannot has [passenger > max_passenger] ({count} / {self.ride.max_passenger})")
 
     def save(self, *args, **kwargs):
         self.full_clean()  # Call validations
