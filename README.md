@@ -11,15 +11,7 @@ This repository contains the code of a Car Pooling Web Site made with <b>Django<
 
 ## Dependencies
 
-### How to install dependencies
-
-```bash
-	cd <application_name>
-	pipenv --rm
-	pipenv install  #Scaricare la versione di Python presente nel file "Pipfile"
-```
-
-### List of dependencies
+ⓘ Each dependency is listed in the Pipfile, so it will be automatically installed on the first run.
 
 - `django`: A high-level Python web framework that encourages rapid development and clean, pragmatic design.
 - `crispy-bootstrap4`: Django app for creating beautiful forms using Bootstrap 4.
@@ -29,11 +21,12 @@ This repository contains the code of a Car Pooling Web Site made with <b>Django<
 
 <br>
 
-## How try it
+## How to start the website (first run)
 
 ```bash
+cd <application_name>
 pipenv --rm
-pipenv install  #Scaricare la versione di Python presente nel file "Pipfile"
+pipenv install
 pipenv shell
 cd <PROJECT_NAME> 
 python3 manage.py runserver
