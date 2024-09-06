@@ -248,7 +248,7 @@ class DatailRideView(GroupRequiredMixin , DetailView):
                 messages.error(request, "You tried to get trip detail of another user. You will be reported to the admin! ⚠️ ")
                 return redirect('home')
         return super().dispatch(request, *args, **kwargs)
-        
+
     #Back button
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -456,6 +456,17 @@ class UpdateReviewView(GroupRequiredMixin , Update):
     model = Review
     form_class = CreateReviewForm
     success_url = reverse_lazy("home")
+
+    # Check if the user is trying to modify an other review
+    def dispatch(self, request, *args, **kwargs):
+        #Check if the logged user is in that specific trip
+        review = self.get_object()
+        list_of_reviewers = review.reviewers.filter(user = self.request.user)
+
+        if len(list_of_reviewers) == 0:
+            messages.error(request, "You tried to modify a review of another user. You will be reported to the admin! ⚠️ ")
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
 #-----------------------------------------------------------------------
 
 
@@ -484,7 +495,7 @@ class RankingView(ListView):
 
 # MY-PROFILE ------------------------------------------------------------
 
-class MyProfileView(ListView):
+class MyProfileView(GroupRequiredMixin , ListView):
     group_required = ["Passenger", "Driver"]
     model = User
     template_name = "profile.html"

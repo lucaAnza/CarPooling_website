@@ -129,7 +129,7 @@ class Ride(models.Model):
 class Passenger(models.Model):
     ride = models.ForeignKey(Ride, on_delete=models.CASCADE , related_name = "passengers")
     user = models.ForeignKey(User, on_delete=models.CASCADE , related_name = "passengers_ride" )
-    review_id = models.ForeignKey(Review, on_delete=models.SET_NULL , null = True , default = None , blank = True)
+    review_id = models.ForeignKey(Review, on_delete=models.SET_NULL , null = True , default = None , blank = True , related_name = "reviewers")
 
     # Primary Key (ride,user)
     class Meta:
