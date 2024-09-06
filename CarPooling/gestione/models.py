@@ -111,6 +111,10 @@ class Ride(models.Model):
             return True
         else:
             return False
+
+    def is_finish(self):
+        current_time = timezone.now()
+        return current_time > self.arrival_time
          
     def clean(self):
         if self.departure_time > self.arrival_time:

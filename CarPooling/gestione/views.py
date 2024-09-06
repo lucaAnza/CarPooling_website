@@ -30,6 +30,8 @@ from django.contrib.auth.decorators import user_passes_test
 def is_a_driver(user):
     return user.groups.filter(name='Driver').exists()
 
+    
+
 
 # BASE - CLASS
 
@@ -74,12 +76,20 @@ class DeleteCarView(GroupRequiredMixin , DeleteView):
     model = Car
     success_url = reverse_lazy("garage")
 
+    # Check if the user is trying to delete an other car
+    def dispatch(self, request, *args, **kwargs):
+        car = self.get_object()
+        if car.user != request.user:
+            messages.error(request, "You tried to delete a car of another user. You will be reported to the admin! ⚠️")
+            return redirect('garage')
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         car = self.get_object()    
         rides = car.my_rides.all() 
         current_time = timezone.now()
         
-
+        # Check if the car is used in this moment
         for r in rides:
             if current_time <= r.arrival_time: 
                 messages.error(self.request, "This car cannot be deleted because it has active or upcoming rides.")
@@ -95,6 +105,19 @@ class UpdateCarView(GroupRequiredMixin , Update):
     model = Car
     form_class = UpdateCarForm
     success_url = reverse_lazy("garage")
+
+    # Check if the user is trying to modify an other car
+    def dispatch(self, request, *args, **kwargs):
+        car = self.get_object()
+        if car.user != request.user:
+            messages.error(request, "You tried to modify a car of another user. You will be reported to the admin! ⚠️")
+            return redirect('garage')
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        car = self.get_object()    
+        messages.success(self.request, "Car modified successfully 🛠️ ")
+        return super().form_valid(form)
 
 # ----------------------------------------------------------------------
 
@@ -216,6 +239,16 @@ class DatailRideView(GroupRequiredMixin , DetailView):
     model = Ride
     template_name = "ride_detail.html"
 
+    # Check if the user is trying to get information of other rides
+    def dispatch(self, request, *args, **kwargs):
+        ride = self.get_object()
+        if(ride.is_finish()):
+            p = Passenger.objects.filter(user = request.user , ride = ride )
+            if ride.user != request.user and len(p) == 0:
+                messages.error(request, "You tried to get trip detail of another user. You will be reported to the admin! ⚠️ ")
+                return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
+        
     #Back button
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -230,6 +263,15 @@ class DeleteRideView(GroupRequiredMixin , DeleteView):
     group_required = ["Driver"]
     model = Ride
     success_url = reverse_lazy("home")
+
+    # Check if the user is trying to delete an other ride
+    def dispatch(self, request, *args, **kwargs):
+        ride = self.get_object()
+        print(ride , "---" , request.user , "---" , ride.user)
+        if ride.user != request.user:
+            messages.error(request, "You tried to delete a trip of another user. You will be reported to the admin! ⚠️ ")
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
 
     # Delete elements linked with the ride
     def post(self, request, *args, **kwargs):

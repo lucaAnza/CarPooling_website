@@ -128,9 +128,15 @@ class RideModelTest(TestCase):
         
         # Check if number of passengers is still 2
         self.assertEqual(self.ride.get_count_passenger(), 2)
-
+    
+    def test_is_finish_with_correct_data(self):
         
-	
+        self.ride.open_registration_time = timezone.now() - timezone.timedelta(hours=1)
+        self.ride.close_registration_time = timezone.now() - timezone.timedelta(hours=2)
+        self.ride.departure_time = timezone.now() - timezone.timedelta(hours=0.5)
+        self.ride.arrival_time = timezone.now() - timezone.timedelta(hours=0.2)
+
+        self.assertTrue(self.ride.is_finish() , True)
 
 # Test on FBV (show_review)
 class ShowReviewViewTest(TestCase):
