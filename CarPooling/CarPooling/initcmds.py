@@ -62,10 +62,10 @@ def func_time(year_offset=0, month_offset=0, day=0, hour=0, minute=0):
         day,
         hour, minute))
 
-def generate_next_month_rides( ride_to_generate = 10):
+def generate_next_month_rides( ride_to_generate = 1):
     
     # If is true block the creation process
-    locked = True
+    locked = False
 
     if len(Ride.objects.all()) != 0 and locked:
         print("\nRide table is already populated.")
@@ -99,7 +99,7 @@ def generate_next_month_rides( ride_to_generate = 10):
     users = User.objects.filter(groups= driver_group)  # Retrieve only driver users
 
     for i in range(ride_to_generate):
-        print("Generating car " , i , "...")
+        print("Generating car(", i , ")...")
         ride = Ride()
 
          # Get the 'Driver' group
@@ -123,7 +123,7 @@ def generate_next_month_rides( ride_to_generate = 10):
         ride.arrival_address = random.choice(ride_data["arrival_address"])
         ride.max_passenger = random.choice(ride_data["max_passenger"])
         ride.image = None
-
+    
         # Generate departure and arrival times 
         random_day = random.choice(days)
         ride.departure_time = func_time(0, 1, random_day, random.randint(6, 10), random.randint(0, 59))

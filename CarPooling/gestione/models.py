@@ -76,10 +76,12 @@ class Ride(models.Model):
     image = models.ImageField(upload_to='ride_images/', null=True, blank=True)
 
     def __str__(self):
-        if self.image != None : 
-            string =  f'Ride : {self.id} - Departure: {self.departure_state} , {self.departure_location} ,  {self.departure_address} - Arrival: {self.arrival_state} , {self.arrival_location} , {self.arrival_address} - Trip : ({self.departure_time} to {self.arrival_time} ) - Booking : ({self.open_registration_time} to {self.close_registration_time} ) - IMG : {self.image} [{self.user.username}]  '
-        else:
+        # Condition is "" not None because ImageField does not support None
+        if self.image == "" : 
             string =  f'Ride : {self.id} - Departure: {self.departure_state} , {self.departure_location} ,  {self.departure_address} - Arrival: {self.arrival_state} , {self.arrival_location} , {self.arrival_address} - Trip : ({self.departure_time} to {self.arrival_time} ) - Booking : ({self.open_registration_time} to {self.close_registration_time} ) 📷NO-IMG📷 [{self.user.username}] '
+        else:
+            string =  f'Ride : {self.id} - Departure: {self.departure_state} , {self.departure_location} ,  {self.departure_address} - Arrival: {self.arrival_state} , {self.arrival_location} , {self.arrival_address} - Trip : ({self.departure_time} to {self.arrival_time} ) - Booking : ({self.open_registration_time} to {self.close_registration_time} ) - IMG : {self.image} [{self.user.username}]  '
+            
         
         if(self.car != None):
             string = string + "CAR [" + str(self.car) + "]"
