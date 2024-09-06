@@ -2,6 +2,7 @@ from gestione.models import Car
 from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import datetime,timedelta
+import random
 
 def erase_car_tables():
     print("\nDeleting Car table DB 🗑️ \n")
@@ -47,7 +48,77 @@ def init_db():
         c.user_id = admin_user
         c.save()
 
-        
-    
     print("DUMP DB")
     print(Car.objects.all()) 
+
+
+def func_time(year_offset=0, month_offset=0, day_offset=0, hour=0, minute=0):
+    """Helper function to get a time with specific offsets."""
+    tz = timezone.now()
+    return timezone.make_aware(datetime(
+        tz.year + year_offset,
+        tz.month + month_offset,
+        tz.day + day_offset,
+        hour, minute))
+
+def generate_next_month_rides():
+    
+    if len(Ride.objects.all()) != 0:
+        print("Ride table is already populated.")
+        return
+
+    users = User.objects.all()  # Retrieve all users in the system
+    cars = Car.objects.all()    # Retrieve all cars in the system
+    
+    if not users.exists() or not cars.exists():
+        print("Error: there aren't car or user in the system!")
+        return
+
+    ride_count = 40  # We want to create 40 rides
+    days = list(range(1, 28))  # October days
+    
+    ride_data = {
+        "departure_location": ["Rome", "Milan", "Turin", "Naples", "Florence"],
+        "departure_address": ["Street A", "Street B", "Street C", "Street D", "Street E"],
+        "arrival_location": ["Bologna", "Venice", "Palermo", "Genoa", "Catania"],
+        "arrival_address": ["Street F", "Street G", "Street H", "Street I", "Street J"],
+        "max_passenger": [1 , 2, 3, 4, 5, 6]
+    }
+
+    users = User.objects.filter(groups=driver_group) # Retrieve only driver users
+
+    for i in range(ride_count):
+        ride = Ride()
+
+         # Get the 'Driver' group
+        try:
+            driver_group = Group.objects.get(name='Driver')
+        except Group.DoesNotExist:
+            print("Errore: Il gruppo 'Driver' non esiste.")
+            return
+
+        # Get users in the 'Driver' group
+        ride.user = random.choice(users) # Choose a user from all drivers
+        cars = Car.objects.filter(user = ride.user)  # Retrieve all cars of the user
+        ride.car = random.choice(cars) # Choose a car from the user's car
+
+        # Randomly assign locations and details
+        ride.departure_location = random.choice(ride_data["departure_location"])
+        ride.departure_state = "Italy"
+        ride.departure_address = random.choice(ride_data["departure_address"])
+        ride.arrival_location = random.choice(ride_data["arrival_location"])
+        ride.arrival_state = "Italy"
+        ride.arrival_address = random.choice(ride_data["arrival_address"])
+        ride.max_passenger = random.choice(ride_data["max_passenger"])
+
+        # Generate departure and arrival times 
+        random_day = random.choice(oct_days)
+        ride.departure_time = func_time(0, 1, random_day, random.randint(6, 10), random.randint(0, 59))
+        ride.arrival_time = ride.departure_time + timedelta(hours=random.randint(1, 5))
+
+        # Booking times
+        ride.open_registration_time = ride.departure_time - timedelta(hours = 5)
+        ride.close_registration_time = ride.departure_time - timedelta(hours= 4)
+        ride.save()
+
+    print(f"Successfully created {ride_count} rides")
