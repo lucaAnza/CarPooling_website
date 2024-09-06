@@ -36,7 +36,7 @@
 
     <!--Passenger information-->
     <ul class="list-group">
-        <li class="list-group-item disabled" style="color: rgb(32, 102, 102);" aria-disabled="true">Passengers <i class="bi bi-person-circle"></i> </li>
+        <li class="list-group-item disabled" style="color: rgb(32, 102, 102);" aria-disabled="true">Passengers </li>
         {% if object.passengers.count == 0 %}
             <li class="list-group-item">
                 <div class="alert alert-primary" role="alert">
@@ -46,7 +46,7 @@
         {% else %}
 
             {% for passenger in object.passengers.all %}
-                <li class="list-group-item"> {{ passenger.user.username }} </li>
+                <li class="list-group-item"> {{forloop.counter}}.{{ passenger.user.username }} <i class="bi bi-person-circle"></i> </li>
             {% endfor %}
 
         {% endif %}

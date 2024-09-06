@@ -128,6 +128,11 @@ def leave_trip(request, pk):
     # Find the trip and ensure the user is a passenger
     passenger = get_object_or_404(Passenger, ride_id=pk, user=request.user)
 
+    ride = Ride.objects.get(id = pk)
+    if(ride.is_running()):
+        messages.error(request, "You can't leave a trip while is running")
+        return redirect("home")
+        
     try:
         passenger.delete()  # Remove the user from the trip
         messages.success(request, "You have successfully left the trip.")
@@ -379,7 +384,7 @@ def take_part(request, pk):
             print("Error! " + str(e))
             messages.error(request, "Error adding to trip.")
 
-    return redirect('search_trip')
+    return redirect('home')
 #-----------------------------------------------------------------------
 
 
