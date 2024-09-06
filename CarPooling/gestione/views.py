@@ -132,7 +132,6 @@ def leave_trip(request, pk):
     if(ride.is_running()):
         messages.error(request, "You can't leave a trip while is running")
         return redirect("home")
-        
     try:
         passenger.delete()  # Remove the user from the trip
         messages.success(request, "You have successfully left the trip.")
@@ -171,9 +170,11 @@ class TripsListView(GroupRequiredMixin , ListView):
         elif trip_type == 'passenger':
             return Passenger.objects.filter(user=self.request.user , ride__arrival_time__gt=timezone.now()).order_by('-id')[:limit]
         elif trip_type == 'old':
+            #TODO -> FINISH CHECK
             set1 = Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user).order_by('-id')
             set2 = Ride.objects.filter(arrival_time__lt=timezone.now() , user = self.request.user).order_by('-id')
             final_set = set1 | set2
+            final_set = final_set.distinct()
             final_set = final_set[:limit]
             return final_set
         else:
@@ -290,9 +291,8 @@ class DeleteRideView(GroupRequiredMixin , DeleteView):
 
 # RESEARCH--------------------------------------------------------------
 
-def get_filtered_rides(user=None, search_string=None, search_where=None):
+def get_filtered_rides(user=None, search_string=None, search_where=None , limit = 9):
     current_time = timezone.now()
-    limit = 9
     # Base queryset: Rides that are valid (open for registration, not full)
     rides = Ride.objects.filter(
         open_registration_time__lte=current_time,  # Ride has opened registration
@@ -326,7 +326,7 @@ def search(request):
             string = form.cleaned_data.get("search_string")
 
             # Apply filters and redirect to results page
-            return redirect("search_results_trip", string=string, where=where)
+            return redirect("search_results_trip", string=string, where=where , limit = 18)
     else:
         form = SearchTripForm()
 
