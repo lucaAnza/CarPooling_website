@@ -1,8 +1,9 @@
-from gestione.models import Car
-from django.contrib.auth.models import User
+from gestione.models import Car,Ride
+from django.contrib.auth.models import User , Group
 from django.utils import timezone
 from datetime import datetime,timedelta
 import random
+import time
 
 def erase_car_tables():
     print("\nDeleting Car table DB 🗑️ \n")
@@ -52,19 +53,29 @@ def init_db():
     print(Car.objects.all()) 
 
 
-def func_time(year_offset=0, month_offset=0, day_offset=0, hour=0, minute=0):
+def func_time(year_offset=0, month_offset=0, day=0, hour=0, minute=0):
     """Helper function to get a time with specific offsets."""
     tz = timezone.now()
     return timezone.make_aware(datetime(
         tz.year + year_offset,
         tz.month + month_offset,
-        tz.day + day_offset,
+        day,
         hour, minute))
 
-def generate_next_month_rides():
+def generate_next_month_rides( ride_to_generate = 3):
     
-    if len(Ride.objects.all()) != 0:
-        print("Ride table is already populated.")
+    # If is true block the creation process
+    locked = True
+
+    if len(Ride.objects.all()) != 0 and locked:
+        print("\nRide table is already populated.\n")
+        print("Please comment the function [generate_next_month_rides()] on Carpooling/urls.py \n")
+        return
+
+    string = input("Danger : you are generating " + str(ride_to_generate) + " rides are you sure ? \n - Write 'YES' if you confirmed : ")
+
+    if(string != 'YES'):
+        print("Operation suppressed")
         return
 
     users = User.objects.all()  # Retrieve all users in the system
@@ -74,20 +85,20 @@ def generate_next_month_rides():
         print("Error: there aren't car or user in the system!")
         return
 
-    ride_count = 40  # We want to create 40 rides
-    days = list(range(1, 28))  # October days
+    days = list(range(1, 28))  
     
     ride_data = {
-        "departure_location": ["Rome", "Milan", "Turin", "Naples", "Florence"],
-        "departure_address": ["Street A", "Street B", "Street C", "Street D", "Street E"],
+        "departure_location": ["Roma", "Milano", "Torino", "Napoli", "Firenze"],
+        "departure_address": ["Via Carducci", "Via Dante Alighieri", "Via Sallo", "Via Marconi", "Via Napoleone"],
         "arrival_location": ["Bologna", "Venice", "Palermo", "Genoa", "Catania"],
-        "arrival_address": ["Street F", "Street G", "Street H", "Street I", "Street J"],
+        "arrival_address": ["Via Garibaldi", "Via Cavour", "Corso Italia", "Via XX Settembre", "Via Mazzini"],
         "max_passenger": [1 , 2, 3, 4, 5, 6]
     }
 
-    users = User.objects.filter(groups=driver_group) # Retrieve only driver users
+    driver_group = Group.objects.get(name = "Driver").id
+    users = User.objects.filter(groups= driver_group)  # Retrieve only driver users
 
-    for i in range(ride_count):
+    for i in range(ride_to_generate):
         ride = Ride()
 
          # Get the 'Driver' group
@@ -110,15 +121,16 @@ def generate_next_month_rides():
         ride.arrival_state = "Italy"
         ride.arrival_address = random.choice(ride_data["arrival_address"])
         ride.max_passenger = random.choice(ride_data["max_passenger"])
+        ride.image = None
 
         # Generate departure and arrival times 
-        random_day = random.choice(oct_days)
+        random_day = random.choice(days)
         ride.departure_time = func_time(0, 1, random_day, random.randint(6, 10), random.randint(0, 59))
         ride.arrival_time = ride.departure_time + timedelta(hours=random.randint(1, 5))
 
         # Booking times
-        ride.open_registration_time = ride.departure_time - timedelta(hours = 5)
+        ride.open_registration_time = timezone.now()
         ride.close_registration_time = ride.departure_time - timedelta(hours= 4)
         ride.save()
 
-    print(f"Successfully created {ride_count} rides")
+    print(f"Successfully created {ride_to_generate} rides")

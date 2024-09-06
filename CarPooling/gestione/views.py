@@ -326,7 +326,7 @@ def search(request):
             string = form.cleaned_data.get("search_string")
 
             # Apply filters and redirect to results page
-            return redirect("search_results_trip", string=string, where=where , limit = 18)
+            return redirect("search_results_trip", string=string, where=where)
     else:
         form = SearchTripForm()
 

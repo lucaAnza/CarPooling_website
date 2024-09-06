@@ -19,7 +19,7 @@ from django.urls import path,include, re_path
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
-from .initcmds import init_db,erase_car_tables
+from .initcmds import *
 from .views import *
 
 urlpatterns = [
@@ -33,5 +33,6 @@ urlpatterns = [
     path('gestione/', include('gestione.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+generate_next_month_rides()
 #init_db()
 #erase_car_tables()
