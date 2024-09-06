@@ -166,15 +166,15 @@ class TripsListView(GroupRequiredMixin , ListView):
             # Show only incoming rides
             current_time = timezone.now()
             rides = Ride.objects.filter(  arrival_time__gte=current_time ) 
-            return rides.filter(user=self.request.user).order_by('-id')[:limit]
+            return rides.filter(user=self.request.user).order_by('departure_time')[:limit]
         elif trip_type == 'passenger':
-            return Passenger.objects.filter(user=self.request.user , ride__arrival_time__gt=timezone.now()).order_by('-id')[:limit]
+            return Passenger.objects.filter(user=self.request.user , ride__arrival_time__gt=timezone.now()).order_by('ride__departure_time')[:limit]
         elif trip_type == 'old':
-            #TODO -> FINISH CHECK
-            set1 = Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user).order_by('-id')
-            set2 = Ride.objects.filter(arrival_time__lt=timezone.now() , user = self.request.user).order_by('-id')
+            set1 = Ride.objects.filter(arrival_time__lt=timezone.now() , passengers__user = self.request.user)
+            set2 = Ride.objects.filter(arrival_time__lt=timezone.now() , user = self.request.user)
             final_set = set1 | set2
             final_set = final_set.distinct()
+            final_set = final_set.order_by('departure_time')
             final_set = final_set[:limit]
             return final_set
         else:
@@ -316,6 +316,7 @@ def get_filtered_rides(user=None, search_string=None, search_where=None , limit 
         elif search_where == "Departure":
             rides = rides.filter(departure_location__icontains = search_string)
 
+    rides = rides.order_by('departure_time')
     return rides[:limit]
 
 def search(request):
@@ -330,8 +331,8 @@ def search(request):
     else:
         form = SearchTripForm()
 
-    # Get the filtered trips for the initial load
-    trips = get_filtered_rides(user=request.user)
+    # Get the filtered trips for the initial load (most recent trips)
+    trips = get_filtered_rides(user=request.user , limit = 100)
 
     return render(request, "search_trip.html", context={"form": form, "title": "Search", "trips": trips})
 
@@ -344,7 +345,7 @@ class SearchResultsList(ListView):
         where = self.request.resolver_match.kwargs["where"]
 
         # Apply filters based on query parameters
-        return get_filtered_rides(user=self.request.user, search_string=string, search_where=where)
+        return get_filtered_rides(user=self.request.user, search_string=string, search_where=where , limit = 18)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

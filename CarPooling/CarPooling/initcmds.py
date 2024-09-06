@@ -62,20 +62,20 @@ def func_time(year_offset=0, month_offset=0, day=0, hour=0, minute=0):
         day,
         hour, minute))
 
-def generate_next_month_rides( ride_to_generate = 3):
+def generate_next_month_rides( ride_to_generate = 10):
     
     # If is true block the creation process
     locked = True
 
     if len(Ride.objects.all()) != 0 and locked:
-        print("\nRide table is already populated.\n")
+        print("\nRide table is already populated.")
         print("Please comment the function [generate_next_month_rides()] on Carpooling/urls.py \n")
         return
 
     string = input("Danger : you are generating " + str(ride_to_generate) + " rides are you sure ? \n - Write 'YES' if you confirmed : ")
 
     if(string != 'YES'):
-        print("Operation suppressed")
+        print("Operation suppressed \n\n")
         return
 
     users = User.objects.all()  # Retrieve all users in the system
@@ -99,6 +99,7 @@ def generate_next_month_rides( ride_to_generate = 3):
     users = User.objects.filter(groups= driver_group)  # Retrieve only driver users
 
     for i in range(ride_to_generate):
+        print("Generating car " , i , "...")
         ride = Ride()
 
          # Get the 'Driver' group
@@ -133,4 +134,4 @@ def generate_next_month_rides( ride_to_generate = 3):
         ride.close_registration_time = ride.departure_time - timedelta(hours= 4)
         ride.save()
 
-    print(f"Successfully created {ride_to_generate} rides")
+    print(f"Successfully created {ride_to_generate} rides\n\n")
