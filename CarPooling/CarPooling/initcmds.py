@@ -62,10 +62,10 @@ def func_time(year_offset=0, month_offset=0, day=0, hour=0, minute=0):
         day,
         hour, minute))
 
-def generate_next_month_rides( ride_to_generate = 1):
+def generate_next_month_rides( ride_to_generate = 10):
     
     # If is true block the creation process
-    locked = False
+    locked = True
 
     if len(Ride.objects.all()) != 0 and locked:
         print("\nRide table is already populated.")
