@@ -6,6 +6,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from datetime import datetime
+# Import for Ride,Car img elimination
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
+
 
 class Car(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True,null=True , related_name="my_cars")

@@ -4,6 +4,9 @@ from django.utils import timezone
 from datetime import datetime,timedelta
 import random
 import time
+import os
+from django.core.files import File
+from django.conf import settings
 
 def erase_car_tables():
     print("\nDeleting Car table DB 🗑️ \n")
@@ -62,10 +65,10 @@ def func_time(year_offset=0, month_offset=0, day=0, hour=0, minute=0):
         day,
         hour, minute))
 
-def generate_next_month_rides( ride_to_generate = 10):
+def generate_next_month_rides( ride_to_generate = 1):
     
     # If is true block the creation process
-    locked = True
+    locked = False
 
     if len(Ride.objects.all()) != 0 and locked:
         print("\nRide table is already populated.")
@@ -90,7 +93,7 @@ def generate_next_month_rides( ride_to_generate = 10):
     ride_data = {
         "departure_location": ["Roma", "Milano", "Torino", "Napoli", "Firenze"],
         "departure_address": ["Via Carducci", "Via Dante Alighieri", "Via Sallo", "Via Marconi", "Via Napoleone"],
-        "arrival_location": ["Bologna", "Venice", "Palermo", "Genoa", "Catania"],
+        "arrival_location": ["Bologna", "Venezia", "Palermo", "Genova", "Catania"],
         "arrival_address": ["Via Garibaldi", "Via Cavour", "Corso Italia", "Via XX Settembre", "Via Mazzini"],
         "max_passenger": [1 , 2, 3, 4, 5, 6]
     }
@@ -99,9 +102,7 @@ def generate_next_month_rides( ride_to_generate = 10):
     users = User.objects.filter(groups= driver_group)  # Retrieve only driver users
 
     for i in range(ride_to_generate):
-        print("Generating car(", i , ")...")
         ride = Ride()
-
          # Get the 'Driver' group
         try:
             driver_group = Group.objects.get(name='Driver')
@@ -123,6 +124,14 @@ def generate_next_month_rides( ride_to_generate = 10):
         ride.arrival_address = random.choice(ride_data["arrival_address"])
         ride.max_passenger = random.choice(ride_data["max_passenger"])
         ride.image = None
+
+        image_path = "/home/luke/Desktop/Car_Place_img/"
+        image_name = ride.arrival_location.lower() + ".jpg"    
+        image_path = image_path + image_name
+
+        if os.path.exists(image_path):
+            with open(image_path, 'rb') as img_file:
+                ride.image.save('test.jpg', File(img_file), save=False)
     
         # Generate departure and arrival times 
         random_day = random.choice(days)
@@ -133,5 +142,45 @@ def generate_next_month_rides( ride_to_generate = 10):
         ride.open_registration_time = timezone.now()
         ride.close_registration_time = ride.departure_time - timedelta(hours= 4)
         ride.save()
+        print(f"Generated ride({i})[ID = {ride.id}] ...")
 
     print(f"Successfully created {ride_to_generate} rides\n\n")
+
+
+def delete_all_unlinked_imgs():
+    
+    # get base path
+    car_images_dir = os.path.join(settings.MEDIA_ROOT, 'car_images/')
+    ride_images_dir = os.path.join(settings.MEDIA_ROOT, 'ride_images/')
+    
+    # get images name
+    car_images_on_fs = set(os.listdir(car_images_dir))
+    ride_images_on_fs = set(os.listdir(ride_images_dir))
+
+    # get images name(used)
+    car_images_in_db = set(Car.objects.exclude(image='').values_list('image', flat=True))
+    ride_images_in_db = set(Ride.objects.exclude(image='').values_list('image', flat=True))
+
+    # normalize path 
+    car_images_in_db = set([os.path.basename(image) for image in car_images_in_db])
+    ride_images_in_db = set([os.path.basename(image) for image in ride_images_in_db])
+
+    # find unlinked imgs
+    unlinked_car_images = car_images_on_fs - car_images_in_db
+    unlinked_ride_images = ride_images_on_fs - ride_images_in_db
+
+    # Delete not linked imgs
+    for image in unlinked_car_images:
+        image_path = os.path.join(car_images_dir, image)
+        if os.path.isfile(image_path):
+            os.remove(image_path)
+            print(f"Deleted non linked img: {image_path}")
+
+    for image in unlinked_ride_images:
+        image_path = os.path.join(ride_images_dir, image)
+        if os.path.isfile(image_path):
+            os.remove(image_path)
+            print(f"Deleted non linked img: {image_path}")
+
+
+
