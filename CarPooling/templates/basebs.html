@@ -131,8 +131,11 @@
               xhttp.onload = function() {
                   if (xhttp.status == 200)
                     console.log("Debug (AJAX) : " + this.responseText);
-                    if(suggestionContainer && suggestionString){
-                      suggestionContainer.style.display = "block";
+                    if(suggestionContainer && suggestionString ){
+                      if(this.responseText != "")
+                        suggestionContainer.style.display = "block";
+                      else
+                        suggestionContainer.style.display = "none";
                       suggestionString.innerHTML = this.responseText;
                     }
               }

@@ -296,14 +296,20 @@ class DeleteRideView(GroupRequiredMixin , DeleteView):
 
 def get_hint(request):
     response = request.GET["q"]
+    enter = False
     if(request.GET["w"]=="Destination"):  
         q = Ride.objects.filter(arrival_location__icontains=response)
         if len(q) > 0:
+            enter = True
             response = q[0].arrival_location
     elif(request.GET["w"] == "Departure" ) : 
         q = Ride.objects.filter(departure_location__icontains=response)
         if len(q) > 0:
+            enter = True
             response = q[0].departure_location
+    
+    if(not(enter)):
+        response = ""
     
     return HttpResponse(response)
 
