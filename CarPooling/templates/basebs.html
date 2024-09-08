@@ -91,6 +91,37 @@
       }, 2000); 
     }
   }, 1000);
+
+  //Hint script
+  // Call the function only when the page is full loaded
+  document.addEventListener("DOMContentLoaded", function() { 
+      var stringText = document.getElementById("id_search_string");
+      if (stringText) {
+          stringText.onkeyup = autoComplete;
+          stringText.autocomplete = "off";
+      }else{
+          console.log("id_search_string doesn't exists!");
+      }
+
+      function autoComplete() {
+          var s = stringText.value.toLowerCase();
+          console.log("s =", s); 
+          if (s.length < 3) {
+              return;
+          } else {
+              const w = document.getElementById("id_search_where").value;
+              const xhttp = new XMLHttpRequest();
+              xhttp.onload = function() {
+                  if (xhttp.status == 200)
+                    console.log("Debug : " + this.responseText);
+                    stringText.value = this.responseText;
+              }
+              xhttp.open("GET", "gethint/?w=" + w + "&q=" + s);
+              xhttp.send();
+          }
+      }
+    });
+  
   </script>
 
   

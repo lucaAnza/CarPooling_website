@@ -294,6 +294,19 @@ class DeleteRideView(GroupRequiredMixin , DeleteView):
 
 # RESEARCH--------------------------------------------------------------
 
+def get_hint(request):
+    response = request.GET["q"]
+    if(request.GET["w"]=="Destination"):  
+        q = Ride.objects.filter(arrival_location__icontains=response)
+        if len(q) > 0:
+            response = q[0].arrival_location
+    elif(request.GET["w" == "Departure"]) : 
+        q = Ride.objects.filter(departure_location__icontains=response)
+        if len(q) > 0:
+            response = q[0].departure_location
+    
+    return HttpResponse(response)
+
 def get_filtered_rides(user=None, search_string=None, search_where=None , limit = 9):
     current_time = timezone.now()
     # Base queryset: Rides that are valid (open for registration, not full)

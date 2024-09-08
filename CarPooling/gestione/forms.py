@@ -135,8 +135,8 @@ class CreateTripForm(forms.Form):
 class SearchTripForm(forms.Form):
 
     choice_list = [("Destination","Search for destinations"), ("Departure","Search for departure") ]
-    search_where = forms.ChoiceField(label="Filter", required=True, choices=choice_list)
-    search_string = forms.CharField(label="City / Location",max_length=100, min_length=3, required=True)
+    search_where = forms.ChoiceField(label="Filter", required=True, choices=choice_list , widget=forms.Select(attrs={'id': 'id_search_where'}))
+    search_string = forms.CharField(label="City / Location",max_length=100, min_length=3, required=True , widget=forms.TextInput(attrs={'id': 'id_search_string'}) )
 
 class UpdateCarForm(forms.ModelForm):
     class Meta:
