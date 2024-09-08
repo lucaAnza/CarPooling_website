@@ -161,7 +161,7 @@ class TripsListView(GroupRequiredMixin , ListView):
     # Get the last {limit} elements
     def get_queryset(self):
         trip_type = self.kwargs.get('str')
-        limit = 6
+        limit = 9
         if trip_type == 'driver':
             # Show only incoming rides
             current_time = timezone.now()
@@ -175,6 +175,7 @@ class TripsListView(GroupRequiredMixin , ListView):
             final_set = set1 | set2
             final_set = final_set.distinct()
             final_set = final_set.order_by('departure_time')
+            limit = 18
             final_set = final_set[:limit]
             return final_set
         else:

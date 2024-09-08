@@ -33,7 +33,7 @@ urlpatterns = [
     path('gestione/', include('gestione.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-delete_all_unlinked_imgs()
-#generate_next_month_rides()
+#delete_all_unlinked_imgs()
+#generate_next_month_rides(15)
 #init_db()
 #erase_car_tables()
