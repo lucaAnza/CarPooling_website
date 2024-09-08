@@ -93,15 +93,32 @@
   }, 1000);
   
   //Hint script
+  function getHint() {
+    var stringText = document.getElementById("id_search_string");
+    if (stringText) {
+        var suggestionString = document.getElementById("suggestion-string");
+        stringText.value = suggestionString.innerHTML;
+    }else{
+        console.log("id_search_string doesn't exists!");
+    }
+        
+  }
   // Call the function only when the page is full loaded
   document.addEventListener("DOMContentLoaded", function() { 
       var stringText = document.getElementById("id_search_string");
+      var suggestionContainer = document.getElementById("suggestion-container");
+      var suggestionString = document.getElementById("suggestion-string");
       if (stringText) {
           stringText.onkeyup = autoComplete;
           stringText.autocomplete = "off";
       }else{
           console.log("id_search_string doesn't exists!");
       }
+
+      if(suggestionContainer && suggestionString){
+        suggestionContainer.style.display = "none";
+      }
+      
 
       function autoComplete() {
           var s = stringText.value.toLowerCase();
@@ -113,13 +130,17 @@
               const xhttp = new XMLHttpRequest();
               xhttp.onload = function() {
                   if (xhttp.status == 200)
-                    console.log("Debug : " + this.responseText);
-                    stringText.value = this.responseText;
+                    console.log("Debug (AJAX) : " + this.responseText);
+                    if(suggestionContainer && suggestionString){
+                      suggestionContainer.style.display = "block";
+                      suggestionString.innerHTML = this.responseText;
+                    }
               }
               xhttp.open("GET", "gethint/?w=" + w + "&q=" + s);
               xhttp.send();
           }
       }
+
     });
   
   </script>

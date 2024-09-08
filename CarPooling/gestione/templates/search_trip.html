@@ -20,6 +20,14 @@
     <form action="{% url 'search_trip' %}" method="POST">
         {% csrf_token %}
         {{ form|crispy }}
+        <div style="margin-top: 10px;" id="suggestion-container">
+            <p style="color: #6c757d; font-style: italic; font-size: 14px; display: flex; align-items: center;">
+                <span style="background-color: #e9ecef; padding: 5px 10px; border-radius: 15px; display: inline-flex; align-items: center;">
+                    <i class="bi bi-search" style="margin-right: 3px;"></i>
+                     Suggestion: <span id="suggestion-string" onclick="getHint()" style="font-weight: bold; margin-left: 5px; color: #007bff;">"???"</span>
+                </span>
+            </p>
+        </div>
     <input type="submit" value="Search"> </form>
     </div>
 
