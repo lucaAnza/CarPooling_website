@@ -273,7 +273,9 @@ class DeleteRideView(GroupRequiredMixin , DeleteView):
     # Check if the user is trying to delete an other ride
     def dispatch(self, request, *args, **kwargs):
         ride = self.get_object()
-        print(ride , "---" , request.user , "---" , ride.user)
+        if ride.is_finish():
+            messages.error(request , "You tried to delete a trip that is already finished!")
+            return redirect('home')
         if ride.user != request.user:
             messages.error(request, "You tried to delete a trip of another user. You will be reported to the admin! ⚠️ ")
             return redirect('home')
