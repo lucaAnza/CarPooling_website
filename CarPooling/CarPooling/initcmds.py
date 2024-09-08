@@ -91,9 +91,9 @@ def generate_next_month_rides( ride_to_generate = 1):
     days = list(range(1, 28))  
     
     ride_data = {
-        "departure_location": ["Roma", "Milano", "Torino", "Napoli", "Firenze"],
+        "departure_location": ["Roma", "Milano", "Torino", "Napoli", "Firenze" , "Livorno"],
         "departure_address": ["Via Carducci", "Via Dante Alighieri", "Via Sallo", "Via Marconi", "Via Napoleone"],
-        "arrival_location": ["Bologna", "Venezia", "Palermo", "Genova", "Catania"],
+        "arrival_location": ["Bologna", "Venezia", "Palermo", "Genova", "Catania" , "Bari" , "Mantova" , "Brescia"  , "Perugia" , "Rimini" , "Verona"],
         "arrival_address": ["Via Garibaldi", "Via Cavour", "Corso Italia", "Via XX Settembre", "Via Mazzini"],
         "max_passenger": [1 , 2, 3, 4, 5, 6]
     }
