@@ -149,6 +149,8 @@ def generate_next_month_rides( ride_to_generate = 1):
 
 def delete_all_unlinked_imgs():
     
+    print("\nStarting to clean unlinked imgs 🧹 ...")
+
     # get base path
     car_images_dir = os.path.join(settings.MEDIA_ROOT, 'car_images/')
     ride_images_dir = os.path.join(settings.MEDIA_ROOT, 'ride_images/')
@@ -169,18 +171,22 @@ def delete_all_unlinked_imgs():
     unlinked_car_images = car_images_on_fs - car_images_in_db
     unlinked_ride_images = ride_images_on_fs - ride_images_in_db
 
+    enter = False
     # Delete not linked imgs
     for image in unlinked_car_images:
+        enter = True
         image_path = os.path.join(car_images_dir, image)
         if os.path.isfile(image_path):
             os.remove(image_path)
             print(f"Deleted non linked img: {image_path}")
 
     for image in unlinked_ride_images:
+        enter = True
         image_path = os.path.join(ride_images_dir, image)
         if os.path.isfile(image_path):
             os.remove(image_path)
             print(f"Deleted non linked img: {image_path}")
 
+    print("- There are 0 imgs unlinked! nothing to clean...\n")
 
 
