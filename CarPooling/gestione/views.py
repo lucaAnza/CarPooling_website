@@ -334,7 +334,7 @@ def search(request):
         form = SearchTripForm()
 
     # Get the filtered trips for the initial load (most recent trips)
-    trips = get_filtered_rides(user=request.user , limit = 100)
+    trips = get_filtered_rides(user=request.user , limit = 6)
 
     return render(request, "search_trip.html", context={"form": form, "title": "Search", "trips": trips})
 
@@ -347,7 +347,7 @@ class SearchResultsList(ListView):
         where = self.request.resolver_match.kwargs["where"]
 
         # Apply filters based on query parameters
-        return get_filtered_rides(user=self.request.user, search_string=string, search_where=where , limit = 18)
+        return get_filtered_rides(user=self.request.user, search_string=string, search_where=where , limit = 30)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

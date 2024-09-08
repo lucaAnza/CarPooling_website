@@ -131,7 +131,7 @@ def generate_next_month_rides( ride_to_generate = 1):
 
         if os.path.exists(image_path):
             with open(image_path, 'rb') as img_file:
-                ride.image.save('test.jpg', File(img_file), save=False)
+                ride.image.save(image_name , File(img_file), save=False)
     
         # Generate departure and arrival times 
         random_day = random.choice(days)
@@ -142,14 +142,14 @@ def generate_next_month_rides( ride_to_generate = 1):
         ride.open_registration_time = timezone.now()
         ride.close_registration_time = ride.departure_time - timedelta(hours= 4)
         ride.save()
-        print(f"Generated ride({i})[ID = {ride.id}] ...")
+        print(f"Generated ride({i})[ID = {ride.id}] ✓")
 
     print(f"Successfully created {ride_to_generate} rides\n\n")
 
 
 def delete_all_unlinked_imgs():
     
-    print("\nStarting to clean unlinked imgs 🧹 ...")
+    print("\nStarting to clean unlinked imgs 🧹...")
 
     # get base path
     car_images_dir = os.path.join(settings.MEDIA_ROOT, 'car_images/')
@@ -187,6 +187,9 @@ def delete_all_unlinked_imgs():
             os.remove(image_path)
             print(f"Deleted non linked img: {image_path}")
 
-    print("- There are 0 imgs unlinked! nothing to clean...\n")
+    if(not(enter)):
+        print("- There are 0 imgs unlinked!\n")
+    else:
+        print("Clean successfully finished ✓")
 
 
