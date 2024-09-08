@@ -300,7 +300,7 @@ def get_hint(request):
         q = Ride.objects.filter(arrival_location__icontains=response)
         if len(q) > 0:
             response = q[0].arrival_location
-    elif(request.GET["w" == "Departure"]) : 
+    elif(request.GET["w"] == "Departure" ) : 
         q = Ride.objects.filter(departure_location__icontains=response)
         if len(q) > 0:
             response = q[0].departure_location
