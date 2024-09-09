@@ -68,6 +68,13 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
 ]
 
+# Permission for API
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated' , # isAuthenticated (API access only for authenticated user) ['AllowAny' is for all]
+    ]
+}
+
 ROOT_URLCONF = 'CarPooling.urls'
 
 TEMPLATES = [
