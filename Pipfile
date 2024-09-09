@@ -10,6 +10,7 @@ django-braces = "*"
 django-autocomplete-light = "*"
 pillow = "*"
 djangorestframework = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
