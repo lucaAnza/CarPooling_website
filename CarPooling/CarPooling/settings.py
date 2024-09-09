@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'gestione',
     'crispy_forms',
     'crispy_bootstrap4',
+    'rest_framework',  # Needed for API
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [

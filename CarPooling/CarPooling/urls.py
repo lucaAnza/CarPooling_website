@@ -24,7 +24,8 @@ from .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('gestione/' , include('gestione.urls')),
+    path('gestione/' , include('gestione.urls')),  # Application for Ride,Car,Review...
+    path('api/v1/', include('api.urls')),   # Application for API
     re_path(r"^$|^\/$|^home\/$", home_page ,name="home"),  # Homepage
     path("register/", UserCreateView.as_view(), name="register"), # Register {templates/user_create.html}
     path("login/", auth_views.LoginView.as_view(), name="login"),   # Login (pre-built Django) {templates/registration/login.html}

@@ -9,6 +9,7 @@ crispy-bootstrap4 = "*"
 django-braces = "*"
 django-autocomplete-light = "*"
 pillow = "*"
+djangorestframework = "*"
 
 [dev-packages]
 
