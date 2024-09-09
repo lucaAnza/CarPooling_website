@@ -18,6 +18,8 @@ This repository contains the code of a Car Pooling Web Site made with <b>Django<
 - `django-braces`: Reusable, generic mixins for Django.
 - `django-autocomplete-light`: Django app for adding autocomplete functionality to forms.
 - `pillow`: Python Imaging Library (PIL) fork that adds image processing capabilities to your Python interpreter.
+- `djangorestframework`: A powerful and flexible toolkit for building Web APIs in Django, including features like serialization, authentication, and viewsets.
+- `django-cors-headers`: A Django app for handling the server headers required for Cross-Origin Resource Sharing (CORS), allowing your backend to serve responses to requests made from different origins (domains).
 
 <br>
 
@@ -46,6 +48,7 @@ python3 manage.py runserver
 6. User profile with travel history and owned vehicles.
 7. Recommendation system based on popular destinations.
 8. Section with ranking of best drivers (Number of rides).
+9. Possibility to list User data with API.
 
 <br>
 
