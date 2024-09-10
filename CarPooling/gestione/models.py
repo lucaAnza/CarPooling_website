@@ -126,6 +126,8 @@ class Ride(models.Model):
             raise ValidationError('Arrival time cannot be before the Departure time')
         if self.open_registration_time > self.close_registration_time:
             raise ValidationError("Close registration cannot be before the Open registration time")
+        if self.close_registration_time > self.departure_time:
+            raise ValidationError("Close registration cannot be after the departure time")
 
     def save(self, *args, **kwargs):
         self.full_clean()  # Call validations

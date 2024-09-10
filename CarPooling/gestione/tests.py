@@ -93,6 +93,16 @@ class RideModelTest(TestCase):
         
         self.assertRaises(ValidationError , self.ride.save )
 
+    def test_close_registration_time_cannot_be_after_departure_time(self):
+        self.ride.open_registration_time = timezone.now() + timezone.timedelta(hours=2)
+        self.ride.close_registration_time = timezone.now() + timezone.timedelta(hours=4)
+        self.ride.departure_time = timezone.now() + timezone.timedelta(hours=3)
+        self.ride.arrival_time = timezone.now() + timezone.timedelta(hours=5)
+
+        self.assertRaises(ValidationError , self.ride.save )
+
+
+
     def test_get_count_passengers(self):
 
         self.p1 = User.objects.create_user(username='passenger1', password='12345')
