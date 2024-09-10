@@ -35,6 +35,6 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #delete_all_unlinked_imgs()
-#generate_next_month_rides(15)
+#generate_next_month_rides(10)
 #init_db()
 #erase_car_tables()
