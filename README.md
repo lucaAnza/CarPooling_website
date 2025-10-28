@@ -26,11 +26,11 @@ This repository contains the code of a Car Pooling Web Site made with <b>Django<
 ## How to start the website (first run)
 
 ```bash
-cd <application_name>
+cd CarPooling_website   # <application_name>
 pipenv --rm
 pipenv install
 pipenv shell
-cd <PROJECT_NAME> 
+cd CarPooling # <PROJECT_NAME> 
 python3 manage.py runserver
 
 ```
