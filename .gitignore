@@ -1,1 +1,7 @@
-Car_Place_img
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+.venvs/

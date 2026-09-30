@@ -23,17 +23,40 @@ This repository contains the code of a Car Pooling Web Site made with <b>Django<
 
 <br>
 
+
 ## How to start the website (first run)
+
+### ![Pipenv](https://img.shields.io/badge/Pipenv-Environment-blue)
 
 ```bash
 cd CarPooling_website   # <application_name>
-pipenv --rm
+
 pipenv install
 pipenv shell
-cd CarPooling # <PROJECT_NAME> 
-python3 manage.py runserver
 
+cd CarPooling           # <PROJECT_NAME>
+python manage.py migrate
+python manage.py runserver
 ```
+
+### ![Venv](https://img.shields.io/badge/VENV-Environment-green)
+
+```bash
+cd CarPooling_website   # <application_name>
+
+# Create and activate the virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+python -m pip install -r requirements.txt
+
+# Start Django
+cd CarPooling           # <PROJECT_NAME>
+python manage.py migrate
+python manage.py runserver
+```
+
 <br>
 
 ## Main functionality
